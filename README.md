@@ -35,7 +35,7 @@ The system enables different stakeholders—warehouse administrators (external w
 - Receive shipment initiation requests from respective order platforms 
 - Validate and process shipment initiation 
 - Trigger shipment notifications via SMS Gateway  
-- Manage warehouse inventory related to outgoing shipments and raise pre-alert to transit hub
+- Manage warehouse inventory related to outgoing shipments and Raise Pre-Alert to Transit Hub
 - Receive RTO information from respective order platforms
 
 ---
@@ -49,7 +49,7 @@ The system enables different stakeholders—warehouse administrators (external w
 **Planned Features:**
 - Perform in-scan when shipments arrive at the hub  
 - Perform out-scan when shipments leave the hub
--  Manage inventory at the transit hub  and raise pre-alert to local delivery agency
+-  Manage inventory at the transit hub  and Raise Pre-Alert to Local Delivery Agency
 - Update shipment movement status during transit  
 
 ---

@@ -49,7 +49,7 @@ The system enables different stakeholders—warehouse administrators (external w
 **Planned Features:**
 - Perform in-scan when shipments arrive at the hub  
 - Perform out-scan when shipments leave the hub
--  Manage inventory at the transit hub  and raise pre-alert to local Delivery Agency
+-  Manage inventory at the transit hub  and raise pre-alert to local delivery agency
 - Update shipment movement status during transit  
 
 ---

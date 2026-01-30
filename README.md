@@ -1,6 +1,6 @@
 # 📦 Warehouse to Last-Mile Coordination Platform
 
-## 1)Problem Statement
+## Problem Statement
 
 The **Warehouse to Last-Mile Coordination Platform** is designed to support and coordinate logistics operations from shipment initiation at the warehouse through transit handling and final delivery to the customer.
 
@@ -8,7 +8,7 @@ The system enables different stakeholders—warehouse administrators, transit hu
 
 ---
 
-## 2) Identified Actors
+## Identified Actors
 
 1. Warehouse Admin  
 2. Transit Hub Manager  
@@ -22,7 +22,7 @@ The system enables different stakeholders—warehouse administrators, transit hu
 
 ---
 
-## 3) Use Cases & Planned Features
+## Use Cases & Planned Features
 
 ### Warehouse Admin
 

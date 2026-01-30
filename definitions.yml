@@ -1,0 +1,184 @@
+# Domain: Warehouse to Last-Mile Coordination
+# Problem Statement: Warehouse to Last Mile Coordination Platform
+# Last Updated: 2026-01-30
+
+Shipment: Shipment
+definition:
+A physical unit of goods that is prepared at a warehouse and moved through hubs for delivery to a final recipient.
+examples:
+- "Shipment SHP-10234 is created at the warehouse and sent to the city hub."
+aliases:
+- Consignment
+- Parcel
+
+TrackingID: Tracking ID
+definition:
+A unique and stable reference assigned to a shipment that is used by customers, customer care, and operations teams to identify and track the shipment across all stages of its delivery lifecycle.
+examples:
+- "Customer enters Tracking ID TRK-894532 to view shipment status."
+- "Customer care uses the Tracking ID to locate the shipment during a support call."
+aliases:
+- Tracking Number
+- Shipment Reference
+
+ShipmentInitiation: Shipment Initiation
+definition:
+The warehouse-controlled action of creating and releasing a shipment into the delivery network.
+examples:
+- "Warehouse Admin performs shipment initiation after packing is completed."
+aliases:
+- Dispatch Creation
+- Shipment Creation
+
+Warehouse: Warehouse
+definition:
+A fulfillment location where goods are stored, packed, and prepared before entering the delivery network.
+examples:
+- "The warehouse initiates 300 shipments for same-day delivery."
+aliases:
+- Fulfillment Center
+- Origin Facility
+
+WarehouseAdmin: Warehouse Admin
+definition:
+The operational role responsible for initiating shipments, managing inventory, and authorizing return-to-origin actions.
+examples:
+- "Warehouse Admin authorizes a shipment to be returned after delivery failure."
+aliases:
+- Dispatch Admin
+- Warehouse Operator
+
+Inventory: Inventory
+definition:
+The count and status of items available at a warehouse or hub for fulfillment and movement.
+examples:
+- "Inventory is reduced after shipment initiation."
+aliases:
+- Stock
+- On-hand Items
+
+InventoryManagement: Inventory Management
+definition:
+The process of maintaining accurate inventory levels across warehouses and transit hubs.
+examples:
+- "Inventory is reconciled after shipments arrive at the hub."
+aliases:
+- Stock Management
+- Inventory Control
+
+TransitHub: Transit Hub
+definition:
+An intermediate facility where shipments are received, sorted, and prepared for onward or last-mile delivery.
+examples:
+- "Shipment arrives at the transit hub for sorting."
+aliases:
+- Hub
+- Sorting Center
+
+TransitHubManager: Transit Hub Manager
+definition:
+The operational role responsible for shipment handling and coordination within a transit hub.
+examples:
+- "Transit Hub Manager prepares shipments for last-mile handover."
+aliases:
+- Hub Operator
+- Hub Admin
+
+InScan: In-Scan
+definition:
+An acknowledgment that a shipment has been received at a warehouse or transit hub.
+examples:
+- "In-scan is completed when the shipment reaches the hub."
+aliases:
+- Arrival Scan
+- Receiving Scan
+
+OutScan: Out-Scan
+definition:
+An acknowledgment that a shipment has departed a warehouse or transit hub toward the next delivery stage.
+examples:
+- "Out-scan is completed before handing over to the delivery agency."
+aliases:
+- Dispatch Scan
+- Departure Scan
+
+LocalDeliveryAgency: Local Delivery Agency
+definition:
+An external delivery organization responsible for executing last-mile delivery to the recipient.
+examples:
+- "Local delivery agency takes custody after hub out-scan."
+aliases:
+- Delivery Partner
+- Last-mile Carrier
+
+DeliveryRoute: Delivery Route
+definition:
+A planned sequence of locations and stops that a delivery agent follows to deliver one or more shipments.
+examples:
+- "The delivery route covers five neighborhoods for morning deliveries."
+aliases:
+- Route
+- Delivery Path
+
+DeliveryShipment: Delivery Shipment
+definition:
+The last-mile phase where a shipment is transported from a hub to the final recipient.
+examples:
+- "Shipment is marked out for delivery."
+aliases:
+- Last-mile Delivery
+- Delivery Run
+
+DeliveryAttempt: Delivery Attempt
+definition:
+A single attempt made to deliver a shipment to the recipient, which may succeed or fail.
+examples:
+- "Delivery attempt failed due to recipient unavailability."
+aliases:
+- Drop Attempt
+- Attempt
+
+RTO: Return To Origin
+definition:
+The shipment state where goods are returned to the origin when delivery cannot be completed.
+examples:
+- "Shipment status changes to RTO after delivery failure."
+aliases:
+- Return Shipment
+- Origin Return
+
+ShipmentTracking: Shipment Tracking
+definition:
+The ability to view shipment progress and current status using the tracking reference.
+examples:
+- "Customer tracks shipment location using the tracking page."
+aliases:
+- Track Shipment
+- Live Tracking
+
+EstimatedTimeOfArrival: Estimated Time of Arrival
+definition:
+The predicted time when a shipment is expected to reach the next checkpoint or the final recipient.
+examples:
+- "ETA for delivery is shown as 6:00 PM."
+aliases:
+- ETA
+- Arrival Estimate
+
+Customer: Customer
+definition:
+The recipient who expects delivery of a shipment and can track progress or seek support.
+examples:
+- "Customer checks tracking before delivery."
+aliases:
+- Recipient
+- Consignee
+
+CustomerCareSupport: Customer Care Support
+definition:
+The support process that assists customers with shipment-related issues and inquiries.
+examples:
+- "Customer care explains a delivery delay."
+aliases:
+- Support
+- Helpdesk

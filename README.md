@@ -29,12 +29,14 @@ The system enables different stakeholders—warehouse administrators, transit hu
 **Use Cases:**
 - Shipment Initiation  
 - Manage Inventory  
-
+- Handle RTO Requests
+- 
 **Planned Features:**
-- Initiate shipments in the system  
+- Receive shipment initiation requests from external order platforms
+- Validate and process shipment initiation 
 - Trigger shipment notifications via SMS Gateway  
 - Manage warehouse inventory related to outgoing shipments  
-- Ensure inventory availability before dispatch  
+- Receive RTO information from external platforms  
 
 ---
 
@@ -81,7 +83,7 @@ The system enables different stakeholders—warehouse administrators, transit hu
 
 ---
 
-## 🔗 External System Integrations
+## External System Integrations
 
 ### SMS Gateway System
 - Sends notifications during shipment initiation  

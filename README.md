@@ -2,10 +2,9 @@
 
 ## Problem Statement
 
-The **Warehouse to Last-Mile Coordination Platform** is designed to support and coordinate logistics operations from shipment initiation at the warehouse through transit handling and final delivery to the customer.
+The Warehouse to Last-Mile Coordination Platform is designed to support and coordinate logistics operations from shipment initiation at the warehouse through transit handling and final delivery to the customer.
 
-The system enables different stakeholders—warehouse administrators, transit hub managers, local delivery agencies, and customers—to interact with shipment-related processes such as inventory management, scanning operations, delivery execution, exception handling (RTO), tracking, and customer support within a single platform.
-
+The system enables different stakeholders—warehouse administrators (external warehouse partners who are given authorized access to the platform and operate shipments directly within the system), transit hub managers, local delivery agencies, and customers—to interact with shipment-related processes such as inventory management, scanning operations, delivery execution, exception handling (RTO), tracking, and customer support within a single platform.
 ---
 
 ## Identified Actors
@@ -32,11 +31,11 @@ The system enables different stakeholders—warehouse administrators, transit hu
 - Handle RTO Requests
 - 
 **Planned Features:**
-- Receive shipment initiation requests from external order platforms
+- Receive shipment initiation requests from respective order platforms 
 - Validate and process shipment initiation 
 - Trigger shipment notifications via SMS Gateway  
 - Manage warehouse inventory related to outgoing shipments  
-- Receive RTO information from external platforms  
+- Receive RTO information from respective order platforms
 
 ---
 

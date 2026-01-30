@@ -29,7 +29,8 @@ The system enables different stakeholders—warehouse administrators (external w
 **Use Cases:**
 - Shipment Initiation  
 - Manage Inventory  
-- Handle RTO Requests 
+- Handle RTO Requests
+- 
 **Planned Features:**
 - Receive shipment initiation requests from respective order platforms 
 - Validate and process shipment initiation 

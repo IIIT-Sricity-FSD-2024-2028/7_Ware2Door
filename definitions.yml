@@ -1,6 +1,6 @@
 # Domain: Warehouse to Last-Mile Coordination
 # Problem Statement: Warehouse to Last Mile Coordination Platform
-# Last Updated: 2026-01-30
+# Last Updated: 2026-01-31
 
 Shipment: Shipment
 definition:
@@ -101,6 +101,33 @@ examples:
 aliases:
 - Dispatch Scan
 - Departure Scan
+
+Inbound: Inbound
+definition:
+The operational state representing the set and count of shipments that have been in-scanned at a warehouse or transit hub, confirming their physical receipt at that node.
+examples:
+- "Inbound at the transit hub shows 180 shipments after all arrivals are in-scanned."
+aliases:
+- Received Shipments
+- Arrival Volume
+
+Outbound: Outbound
+definition:
+The operational state representing the set and count of shipments that have been out-scanned from a warehouse or transit hub, confirming their departure from that node.
+examples:
+- "Outbound from the hub shows 150 shipments after out-scan completion."
+aliases:
+- Dispatched Shipments
+- Departure Volume
+
+PreAlert: Pre-Alert
+definition:
+An advance notification sent from a source node to a destination node containing outbound shipment information, indicating what shipments are expected to arrive before their physical arrival.
+examples:
+- "The warehouse sends a pre-alert to the transit hub for 150 outbound shipments."
+aliases:
+- Advance Notice
+- Arrival Alert
 
 LocalDeliveryAgency: Local Delivery Agency
 definition:

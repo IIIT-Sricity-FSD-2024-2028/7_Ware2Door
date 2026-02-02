@@ -192,6 +192,16 @@ aliases:
 - ETA
 - Arrival Estimate
 
+EstimatedDateOfDelivery: Estimated Date of Delivery
+definition:
+  The predicted calendar date on which a shipment or order is expected to be delivered to the final recipient.
+examples:
+  - "Estimated date of delivery is March 15, 2026."
+aliases:
+  - EDD
+  - Expected Delivery Date
+  - Delivery Date Estimate
+
 Customer: Customer
 definition:
 The recipient who expects delivery of a shipment and can track progress or seek support.

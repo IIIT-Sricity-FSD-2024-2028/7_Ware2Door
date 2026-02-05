@@ -90,7 +90,7 @@ The system enables different stakeholders—warehouse administrators (external w
 
 ### Third-Party Ordering Platform
 - Acts as the external source for customer orders and triggers shipment initiation in the system.
-- 
+ 
 ### GPS Tracking System
 - Provides real-time location data for shipment tracking  
 

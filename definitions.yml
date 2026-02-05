@@ -78,7 +78,7 @@ aliases:
 
 InScan: In-Scan
 definition:
-An acknowledgment that a shipment has been received at a warehouse or transit hub.
+An acknowledgment that a shipment has been received at transit hub or local delivery agency.
 examples:
 - "In-scan is completed when the shipment reaches the hub."
 aliases:
@@ -87,7 +87,7 @@ aliases:
 
 OutScan: Out-Scan
 definition:
-An acknowledgment that a shipment has departed a warehouse or transit hub toward the next delivery stage.
+An acknowledgment that a shipment has departed a transit hub or local delivery agency toward the next delivery stage.
 examples:
 - "Out-scan is completed before handing over to the delivery agency."
 aliases:
@@ -96,7 +96,7 @@ aliases:
 
 Inbound: Inbound
 definition:
-The operational state representing the set and count of shipments that have been in-scanned at a warehouse or transit hub, confirming their physical receipt at that node.
+The operational state representing the set and count of shipments that have been in-scanned at a transit hub or local delivery agency, confirming their physical receipt at that node.
 examples:
 - "Inbound at the transit hub shows 180 shipments after all arrivals are in-scanned."
 aliases:
@@ -105,7 +105,7 @@ aliases:
 
 Outbound: Outbound
 definition:
-The operational state representing the set and count of shipments that have been out-scanned from a warehouse or transit hub, confirming their departure from that node.
+The operational state representing the set and count of shipments that have been out-scanned from a transit hub or local delivery agency, confirming their departure from that node.
 examples:
 - "Outbound from the hub shows 150 shipments after out-scan completion."
 aliases:

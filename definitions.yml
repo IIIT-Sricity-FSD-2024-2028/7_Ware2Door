@@ -48,15 +48,25 @@ aliases:
 - Dispatch Admin
 - Warehouse Operator
 
+Inventory: Inventory
+definition:
+  Inventory refers to the stock of goods or items stored in warehouses, transit hubs, or other storage locations that are ready for shipment, sale, or further processing.
+examples:
+  - "The warehouse currently holds 500 units of Product A."
+aliases:
+  - Stock
+  - Goods
+  - Stored Items
+
 InventoryManagement: Inventory Management
 definition:
-Inventory Management is the process of tracking, updating, and reconciling item quantities and statuses at warehouses and transit hubs during shipment creation, movement, and in-scan/out-scan events.
+  Inventory Management is the process of tracking, updating, and reconciling item quantities and statuses at warehouses and transit hubs during shipment creation, movement, and in-scan/out-scan events.
 examples:
-- "Inventory is updated after shipment initiation."
-- "Inventory is reconciled after shipments arrive at the hub."
+  - "Inventory is updated after shipment initiation."
+  - "Inventory is reconciled after shipments arrive at the hub."
 aliases:
-- Stock Management
-- Inventory Control
+  - Stock Management
+  - Inventory Control
 
 TransitHub: Transit Hub
 definition:

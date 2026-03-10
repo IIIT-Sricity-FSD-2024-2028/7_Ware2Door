@@ -12,7 +12,6 @@ CREATE TABLE Warehouse (
     warehouse_id INT PRIMARY KEY,
     warehouse_name VARCHAR(100) NOT NULL,
     warehouse_address TEXT NOT NULL,
-    address TEXT NOT NULL,
     latitude DECIMAL(10,6) NOT NULL,
     longitude DECIMAL(10,6) NOT NULL,
     manager_name VARCHAR(100) NOT NULL,

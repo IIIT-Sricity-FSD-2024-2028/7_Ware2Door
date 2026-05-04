@@ -1,0 +1,383 @@
+{
+  "hub-001": [
+    {
+      "trackingId": "RTOID-1777895363612-522",
+      "status": "Outscan",
+      "agencyName": "RTO Return — Rakshitha",
+      "hubName": null,
+      "warehouseId": "wh-001",
+      "timestamp": "2026-05-04T11:50:21.479Z",
+      "flagged": false,
+      "flagMsg": "",
+      "isRTO": true
+    },
+    {
+      "trackingId": "TRK91925",
+      "status": "Outscan",
+      "agencyName": "Adyar Delivery Center",
+      "hubName": "Chennai Transit Hub",
+      "warehouseId": "wh-001",
+      "timestamp": "2026-05-04T11:46:31.877Z",
+      "flagged": false,
+      "flagMsg": ""
+    },
+    {
+      "trackingId": "THRYTHGBFYTGFGBF",
+      "status": "Error",
+      "agencyName": null,
+      "timestamp": "2026-05-04T11:45:56.176Z",
+      "flagged": true,
+      "flagMsg": "Unknown tracking ID — not found in manifest"
+    },
+    {
+      "trackingId": "RTOID-1777894310174-227",
+      "status": "Outscan",
+      "agencyName": "RTO Return — Rakshitha",
+      "hubName": null,
+      "warehouseId": "wh-001",
+      "timestamp": "2026-05-04T11:33:09.408Z",
+      "flagged": false,
+      "flagMsg": "",
+      "isRTO": true
+    },
+    {
+      "trackingId": "TRK73601",
+      "status": "Outscan",
+      "agencyName": "Adyar Delivery Center",
+      "hubName": "Chennai Transit Hub",
+      "warehouseId": "wh-001",
+      "timestamp": "2026-05-04T11:29:33.092Z",
+      "flagged": false,
+      "flagMsg": ""
+    },
+    {
+      "trackingId": "THNTYTRGRGTHR",
+      "status": "Error",
+      "agencyName": null,
+      "timestamp": "2026-05-04T11:28:55.141Z",
+      "flagged": true,
+      "flagMsg": "Unknown tracking ID — not found in manifest"
+    },
+    {
+      "trackingId": "RTOID-1777893386045-021",
+      "status": "Outscan",
+      "agencyName": "RTO Return — Rakshitha",
+      "hubName": null,
+      "warehouseId": "wh-001",
+      "timestamp": "2026-05-04T11:17:59.832Z",
+      "flagged": false,
+      "flagMsg": "",
+      "isRTO": true
+    },
+    {
+      "trackingId": "GERFDX",
+      "status": "Error",
+      "agencyName": null,
+      "timestamp": "2026-05-04T11:09:32.497Z",
+      "flagged": true,
+      "flagMsg": "Unknown tracking ID — not found in manifest"
+    },
+    {
+      "trackingId": "TRK88874",
+      "status": "Outscan",
+      "agencyName": "Adyar Delivery Center",
+      "hubName": "Chennai Transit Hub",
+      "warehouseId": "wh-001",
+      "timestamp": "2026-05-04T11:10:20.479Z",
+      "flagged": false,
+      "flagMsg": ""
+    },
+    {
+      "trackingId": "TRK40972",
+      "status": "Outscan",
+      "agencyName": "Adyar Delivery Center",
+      "hubName": "Chennai Transit Hub",
+      "warehouseId": "wh-001",
+      "timestamp": "2026-05-04T10:45:26.760Z",
+      "flagged": false,
+      "flagMsg": ""
+    },
+    {
+      "trackingId": "RTOID-1777886577519-074",
+      "status": "Outscan",
+      "agencyName": "RTO Return — Rahul Sharma",
+      "hubName": null,
+      "warehouseId": "wh-001",
+      "timestamp": "2026-05-04T09:25:38.083Z",
+      "flagged": false,
+      "flagMsg": "",
+      "isRTO": true
+    },
+    {
+      "trackingId": "TRK10589",
+      "status": "Outscan",
+      "agencyName": "Adyar Delivery Center",
+      "hubName": "Chennai Transit Hub",
+      "warehouseId": "wh-001",
+      "timestamp": "2026-05-04T09:16:35.365Z",
+      "flagged": false,
+      "flagMsg": ""
+    },
+    {
+      "trackingId": "TDSETRD",
+      "status": "Error",
+      "agencyName": null,
+      "timestamp": "2026-05-04T09:15:47.683Z",
+      "flagged": true,
+      "flagMsg": "Unknown tracking ID — not found in manifest"
+    },
+    {
+      "trackingId": "TRK4016",
+      "status": "Outscan",
+      "agencyName": "Adyar Delivery Center",
+      "hubName": "Chennai Transit Hub",
+      "warehouseId": "wh-004",
+      "timestamp": "2026-05-03T17:59:04.604Z",
+      "flagged": false,
+      "flagMsg": ""
+    },
+    {
+      "trackingId": "TRK4010",
+      "status": "Error",
+      "agencyName": "Karol Bagh Delivery Center",
+      "timestamp": "2026-05-03T17:56:20.860Z",
+      "flagged": true,
+      "flagMsg": "Wrong hub — routed to Delhi Transit Hub"
+    },
+    {
+      "trackingId": "TRK18841",
+      "status": "Outscan",
+      "agencyName": "Adyar Delivery Center",
+      "hubName": "Chennai Transit Hub",
+      "warehouseId": "wh-001",
+      "timestamp": "2026-05-03T12:24:58.549Z",
+      "flagged": false,
+      "flagMsg": ""
+    },
+    {
+      "trackingId": "RTOID-1777806187394-142",
+      "status": "Outscan",
+      "agencyName": "RTO Return — Tharun Sharma",
+      "hubName": null,
+      "warehouseId": "wh-001",
+      "timestamp": "2026-05-03T11:12:00.506Z",
+      "flagged": false,
+      "flagMsg": "",
+      "isRTO": true
+    },
+    {
+      "trackingId": "TRK91083",
+      "status": "Outscan",
+      "agencyName": "Adyar Delivery Center",
+      "hubName": "Chennai Transit Hub",
+      "warehouseId": "wh-001",
+      "timestamp": "2026-05-03T11:01:07.594Z",
+      "flagged": false,
+      "flagMsg": ""
+    },
+    {
+      "trackingId": "RTOID-1777803347008-845",
+      "status": "Outscan",
+      "agencyName": "RTO Return — Rahul Sharma",
+      "hubName": null,
+      "warehouseId": "wh-001",
+      "timestamp": "2026-05-03T10:18:03.569Z",
+      "flagged": false,
+      "flagMsg": "",
+      "isRTO": true
+    },
+    {
+      "trackingId": "TRK89535",
+      "status": "Outscan",
+      "agencyName": "Whitefield Delivery Hub",
+      "hubName": "Chennai Transit Hub",
+      "warehouseId": "wh-001",
+      "timestamp": "2026-05-03T06:23:05.551Z",
+      "flagged": false,
+      "flagMsg": ""
+    },
+    {
+      "trackingId": "TRK77615",
+      "status": "Outscan",
+      "agencyName": "Adyar Delivery Center",
+      "hubName": "Chennai Transit Hub",
+      "warehouseId": "wh-001",
+      "timestamp": "2026-04-25T19:52:12.082Z",
+      "flagged": false,
+      "flagMsg": ""
+    },
+    {
+      "trackingId": "TRK97371",
+      "status": "Outscan",
+      "agencyName": "Adyar Delivery Center",
+      "hubName": "Chennai Transit Hub",
+      "warehouseId": "wh-001",
+      "timestamp": "2026-04-25T19:27:02.479Z",
+      "flagged": false,
+      "flagMsg": ""
+    },
+    {
+      "trackingId": "TRK34547",
+      "status": "Outscan",
+      "agencyName": "Adyar Delivery Center",
+      "hubName": "Chennai Transit Hub",
+      "warehouseId": "wh-001",
+      "timestamp": "2026-04-25T18:09:50.521Z",
+      "flagged": false,
+      "flagMsg": ""
+    },
+    {
+      "trackingId": "TRK20334",
+      "status": "Outscan",
+      "agencyName": "Adyar Delivery Center",
+      "hubName": "Chennai Transit Hub",
+      "warehouseId": "wh-001",
+      "timestamp": "2026-04-25T17:31:12.660Z",
+      "flagged": false,
+      "flagMsg": ""
+    },
+    {
+      "trackingId": "TRK4001",
+      "status": "Outscan",
+      "agencyName": "Adyar Delivery Center",
+      "hubName": "Chennai Transit Hub",
+      "warehouseId": "wh-001",
+      "timestamp": "2026-04-25T17:14:24.343Z",
+      "flagged": false,
+      "flagMsg": ""
+    },
+    {
+      "trackingId": "TEST999",
+      "status": "Error",
+      "agencyName": null,
+      "timestamp": "2026-04-24T20:06:40.992Z",
+      "flagged": true,
+      "flagMsg": "Unknown tracking ID — not found in manifest"
+    }
+  ],
+  "hub-002": [
+    {
+      "trackingId": "RTOID-1777802926098-759",
+      "status": "Outscan",
+      "agencyName": "RTO Return — Ravi Shankar",
+      "hubName": null,
+      "warehouseId": "wh-001",
+      "timestamp": "2026-05-03T10:09:02.654Z",
+      "flagged": false,
+      "flagMsg": "",
+      "isRTO": true
+    },
+    {
+      "trackingId": "TRK4002",
+      "status": "Outscan",
+      "agencyName": "Whitefield Delivery Hub",
+      "hubName": "Bangalore Transit Hub",
+      "warehouseId": "wh-001",
+      "timestamp": "2026-05-03T06:15:41.104Z",
+      "flagged": false,
+      "flagMsg": ""
+    }
+  ],
+  "hub-003": [
+    {
+      "trackingId": "RTOID-1777804240688-439",
+      "status": "Outscan",
+      "agencyName": "RTO Return — Chetan Sharma",
+      "hubName": null,
+      "warehouseId": "wh-001",
+      "timestamp": "2026-05-03T10:33:10.217Z",
+      "flagged": false,
+      "flagMsg": "",
+      "isRTO": true
+    },
+    {
+      "trackingId": "TRK79727",
+      "status": "Outscan",
+      "agencyName": "Hitech City Delivery Point",
+      "hubName": "Hyderabad Transit Hub",
+      "warehouseId": "wh-001",
+      "timestamp": "2026-05-03T10:29:02.919Z",
+      "flagged": false,
+      "flagMsg": ""
+    },
+    {
+      "trackingId": "TRK21164",
+      "status": "Outscan",
+      "agencyName": "Hitech City Delivery Point",
+      "hubName": "Hyderabad Transit Hub",
+      "warehouseId": "wh-001",
+      "timestamp": "2026-05-03T05:28:48.129Z",
+      "flagged": false,
+      "flagMsg": ""
+    },
+    {
+      "trackingId": "TRK21162",
+      "status": "Error",
+      "agencyName": null,
+      "timestamp": "2026-05-03T05:28:28.330Z",
+      "flagged": true,
+      "flagMsg": "Unknown tracking ID — not found in manifest"
+    }
+  ],
+  "hub-004": [
+    {
+      "trackingId": "TRK48328",
+      "status": "Scanned In",
+      "agencyName": "Tharun Delivery Office",
+      "hubName": "Mumbai Central Hub",
+      "warehouseId": "wh-001",
+      "timestamp": "2026-05-04T04:52:44.752Z",
+      "flagged": false,
+      "flagMsg": ""
+    },
+    {
+      "trackingId": "TRK48384",
+      "status": "Error",
+      "agencyName": null,
+      "timestamp": "2026-05-04T04:51:59.179Z",
+      "flagged": true,
+      "flagMsg": "Unknown tracking ID — not found in manifest"
+    },
+    {
+      "trackingId": "TRK48348",
+      "status": "Error",
+      "agencyName": null,
+      "timestamp": "2026-05-04T04:49:30.834Z",
+      "flagged": true,
+      "flagMsg": "Unknown tracking ID — not found in manifest"
+    }
+  ],
+  "hub-005": [
+    {
+      "trackingId": "RTOID-1777805188721-320",
+      "status": "Outscan",
+      "agencyName": "RTO Return — Varshith Sharma",
+      "hubName": null,
+      "warehouseId": "wh-001",
+      "timestamp": "2026-05-03T10:49:16.684Z",
+      "flagged": false,
+      "flagMsg": "",
+      "isRTO": true
+    },
+    {
+      "trackingId": "TRK14829",
+      "status": "Outscan",
+      "agencyName": "Karol Bagh Delivery Center",
+      "hubName": "Delhi Transit Hub",
+      "warehouseId": "wh-001",
+      "timestamp": "2026-05-03T10:44:40.272Z",
+      "flagged": false,
+      "flagMsg": ""
+    },
+    {
+      "trackingId": "TRK4005",
+      "status": "Outscan",
+      "agencyName": "Karol Bagh Delivery Center",
+      "hubName": "Delhi Transit Hub",
+      "warehouseId": "wh-001",
+      "timestamp": "2026-05-03T06:25:00.698Z",
+      "flagged": false,
+      "flagMsg": ""
+    }
+  ]
+}

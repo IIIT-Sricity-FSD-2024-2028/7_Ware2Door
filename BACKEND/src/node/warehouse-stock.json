@@ -1,0 +1,132 @@
+{
+  "wh-001": [
+    {
+      "labelId": "SHP-2026-00412",
+      "itemName": "Samsung Galaxy S26 Ultra",
+      "quantity": 24,
+      "lastUpdated": "2026-04-12T18:23:51.186Z"
+    },
+    {
+      "labelId": "SHP-2026-00398",
+      "itemName": "Nike Air Max 2026",
+      "quantity": 116,
+      "lastUpdated": "2026-05-04T11:51:00.911Z"
+    },
+    {
+      "labelId": "SHP-2026-00365",
+      "itemName": "Apple MacBook Pro 16",
+      "quantity": 9,
+      "lastUpdated": "2026-04-12T18:05:42.989Z"
+    },
+    {
+      "labelId": "SHP-2026-003654",
+      "itemName": "Samsung Galaxy S26 Ultra",
+      "quantity": 100,
+      "lastUpdated": "2026-04-12T18:02:07.706Z"
+    },
+    {
+      "labelId": "SHP-2026-003654",
+      "itemName": "Nike Air Max 2026",
+      "quantity": 60,
+      "lastUpdated": "2026-04-12T16:45:38.127Z"
+    },
+    {
+      "labelId": "SYS-1776017922260",
+      "itemName": "Wireless Mouse",
+      "quantity": 1,
+      "lastUpdated": "2026-05-04T11:18:40.561Z"
+    },
+    {
+      "labelId": "SHP-2026-829104",
+      "itemName": "Samsung TV",
+      "quantity": 1,
+      "lastUpdated": "2026-05-03T10:09:09.969Z"
+    },
+    {
+      "labelId": "ship-1234",
+      "itemName": "phone",
+      "quantity": 3,
+      "lastUpdated": "2026-05-04T09:01:33.613Z"
+    }
+  ],
+  "wh-002": [
+    {
+      "labelId": "SHP-2026-01001",
+      "itemName": "Sony WH-1000XM6",
+      "quantity": 5,
+      "lastUpdated": "2026-03-14T10:20:00Z"
+    },
+    {
+      "labelId": "SHP-2026-01002",
+      "itemName": "Dell Ultrasharp Monitor",
+      "quantity": 2,
+      "lastUpdated": "2026-03-14T10:45:00Z"
+    },
+    {
+      "labelId": "SHP-2026-01003",
+      "itemName": "Logitech MX Master 4",
+      "quantity": 60,
+      "lastUpdated": "2026-03-14T11:00:00Z"
+    }
+  ],
+  "wh-003": [
+    {
+      "labelId": "SHP-2026-02001",
+      "itemName": "Amazon Echo Gen 5",
+      "quantity": 18,
+      "lastUpdated": "2026-03-14T11:30:00Z"
+    },
+    {
+      "labelId": "SHP-2026-02002",
+      "itemName": "HP LaserJet Printer",
+      "quantity": 7,
+      "lastUpdated": "2026-03-14T12:00:00Z"
+    },
+    {
+      "labelId": "SHP-2026-02003",
+      "itemName": "Canon EOS R8 Camera",
+      "quantity": 3,
+      "lastUpdated": "2026-03-14T12:20:00Z"
+    }
+  ],
+  "wh-004": [
+    {
+      "labelId": "SHP-2026-03001",
+      "itemName": "Asus Gaming Laptop",
+      "quantity": 12,
+      "lastUpdated": "2026-03-14T12:45:00Z"
+    },
+    {
+      "labelId": "SHP-2026-03002",
+      "itemName": "Mi Smart TV 65 Inch",
+      "quantity": 9,
+      "lastUpdated": "2026-03-14T13:10:00Z"
+    },
+    {
+      "labelId": "SHP-2026-03003",
+      "itemName": "Boat Bluetooth Speaker",
+      "quantity": 80,
+      "lastUpdated": "2026-03-14T13:30:00Z"
+    }
+  ],
+  "wh-005": [
+    {
+      "labelId": "SHP-2026-04001",
+      "itemName": "Refrigerator LG 500L",
+      "quantity": 6,
+      "lastUpdated": "2026-03-14T14:00:00Z"
+    },
+    {
+      "labelId": "SHP-2026-04002",
+      "itemName": "Washing Machine Samsung",
+      "quantity": 4,
+      "lastUpdated": "2026-03-14T14:15:00Z"
+    },
+    {
+      "labelId": "SHP-2026-04003",
+      "itemName": "Air Conditioner Daikin",
+      "quantity": 20,
+      "lastUpdated": "2026-03-14T14:30:00Z"
+    }
+  ]
+}

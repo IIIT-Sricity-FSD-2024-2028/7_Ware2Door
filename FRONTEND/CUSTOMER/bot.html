@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AI Assistant — Ware2Door</title>
+    <meta
+      name="description"
+      content="Chat with our 24/7 AI logistics assistant for instant shipment support."
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="bot.css" />
+  </head>
+  <body>
+    
+    <div class="modal-backdrop" id="modal-backdrop">
+      <div class="modal-card" id="modal-card">
+        
+        <div class="modal-orb modal-orb-1"></div>
+        <div class="modal-orb modal-orb-2"></div>
+
+        <div class="modal-logo">
+          <img src="logo.png" alt="Ware2Door" />
+        </div>
+
+        <div class="modal-icon">
+          <i class="fa-solid fa-truck-fast"></i>
+        </div>
+
+        <h2>Track your shipment</h2>
+        <p>
+          Enter your Tracking ID to start a personalized support session with
+          our AI assistant.
+        </p>
+
+        <div class="modal-input-wrap" id="modal-input-wrap">
+          <i class="fa-solid fa-barcode"></i>
+          <input
+            type="text"
+            id="modal-tracking-input"
+            placeholder="e.g. TRK4001"
+            autocomplete="off"
+            autocapitalize="characters"
+            spellcheck="false"
+          />
+        </div>
+
+        
+        <p class="modal-error" id="modal-error"></p>
+
+        
+        <div class="modal-hint">
+          <span class="hint-label">Try these IDs:</span>
+          <span class="hint-chip" data-id="TRK4001">TRK4001</span>
+          <span class="hint-chip" data-id="TRK4006">TRK4006</span>
+          <span class="hint-chip" data-id="TRK4011">TRK4011</span>
+        </div>
+
+        <button class="modal-btn" id="modal-btn">
+          <i class="fa-solid fa-arrow-right"></i> Start Chat
+        </button>
+
+        <a href="customer.html" class="modal-back">← Back to Support</a>
+      </div>
+    </div>
+
+    
+    <div class="chat-app" id="chat-app" style="display: none">
+      
+      <aside class="sidebar">
+        
+        <div class="sidebar-logo">
+          <a href="../NEW LANDING/index.html">
+            <img src="logo.png" alt="Ware2Door Logo" id="logo" />
+          </a>
+        </div>
+
+        
+        <div class="shipment-panel">
+          <div class="shipment-panel-header">
+            <i class="fa-solid fa-box"></i>
+            <span>Active Shipment</span>
+          </div>
+          <div class="trk-badge" id="sidebar-trk">#—</div>
+
+          <div class="info-row">
+            <div class="info-icon"><i class="fa-regular fa-calendar"></i></div>
+            <div class="info-text">
+              <span class="info-label">Est. Delivery</span>
+              <span class="info-val t1">—</span>
+              <span class="info-sub t2">—</span>
+            </div>
+          </div>
+
+          <div class="info-row">
+            <div class="info-icon"><i class="fa-solid fa-building"></i></div>
+            <div class="info-text">
+              <span class="info-label">Shipper</span>
+              <span class="info-val t3">—</span>
+            </div>
+          </div>
+        </div>
+
+        
+        <div class="status-timeline">
+          <div class="step done">
+            <div class="step-dot"><i class="fa-solid fa-check"></i></div>
+            <div class="step-text">
+              <strong>Warehouse</strong>
+              <span>Dispatched</span>
+            </div>
+          </div>
+          <div class="step done">
+            <div class="step-dot"><i class="fa-solid fa-check"></i></div>
+            <div class="step-text">
+              <strong>Transit Hub</strong>
+              <span>In transit</span>
+            </div>
+          </div>
+          <div class="step active">
+            <div class="step-dot"><i class="fa-solid fa-location-dot"></i></div>
+            <div class="step-text">
+              <strong>Local Agency</strong>
+              <span>Out for delivery</span>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-dot"><i class="fa-solid fa-house"></i></div>
+            <div class="step-text">
+              <strong>Delivered</strong>
+              <span>Pending</span>
+            </div>
+          </div>
+        </div>
+
+        
+        <div class="sidebar-footer">
+          <a href="ticket.html" class="sidebar-action">
+            <i class="fa-solid fa-ticket"></i> Submit a Ticket
+          </a>
+          <a href="faq.html" class="sidebar-action">
+            <i class="fa-solid fa-circle-question"></i> Browse FAQs
+          </a>
+        </div>
+      </aside>
+
+      
+      <main class="chat-area">
+        
+        <div class="chat-header">
+          <a href="customer.html" class="header-back">
+            <i class="fa-solid fa-arrow-left"></i>
+          </a>
+          <div class="header-bot-info">
+            <div class="bot-avatar-sm">
+              <i class="fa-solid fa-robot"></i>
+            </div>
+            <div>
+              <h1>LogisticsAI Assistant</h1>
+              <p class="online-status">
+                <span class="dot"></span> Online — responds instantly
+              </p>
+            </div>
+          </div>
+          <div class="header-actions">
+            <button class="icon-btn" title="Clear chat" id="clearBtn">
+              <i class="fa-solid fa-rotate-right"></i>
+            </button>
+          </div>
+        </div>
+
+        
+        <div class="messages" id="messages"></div>
+
+        
+        <div class="quick-replies" id="quick-replies">
+          <span class="qr-label">Quick questions:</span>
+          <button class="qr-chip" data-msg="Where is my package right now?">
+            📍 Location
+          </button>
+          <button class="qr-chip" data-msg="When will my order be delivered?">
+            📅 Delivery time
+          </button>
+          <button class="qr-chip" data-msg="I want to reschedule my delivery.">
+            🔄 Reschedule
+          </button>
+          <button class="qr-chip" data-msg="My package might be damaged.">
+            📦 Damage report
+          </button>
+          <button class="qr-chip" data-msg="How do I initiate a return?">
+            ↩️ Return
+          </button>
+        </div>
+
+        
+        <div class="input-bar">
+          <div class="input-wrap">
+            <input
+              id="userInput"
+              type="text"
+              placeholder="Type your message…"
+              autocomplete="off"
+            />
+            <button class="attach-btn" title="Attach file">
+              <i class="fa-solid fa-paperclip"></i>
+            </button>
+          </div>
+          <button id="sendBtn">
+            <i class="fa-solid fa-paper-plane"></i>
+          </button>
+        </div>
+      </main>
+    </div>
+
+    <script src="bot.js"></script>
+  </body>
+</html>

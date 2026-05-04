@@ -1,0 +1,4 @@
+{
+  "lowStockThreshold": 50,
+  "maxRtoAttempts": 5
+}

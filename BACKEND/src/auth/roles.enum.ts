@@ -1,0 +1,6 @@
+export enum Role {
+    WAREHOUSE    = 'WAREHOUSE',
+    TRANSIT_HUB  = 'TRANSIT_HUB',
+    LOCAL_AGENCY = 'LOCAL_AGENCY',
+    SUPER_USER   = 'SUPER_USER',
+}

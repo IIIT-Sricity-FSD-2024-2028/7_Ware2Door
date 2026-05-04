@@ -1,0 +1,201 @@
+<!doctype html>
+
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Ware2Door — Customer Service</title>
+    <link rel="stylesheet" href="customer.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&family=Inter:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+  </head>
+
+  <body>
+    <header class="main-header" id="main-header">
+      <nav class="navbar">
+        <div class="navbar-logo">
+          <a href="../NEW%20LANDING/index.html"
+            ><img src="logo.png" alt="Ware2Door Logo" class="main-logo"
+          /></a>
+        </div>
+        <div class="navbar-nav">
+          <a href="../TRACK/home.html">Track Order</a>
+          <a href="../CUSTOMER/customer.html" class="nav-active"
+            >Customer Service</a
+          >
+        </div>
+        <div class="navbar-login">
+          <a href="../AUTH/home.html">Login</a>
+        </div>
+      </nav>
+    </header>
+
+    <div class="body-1">
+      <h1>How can we <span>help</span> you today?</h1>
+      <p>
+        Real-time logistics support and shipment tracking — always at your
+        fingertips.
+      </p>
+
+      <div class="cards-container">
+        <div class="card">
+          <div class="card-icon">
+            <i class="fa-regular fa-comment"></i>
+          </div>
+          <div class="card-content">
+            <h3>Chat with AI Assistant</h3>
+            <p>
+              Get instant help for your orders and shipping queries with our
+              24/7 AI.
+            </p>
+            <a href="bot.html"
+              ><button class="link">Start Chatting →</button></a
+            >
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-icon">
+            <i class="fa-solid fa-book"></i>
+          </div>
+          <div class="card-content">
+            <h3>Browse FAQs</h3>
+            <p>
+              Find answers to common questions in our categorized knowledge
+              base.
+            </p>
+            <a href="faq.html"
+              ><button class="link">View Knowledge Base →</button></a
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="body-2">
+      <h2>Browse by Category</h2>
+
+      <div class="c2-container">
+        <div class="card-2">
+          <div class="icon-circle">
+            <i class="fa-solid fa-truck"></i>
+          </div>
+          <h3>Shipping</h3>
+          <p>Rates, delivery times, and shipping methods</p>
+        </div>
+
+        <div class="card-2">
+          <div class="icon-circle">
+            <i class="fa-solid fa-rotate-left"></i>
+          </div>
+          <h3>Returns</h3>
+          <p>Refund policies and labels</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="body-3">
+      <div class="b3-e01">
+        <h2>Still need help?</h2>
+        <span>
+          Our logistics experts are available 24/7 to assist with complex cases.
+        </span>
+      </div>
+
+      <div class="b3-e02" style="position: relative;">
+        <button id="contactUsBtn">Contact Us</button>
+        <a href="ticket.html"><button>Submit Ticket</button></a>
+        
+        <div id="contactDropdown" style="position: absolute; top: calc(100% + 15px); left: 0; background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 12px; padding: 20px; box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4); z-index: 100; min-width: max-content; text-align: left; opacity: 0; visibility: hidden; pointer-events: none; transition: all 0.3s ease; transform: translateY(-10px);">
+          <h4 style="margin: 0 0 12px 0; color: var(--orange); font-size: 16px; font-weight: 600;">Contact Support</h4>
+          <p style="margin: 0 0 8px 0; font-size: 14px; display: flex; align-items: center; gap: 10px; color: rgba(255,255,255,0.9);">
+            <i class="fa-solid fa-envelope" style="color: var(--orange);"></i> support@ware2door.com
+          </p>
+          <p style="margin: 0; font-size: 14px; display: flex; align-items: center; gap: 10px; color: rgba(255,255,255,0.9);">
+            <i class="fa-solid fa-phone" style="color: var(--orange);"></i> +91 8977568680
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        <div class="footer-col">
+          <img src="logo.png" alt="Ware2Door" class="footer-logo-img" />
+        </div>
+        <div class="footer-col">
+          <h5>Explore</h5>
+          <ul>
+            <li><a href="../NEW%20LANDING/index.html#about-us">About Us</a></li>
+            <li>Our Warehouses</li>
+            <li>Blog</li>
+            <li>News and Media</li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h5>Legal</h5>
+          <ul>
+            <li>Terms</li>
+            <li>Privacy</li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h5>Social Media</h5>
+          <div class="social-links">
+            <a href="#" class="social-circle">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path
+                  d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"
+                ></path>
+              </svg>
+            </a>
+            <a href="#" class="social-circle">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path
+                  d="M4 4l11.733 16h4.267l-11.733 -16z M4 20l6.768 -6.768 M13.232 10.768l6.768 -6.768"
+                ></path>
+              </svg>
+            </a>
+            <a href="#" class="social-circle">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                <path
+                  d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"
+                ></path>
+                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+              </svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <script src="customer.js"></script>
+  </body>
+</html>

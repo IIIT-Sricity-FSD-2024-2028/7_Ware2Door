@@ -1,0 +1,201 @@
+{
+  "agency-001": [
+    {
+      "id": "AGT-A001-03",
+      "name": "Priya Venka",
+      "phone": "+91 9876540003",
+      "email": "priya.v@ware2door.com",
+      "area": "Besant Nagar",
+      "status": "Active",
+      "assigned": 3
+    },
+    {
+      "id": "AGT-A001-04",
+      "name": "Karthik Selvan",
+      "phone": "+91 9876540004",
+      "email": "karthik@ware2door.com",
+      "area": "Thiruvanmiyur",
+      "status": "Active",
+      "assigned": 2
+    },
+    {
+      "id": "AGT-AGENCY-001-1777134630291",
+      "name": "Raghuveer",
+      "phone": "+91 8977568680",
+      "email": "raghuveer.k24@iiits.in",
+      "area": "North Sector",
+      "status": "Active",
+      "assigned": 6
+    }
+  ],
+  "agency-002": [
+    {
+      "id": "AGT-A002-01",
+      "name": "Rajesh Nair",
+      "phone": "+91 9876540011",
+      "email": "rajesh@ware2door.com",
+      "area": "Whitefield East",
+      "status": "Active",
+      "assigned": 0
+    },
+    {
+      "id": "AGT-A002-02",
+      "name": "Anita Sharma",
+      "phone": "+91 9876540012",
+      "email": "anita@ware2door.com",
+      "area": "ITPL Zone",
+      "status": "Active",
+      "assigned": 0
+    },
+    {
+      "id": "AGT-A002-03",
+      "name": "Venkatesh BR",
+      "phone": "+91 9876540013",
+      "email": "venkatesh@ware2door.com",
+      "area": "Marathahalli",
+      "status": "Active",
+      "assigned": 0
+    },
+    {
+      "id": "AGT-A002-04",
+      "name": "Deepa Krishnan",
+      "phone": "+91 9876540014",
+      "email": "deepa@ware2door.com",
+      "area": "Varthur",
+      "status": "Active",
+      "assigned": 1
+    },
+    {
+      "id": "AGT-AGENCY-002-1777786221999",
+      "name": "Raghuveer",
+      "phone": "+91 8977568680",
+      "email": "rag@gmail.com",
+      "area": "Downtown",
+      "status": "Active",
+      "assigned": 1
+    }
+  ],
+  "agency-003": [
+    {
+      "id": "AGT-A003-01",
+      "name": "Mohammad Iqbal",
+      "phone": "+91 9876540021",
+      "email": "iqbal@ware2door.com",
+      "area": "Madhapur West",
+      "status": "Active",
+      "assigned": 1
+    },
+    {
+      "id": "AGT-A003-02",
+      "name": "Sunita Rao",
+      "phone": "+91 9876540022",
+      "email": "sunita@ware2door.com",
+      "area": "Kondapur",
+      "status": "Active",
+      "assigned": 0
+    },
+    {
+      "id": "AGT-A003-03",
+      "name": "Ravi Teja",
+      "phone": "+91 9876540023",
+      "email": "ravi.t@ware2door.com",
+      "area": "Gachibowli",
+      "status": "Active",
+      "assigned": 0
+    },
+    {
+      "id": "AGT-A003-04",
+      "name": "Padma Latha",
+      "phone": "+91 9876540024",
+      "email": "padma@ware2door.com",
+      "area": "HITEC City",
+      "status": "Active",
+      "assigned": 0
+    },
+    {
+      "id": "AGT-AGENCY-003-1777786374933",
+      "name": "Raghuveer",
+      "phone": "+91 8977568680",
+      "email": "rag@gmail.com",
+      "area": "Downtown",
+      "status": "Active",
+      "assigned": 1
+    }
+  ],
+  "agency-004": [
+    {
+      "id": "AGT-A004-01",
+      "name": "Akbar Sheikh",
+      "phone": "+91 9876540031",
+      "email": "akbar@ware2door.com",
+      "area": "Andheri West",
+      "status": "Active",
+      "assigned": 0
+    },
+    {
+      "id": "AGT-A004-02",
+      "name": "Rekha Desai",
+      "phone": "+91 9876540032",
+      "email": "rekha@ware2door.com",
+      "area": "Versova",
+      "status": "Busy",
+      "assigned": 0
+    },
+    {
+      "id": "AGT-A004-03",
+      "name": "Farhan Khan",
+      "phone": "+91 9876540033",
+      "email": "farhan@ware2door.com",
+      "area": "DN Nagar",
+      "status": "Active",
+      "assigned": 0
+    },
+    {
+      "id": "AGT-A004-04",
+      "name": "Sheela Nair",
+      "phone": "+91 9876540034",
+      "email": "sheela@ware2door.com",
+      "area": "Lokhandwala",
+      "status": "Offline",
+      "assigned": 0
+    }
+  ],
+  "agency-005": [
+    {
+      "id": "AGT-A005-01",
+      "name": "Amit Gupta",
+      "phone": "+91 9876540041",
+      "email": "amit@ware2door.com",
+      "area": "Karol Bagh West",
+      "status": "Active",
+      "assigned": 0
+    },
+    {
+      "id": "AGT-A005-02",
+      "name": "Neha Singh",
+      "phone": "+91 9876540042",
+      "email": "neha@ware2door.com",
+      "area": "Patel Nagar",
+      "status": "Active",
+      "assigned": 0
+    },
+    {
+      "id": "AGT-A005-03",
+      "name": "Vijay Kumar",
+      "phone": "+91 9876540043",
+      "email": "vijay@ware2door.com",
+      "area": "Rajinder Nagar",
+      "status": "Busy",
+      "assigned": 2
+    },
+    {
+      "id": "AGT-A005-04",
+      "name": "Poonam Sharma",
+      "phone": "+91 9876540044",
+      "email": "poonam@ware2door.com",
+      "area": "Desh Bandhu Gupta Rd",
+      "status": "Offline",
+      "assigned": 0
+    }
+  ]
+}

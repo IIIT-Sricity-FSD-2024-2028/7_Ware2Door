@@ -1,0 +1,3065 @@
+{
+  "openapi": "3.0.0",
+  "paths": {
+    "/shipment/{warehouseId}/manifest": {
+      "get": {
+        "operationId": "ShipmentsController_getManifest",
+        "parameters": [
+          {
+            "name": "warehouseId",
+            "required": true,
+            "in": "path",
+            "description": "Warehouse ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "x-role": []
+          }
+        ],
+        "summary": "Get manifest/pending shipments for a warehouse",
+        "tags": [
+          "Shipments"
+        ]
+      }
+    },
+    "/shipment/all": {
+      "get": {
+        "operationId": "ShipmentsController_getAllShipments",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "x-role": []
+          }
+        ],
+        "summary": "Get all shipments in the system",
+        "tags": [
+          "Shipments"
+        ]
+      }
+    },
+    "/shipment/{warehouseId}/dispatch": {
+      "post": {
+        "operationId": "ShipmentsController_dispatchShipment",
+        "parameters": [
+          {
+            "name": "warehouseId",
+            "required": true,
+            "in": "path",
+            "description": "Warehouse ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DispatchShipmentDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "x-role": []
+          }
+        ],
+        "summary": "Dispatch a shipment from a warehouse to a hub and agency",
+        "tags": [
+          "Shipments"
+        ]
+      }
+    },
+    "/shipment/summary/{warehouseId}": {
+      "get": {
+        "operationId": "ShipmentsController_getSummary",
+        "parameters": [
+          {
+            "name": "warehouseId",
+            "required": true,
+            "in": "path",
+            "description": "Warehouse ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "x-role": []
+          }
+        ],
+        "summary": "Get shipment summary for a warehouse",
+        "tags": [
+          "Shipments"
+        ]
+      }
+    },
+    "/auth/verify-email": {
+      "post": {
+        "operationId": "NodeController_verifyEmail",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/VerifyEmailDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "summary": "Verify email — trigger OTP (public)",
+        "tags": [
+          "Auth & Node"
+        ]
+      }
+    },
+    "/auth/reset-password": {
+      "post": {
+        "operationId": "NodeController_resetPassword",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ResetPasswordDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "summary": "Reset password using OTP (public)",
+        "tags": [
+          "Auth & Node"
+        ]
+      }
+    },
+    "/auth/warehouse": {
+      "post": {
+        "operationId": "NodeController_GetCredentials1",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "summary": "Warehouse login (public)",
+        "tags": [
+          "Auth & Node"
+        ]
+      }
+    },
+    "/auth/superuser": {
+      "post": {
+        "operationId": "NodeController_GetCredentialsSU",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "summary": "Super User login (public)",
+        "tags": [
+          "Auth & Node"
+        ]
+      }
+    },
+    "/auth/transit": {
+      "post": {
+        "operationId": "NodeController_GetCredentials2",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "summary": "Transit Hub login (public)",
+        "tags": [
+          "Auth & Node"
+        ]
+      }
+    },
+    "/auth/agency": {
+      "post": {
+        "operationId": "NodeController_GetCredential3",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "summary": "Local Agency login (public)",
+        "tags": [
+          "Auth & Node"
+        ]
+      }
+    },
+    "/auth/profile/{id}": {
+      "post": {
+        "operationId": "NodeController_updateProfile",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "Node ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateProfileDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "summary": "Update node profile (public)",
+        "tags": [
+          "Auth & Node"
+        ]
+      }
+    },
+    "/auth/password/{id}": {
+      "post": {
+        "operationId": "NodeController_updatePassword",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "Node ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdatePasswordDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "summary": "Update node password (public)",
+        "tags": [
+          "Auth & Node"
+        ]
+      }
+    },
+    "/system/hubs": {
+      "get": {
+        "operationId": "NodeController_getHubs",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "summary": "Get all transit hubs (public)",
+        "tags": [
+          "Auth & Node"
+        ]
+      }
+    },
+    "/system/agencies": {
+      "get": {
+        "operationId": "NodeController_getAgencies",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "summary": "Get all local agencies (public)",
+        "tags": [
+          "Auth & Node"
+        ]
+      }
+    },
+    "/{warehouseId}/stockInventory": {
+      "get": {
+        "operationId": "NodeController_getCurentStock",
+        "parameters": [
+          {
+            "name": "warehouseId",
+            "required": true,
+            "in": "path",
+            "description": "Warehouse ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "x-role": []
+          }
+        ],
+        "summary": "Get current stock inventory for a warehouse",
+        "tags": [
+          "Auth & Node"
+        ]
+      }
+    },
+    "/{warehouseId}/stockAddition": {
+      "post": {
+        "operationId": "NodeController_addStockItem",
+        "parameters": [
+          {
+            "name": "warehouseId",
+            "required": true,
+            "in": "path",
+            "description": "Warehouse ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StockAdditionDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "x-role": []
+          }
+        ],
+        "summary": "Add a stock item to warehouse inventory",
+        "tags": [
+          "Auth & Node"
+        ]
+      }
+    },
+    "/{warehouseId}/pendingShipments": {
+      "get": {
+        "operationId": "NodeController_getPendingShipments",
+        "parameters": [
+          {
+            "name": "warehouseId",
+            "required": true,
+            "in": "path",
+            "description": "Warehouse ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "x-role": []
+          }
+        ],
+        "summary": "Get pending shipments for a warehouse",
+        "tags": [
+          "Auth & Node"
+        ]
+      },
+      "post": {
+        "operationId": "NodeController_addPendingShipment",
+        "parameters": [
+          {
+            "name": "warehouseId",
+            "required": true,
+            "in": "path",
+            "description": "Warehouse ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreatePendingShipmentDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "x-role": []
+          }
+        ],
+        "summary": "Add a pending shipment to a warehouse",
+        "tags": [
+          "Auth & Node"
+        ]
+      }
+    },
+    "/{warehouseId}/pendingShipments/{orderId}": {
+      "delete": {
+        "operationId": "NodeController_deletePendingShipment",
+        "parameters": [
+          {
+            "name": "warehouseId",
+            "required": true,
+            "in": "path",
+            "description": "Warehouse ID",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "orderId",
+            "required": true,
+            "in": "path",
+            "description": "Order ID to delete",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "x-role": []
+          }
+        ],
+        "summary": "Delete a pending shipment from a warehouse",
+        "tags": [
+          "Auth & Node"
+        ]
+      }
+    },
+    "/hub/{hubId}/inventory": {
+      "get": {
+        "operationId": "NodeController_getHubInventory",
+        "parameters": [
+          {
+            "name": "hubId",
+            "required": true,
+            "in": "path",
+            "description": "Transit Hub ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "x-role": []
+          }
+        ],
+        "summary": "Get inventory at a transit hub",
+        "tags": [
+          "Auth & Node"
+        ]
+      }
+    },
+    "/hub/{hubId}/capacity": {
+      "get": {
+        "operationId": "NodeController_getHubCapacity",
+        "parameters": [
+          {
+            "name": "hubId",
+            "required": true,
+            "in": "path",
+            "description": "Transit Hub ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "x-role": []
+          }
+        ],
+        "summary": "Get capacity information for a transit hub",
+        "tags": [
+          "Auth & Node"
+        ]
+      }
+    },
+    "/agency/{agencyId}/shipments": {
+      "get": {
+        "operationId": "NodeController_getAgencyShipments",
+        "parameters": [
+          {
+            "name": "agencyId",
+            "required": true,
+            "in": "path",
+            "description": "Agency ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "x-role": []
+          }
+        ],
+        "summary": "Get shipments assigned to an agency",
+        "tags": [
+          "Auth & Node"
+        ]
+      }
+    },
+    "/agency/{agencyId}/deliveries": {
+      "get": {
+        "operationId": "NodeController_getAgencyDeliveries",
+        "parameters": [
+          {
+            "name": "agencyId",
+            "required": true,
+            "in": "path",
+            "description": "Agency ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "x-role": []
+          }
+        ],
+        "summary": "Get deliveries for an agency",
+        "tags": [
+          "Auth & Node"
+        ]
+      }
+    },
+    "/agency/{agencyId}/deliveries/{trackingId}/attempt": {
+      "post": {
+        "operationId": "NodeController_recordAttempt",
+        "parameters": [
+          {
+            "name": "agencyId",
+            "required": true,
+            "in": "path",
+            "description": "Agency ID",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "trackingId",
+            "required": true,
+            "in": "path",
+            "description": "Shipment tracking ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RecordAttemptDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "x-role": []
+          }
+        ],
+        "summary": "Record a failed delivery attempt",
+        "tags": [
+          "Auth & Node"
+        ]
+      }
+    },
+    "/agency/{agencyId}/deliveries/{trackingId}/deliver": {
+      "post": {
+        "operationId": "NodeController_markDelivered",
+        "parameters": [
+          {
+            "name": "agencyId",
+            "required": true,
+            "in": "path",
+            "description": "Agency ID",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "trackingId",
+            "required": true,
+            "in": "path",
+            "description": "Shipment tracking ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "x-role": []
+          }
+        ],
+        "summary": "Mark a shipment as delivered",
+        "tags": [
+          "Auth & Node"
+        ]
+      }
+    },
+    "/track/{id}": {
+      "get": {
+        "operationId": "TrackController_getTrackingInfo",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "Shipment tracking ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "summary": "Get full tracking details for a shipment (public)",
+        "tags": [
+          "Tracking"
+        ]
+      }
+    },
+    "/agency/{agencyId}/rto": {
+      "post": {
+        "operationId": "RtoController_createRto",
+        "parameters": [
+          {
+            "name": "agencyId",
+            "required": true,
+            "in": "path",
+            "description": "Agency ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "trackingId": {
+                    "type": "string",
+                    "example": "TRK-HYD-20240001"
+                  },
+                  "reason": {
+                    "type": "string",
+                    "example": "Customer Refused"
+                  },
+                  "notes": {
+                    "type": "string",
+                    "example": "Customer refused to accept the package"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "x-role": []
+          }
+        ],
+        "summary": "Create a Return to Origin (RTO) request",
+        "tags": [
+          "RTO"
+        ]
+      },
+      "get": {
+        "operationId": "RtoController_getAgencyRtos",
+        "parameters": [
+          {
+            "name": "agencyId",
+            "required": true,
+            "in": "path",
+            "description": "Agency ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "x-role": []
+          }
+        ],
+        "summary": "Get all RTOs for an agency",
+        "tags": [
+          "RTO"
+        ]
+      }
+    },
+    "/rto": {
+      "get": {
+        "operationId": "RtoController_getAllRtos",
+        "parameters": [
+          {
+            "name": "warehouseId",
+            "required": false,
+            "in": "query",
+            "description": "Filter by warehouse ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "x-role": []
+          }
+        ],
+        "summary": "Get all RTOs (optionally filtered by warehouse)",
+        "tags": [
+          "RTO"
+        ]
+      }
+    },
+    "/rto/{rtoId}": {
+      "get": {
+        "operationId": "RtoController_getRtoById",
+        "parameters": [
+          {
+            "name": "rtoId",
+            "required": true,
+            "in": "path",
+            "description": "RTO ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "x-role": []
+          }
+        ],
+        "summary": "Get a specific RTO by ID",
+        "tags": [
+          "RTO"
+        ]
+      }
+    },
+    "/rto/{rtoId}/warehouse-inscan": {
+      "post": {
+        "operationId": "RtoController_warehouseInscan",
+        "parameters": [
+          {
+            "name": "rtoId",
+            "required": true,
+            "in": "path",
+            "description": "RTO ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "x-role": []
+          }
+        ],
+        "summary": "In-scan an RTO at the warehouse",
+        "tags": [
+          "RTO"
+        ]
+      }
+    },
+    "/tickets/raise": {
+      "post": {
+        "operationId": "TicketController_raiseTicket",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateTicketDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "summary": "Raise a new support ticket (public)",
+        "tags": [
+          "Tickets"
+        ]
+      }
+    },
+    "/tickets/validate/{trackingId}": {
+      "get": {
+        "operationId": "TicketController_validateTrackingId",
+        "parameters": [
+          {
+            "name": "trackingId",
+            "required": true,
+            "in": "path",
+            "description": "Shipment tracking ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "summary": "Validate a tracking ID before raising a ticket (public)",
+        "tags": [
+          "Tickets"
+        ]
+      }
+    },
+    "/tickets/all": {
+      "get": {
+        "operationId": "TicketController_getAllTickets",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "summary": "Get all tickets (public)",
+        "tags": [
+          "Tickets"
+        ]
+      }
+    },
+    "/tickets/agency/{agencyId}": {
+      "get": {
+        "operationId": "TicketController_getTicketsByAgency",
+        "parameters": [
+          {
+            "name": "agencyId",
+            "required": true,
+            "in": "path",
+            "description": "Agency ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "x-role": []
+          }
+        ],
+        "summary": "Get tickets by agency",
+        "tags": [
+          "Tickets"
+        ]
+      }
+    },
+    "/tickets/{ticketId}/resolve": {
+      "post": {
+        "operationId": "TicketController_resolveTicket",
+        "parameters": [
+          {
+            "name": "ticketId",
+            "required": true,
+            "in": "path",
+            "description": "Ticket ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "x-role": []
+          }
+        ],
+        "summary": "Resolve a ticket",
+        "tags": [
+          "Tickets"
+        ]
+      }
+    },
+    "/tickets/{ticketId}/status": {
+      "post": {
+        "operationId": "TicketController_updateStatus",
+        "parameters": [
+          {
+            "name": "ticketId",
+            "required": true,
+            "in": "path",
+            "description": "Ticket ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateTicketStatusDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "x-role": []
+          }
+        ],
+        "summary": "Update ticket status",
+        "tags": [
+          "Tickets"
+        ]
+      }
+    },
+    "/hub/{hubId}/inscan": {
+      "post": {
+        "operationId": "ScanController_inscanAtHub",
+        "parameters": [
+          {
+            "name": "hubId",
+            "required": true,
+            "in": "path",
+            "description": "Transit Hub ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ScanDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "x-role": []
+          }
+        ],
+        "summary": "In-scan a shipment at a transit hub",
+        "tags": [
+          "Scan"
+        ]
+      }
+    },
+    "/hub/{hubId}/outscan": {
+      "post": {
+        "operationId": "ScanController_outscanFromHub",
+        "parameters": [
+          {
+            "name": "hubId",
+            "required": true,
+            "in": "path",
+            "description": "Transit Hub ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ScanDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "x-role": []
+          }
+        ],
+        "summary": "Out-scan a shipment from a transit hub",
+        "tags": [
+          "Scan"
+        ]
+      }
+    },
+    "/hub/{hubId}/scanHistory": {
+      "get": {
+        "operationId": "ScanController_getScanHistory",
+        "parameters": [
+          {
+            "name": "hubId",
+            "required": true,
+            "in": "path",
+            "description": "Transit Hub ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "x-role": []
+          }
+        ],
+        "summary": "Get scan history for a transit hub",
+        "tags": [
+          "Scan"
+        ]
+      }
+    },
+    "/agency/{agencyId}/inscan": {
+      "post": {
+        "operationId": "ScanController_agencyInscan",
+        "parameters": [
+          {
+            "name": "agencyId",
+            "required": true,
+            "in": "path",
+            "description": "Agency ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ScanDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "x-role": []
+          }
+        ],
+        "summary": "In-scan a shipment at a local agency",
+        "tags": [
+          "Scan"
+        ]
+      }
+    },
+    "/agency/{agencyId}/outscan": {
+      "post": {
+        "operationId": "ScanController_agencyOutscan",
+        "parameters": [
+          {
+            "name": "agencyId",
+            "required": true,
+            "in": "path",
+            "description": "Agency ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ScanDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "x-role": []
+          }
+        ],
+        "summary": "Out-scan a shipment from a local agency",
+        "tags": [
+          "Scan"
+        ]
+      }
+    },
+    "/agency/{agencyId}/scanHistory": {
+      "get": {
+        "operationId": "ScanController_getAgencyScanHistory",
+        "parameters": [
+          {
+            "name": "agencyId",
+            "required": true,
+            "in": "path",
+            "description": "Agency ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "x-role": []
+          }
+        ],
+        "summary": "Get scan history for a local agency",
+        "tags": [
+          "Scan"
+        ]
+      }
+    },
+    "/hub/{hubId}/inbound": {
+      "get": {
+        "operationId": "ReportsController_getInboundForHub",
+        "parameters": [
+          {
+            "name": "hubId",
+            "required": true,
+            "in": "path",
+            "description": "Transit Hub ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "x-role": []
+          }
+        ],
+        "summary": "Get inbound shipments report for a transit hub",
+        "tags": [
+          "Reports"
+        ]
+      }
+    },
+    "/hub/{hubId}/outbound": {
+      "get": {
+        "operationId": "ReportsController_getOutboundForHub",
+        "parameters": [
+          {
+            "name": "hubId",
+            "required": true,
+            "in": "path",
+            "description": "Transit Hub ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "x-role": []
+          }
+        ],
+        "summary": "Get outbound shipments report for a transit hub",
+        "tags": [
+          "Reports"
+        ]
+      }
+    },
+    "/agency/{agencyId}/inbound": {
+      "get": {
+        "operationId": "ReportsController_getAgencyInbound",
+        "parameters": [
+          {
+            "name": "agencyId",
+            "required": true,
+            "in": "path",
+            "description": "Agency ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "x-role": []
+          }
+        ],
+        "summary": "Get inbound shipments for a local agency",
+        "tags": [
+          "Reports"
+        ]
+      }
+    },
+    "/{warehouseId}/outbound": {
+      "get": {
+        "operationId": "ReportsController_getOutboundShipments",
+        "parameters": [
+          {
+            "name": "warehouseId",
+            "required": true,
+            "in": "path",
+            "description": "Warehouse ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "x-role": []
+          }
+        ],
+        "summary": "Get outbound shipments from a warehouse",
+        "tags": [
+          "Reports"
+        ]
+      }
+    },
+    "/{warehouseId}/preAlert": {
+      "get": {
+        "operationId": "ReportsController_getPreAlertReport",
+        "parameters": [
+          {
+            "name": "warehouseId",
+            "required": true,
+            "in": "path",
+            "description": "Warehouse ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "x-role": []
+          }
+        ],
+        "summary": "Get pre-alert shipment report for a warehouse",
+        "tags": [
+          "Reports"
+        ]
+      }
+    },
+    "/agency/{agencyId}/agents": {
+      "get": {
+        "operationId": "WorkersController_getAgents",
+        "parameters": [
+          {
+            "name": "agencyId",
+            "required": true,
+            "in": "path",
+            "description": "Agency ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "x-role": []
+          }
+        ],
+        "summary": "Get all agents for an agency",
+        "tags": [
+          "Workers & Agents"
+        ]
+      },
+      "post": {
+        "operationId": "WorkersController_addAgent",
+        "parameters": [
+          {
+            "name": "agencyId",
+            "required": true,
+            "in": "path",
+            "description": "Agency ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateAgentDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "x-role": []
+          }
+        ],
+        "summary": "Add a new delivery agent to an agency",
+        "tags": [
+          "Workers & Agents"
+        ]
+      }
+    },
+    "/agency/{agencyId}/agents/{agentId}": {
+      "delete": {
+        "operationId": "WorkersController_removeAgent",
+        "parameters": [
+          {
+            "name": "agencyId",
+            "required": true,
+            "in": "path",
+            "description": "Agency ID",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "agentId",
+            "required": true,
+            "in": "path",
+            "description": "Agent ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "x-role": []
+          }
+        ],
+        "summary": "Remove a delivery agent from an agency",
+        "tags": [
+          "Workers & Agents"
+        ]
+      },
+      "put": {
+        "operationId": "WorkersController_editAgent",
+        "parameters": [
+          {
+            "name": "agencyId",
+            "required": true,
+            "in": "path",
+            "description": "Agency ID",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "agentId",
+            "required": true,
+            "in": "path",
+            "description": "Agent ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateAgentDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "x-role": []
+          }
+        ],
+        "summary": "Edit a delivery agent's details",
+        "tags": [
+          "Workers & Agents"
+        ]
+      }
+    },
+    "/agency/{agencyId}/assignAgent": {
+      "post": {
+        "operationId": "WorkersController_assignAgent",
+        "parameters": [
+          {
+            "name": "agencyId",
+            "required": true,
+            "in": "path",
+            "description": "Agency ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AssignAgentDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "x-role": []
+          }
+        ],
+        "summary": "Assign an agent to a shipment",
+        "tags": [
+          "Workers & Agents"
+        ]
+      }
+    },
+    "/agency/{agencyId}/assignments": {
+      "get": {
+        "operationId": "WorkersController_getAllAssignments",
+        "parameters": [
+          {
+            "name": "agencyId",
+            "required": true,
+            "in": "path",
+            "description": "Agency ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "x-role": []
+          }
+        ],
+        "summary": "Get all agent-shipment assignments for an agency",
+        "tags": [
+          "Workers & Agents"
+        ]
+      }
+    },
+    "/agency/{agencyId}/assignments/{trackingId}": {
+      "get": {
+        "operationId": "WorkersController_getAssignment",
+        "parameters": [
+          {
+            "name": "agencyId",
+            "required": true,
+            "in": "path",
+            "description": "Agency ID",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "trackingId",
+            "required": true,
+            "in": "path",
+            "description": "Shipment tracking ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "x-role": []
+          }
+        ],
+        "summary": "Get assignment details for a specific shipment",
+        "tags": [
+          "Workers & Agents"
+        ]
+      }
+    },
+    "/drivers": {
+      "get": {
+        "operationId": "WorkersController_getAllDrivers",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "x-role": []
+          }
+        ],
+        "summary": "Get all drivers",
+        "tags": [
+          "Workers & Agents"
+        ]
+      }
+    },
+    "/drivers/{routeKey}": {
+      "get": {
+        "operationId": "WorkersController_getDriverByRoute",
+        "parameters": [
+          {
+            "name": "routeKey",
+            "required": true,
+            "in": "path",
+            "description": "Route key",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "x-role": []
+          }
+        ],
+        "summary": "Get driver by route key",
+        "tags": [
+          "Workers & Agents"
+        ]
+      },
+      "put": {
+        "operationId": "WorkersController_setDriver",
+        "parameters": [
+          {
+            "name": "routeKey",
+            "required": true,
+            "in": "path",
+            "description": "Route key",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "example": "Rajesh Kumar"
+                  },
+                  "vehicle": {
+                    "type": "string",
+                    "example": "TN-01-AB-1234"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "x-role": []
+          }
+        ],
+        "summary": "Set or update a driver for a route",
+        "tags": [
+          "Workers & Agents"
+        ]
+      },
+      "delete": {
+        "operationId": "WorkersController_deleteDriver",
+        "parameters": [
+          {
+            "name": "routeKey",
+            "required": true,
+            "in": "path",
+            "description": "Route key",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "x-role": []
+          }
+        ],
+        "summary": "Delete a driver from a route",
+        "tags": [
+          "Workers & Agents"
+        ]
+      }
+    },
+    "/su/overview": {
+      "get": {
+        "operationId": "SuperUserController_getOverview",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "x-role": []
+          }
+        ],
+        "summary": "Get system overview (counts, stats)",
+        "tags": [
+          "Super User"
+        ]
+      }
+    },
+    "/su/admins": {
+      "get": {
+        "operationId": "SuperUserController_getAdmins",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "x-role": []
+          }
+        ],
+        "summary": "Get all admin nodes",
+        "tags": [
+          "Super User"
+        ]
+      },
+      "post": {
+        "operationId": "SuperUserController_createAdmin",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateAdminDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "x-role": []
+          }
+        ],
+        "summary": "Create a new admin node",
+        "tags": [
+          "Super User"
+        ]
+      }
+    },
+    "/su/admins/{id}": {
+      "put": {
+        "operationId": "SuperUserController_updateAdmin",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "Admin ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateAdminDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "x-role": []
+          }
+        ],
+        "summary": "Update an admin node",
+        "tags": [
+          "Super User"
+        ]
+      },
+      "delete": {
+        "operationId": "SuperUserController_deleteAdmin",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "Admin ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "x-role": []
+          }
+        ],
+        "summary": "Delete an admin node",
+        "tags": [
+          "Super User"
+        ]
+      }
+    },
+    "/su/admins/{id}/status": {
+      "put": {
+        "operationId": "SuperUserController_setStatus",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "Admin ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SetAdminStatusDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "x-role": []
+          }
+        ],
+        "summary": "Set active/inactive status for an admin",
+        "tags": [
+          "Super User"
+        ]
+      }
+    },
+    "/su/warehouses": {
+      "get": {
+        "operationId": "SuperUserController_getWarehouses",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "x-role": []
+          }
+        ],
+        "summary": "Get all warehouses",
+        "tags": [
+          "Super User"
+        ]
+      }
+    },
+    "/su/warehouses/{id}": {
+      "get": {
+        "operationId": "SuperUserController_getWarehouseDrilldown",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "Warehouse ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "x-role": []
+          }
+        ],
+        "summary": "Get drilldown details for a warehouse",
+        "tags": [
+          "Super User"
+        ]
+      }
+    },
+    "/su/warehouses/{id}/pending": {
+      "delete": {
+        "operationId": "SuperUserController_cancelAllPending",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "Warehouse ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "x-role": []
+          }
+        ],
+        "summary": "Cancel all pending shipments for a warehouse (bypass)",
+        "tags": [
+          "Super User"
+        ]
+      }
+    },
+    "/su/warehouses/{id}/pending/{orderId}": {
+      "delete": {
+        "operationId": "SuperUserController_cancelSinglePending",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "Warehouse ID",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "orderId",
+            "required": true,
+            "in": "path",
+            "description": "Order ID to cancel",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "x-role": []
+          }
+        ],
+        "summary": "Cancel a specific pending shipment for a warehouse",
+        "tags": [
+          "Super User"
+        ]
+      }
+    },
+    "/su/hubs": {
+      "get": {
+        "operationId": "SuperUserController_getHubs",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "x-role": []
+          }
+        ],
+        "summary": "Get all transit hubs",
+        "tags": [
+          "Super User"
+        ]
+      }
+    },
+    "/su/hubs/{id}": {
+      "get": {
+        "operationId": "SuperUserController_getHubDrilldown",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "Hub ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "x-role": []
+          }
+        ],
+        "summary": "Get drilldown details for a transit hub",
+        "tags": [
+          "Super User"
+        ]
+      }
+    },
+    "/su/hubs/{id}/outscan-all": {
+      "put": {
+        "operationId": "SuperUserController_outscanAllHubShipments",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "Hub ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "x-role": []
+          }
+        ],
+        "summary": "Force out-scan all shipments from a transit hub (bypass)",
+        "tags": [
+          "Super User"
+        ]
+      }
+    },
+    "/su/agencies": {
+      "get": {
+        "operationId": "SuperUserController_getAgencies",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "x-role": []
+          }
+        ],
+        "summary": "Get all local agencies",
+        "tags": [
+          "Super User"
+        ]
+      }
+    },
+    "/su/agencies/{id}": {
+      "get": {
+        "operationId": "SuperUserController_getAgencyDrilldown",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "Agency ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "x-role": []
+          }
+        ],
+        "summary": "Get drilldown details for an agency",
+        "tags": [
+          "Super User"
+        ]
+      }
+    },
+    "/su/agencies/{id}/agents/{agentId}/status": {
+      "put": {
+        "operationId": "SuperUserController_updateAgentStatus",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "Agency ID",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "agentId",
+            "required": true,
+            "in": "path",
+            "description": "Agent ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "status": {
+                    "type": "string",
+                    "example": "Active",
+                    "enum": [
+                      "Active",
+                      "Busy",
+                      "Offline"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "x-role": []
+          }
+        ],
+        "summary": "Update the status of an agent within an agency",
+        "tags": [
+          "Super User"
+        ]
+      }
+    },
+    "/su/shipments": {
+      "get": {
+        "operationId": "SuperUserController_getShipments",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "x-role": []
+          }
+        ],
+        "summary": "Get all shipments",
+        "tags": [
+          "Super User"
+        ]
+      }
+    },
+    "/su/rto": {
+      "get": {
+        "operationId": "SuperUserController_getRTO",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "x-role": []
+          }
+        ],
+        "summary": "Get all RTOs",
+        "tags": [
+          "Super User"
+        ]
+      }
+    },
+    "/su/tickets": {
+      "get": {
+        "operationId": "SuperUserController_getTickets",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "x-role": []
+          }
+        ],
+        "summary": "Get all tickets",
+        "tags": [
+          "Super User"
+        ]
+      }
+    },
+    "/su/logs": {
+      "get": {
+        "operationId": "SuperUserController_getLogs",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "x-role": []
+          }
+        ],
+        "summary": "Get system activity logs",
+        "tags": [
+          "Super User"
+        ]
+      },
+      "post": {
+        "operationId": "SuperUserController_appendLog",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AppendLogDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "x-role": []
+          }
+        ],
+        "summary": "Append a new log entry",
+        "tags": [
+          "Super User"
+        ]
+      }
+    },
+    "/su/config": {
+      "get": {
+        "operationId": "SuperUserController_getConfig",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "x-role": []
+          }
+        ],
+        "summary": "Get system configuration",
+        "tags": [
+          "Super User"
+        ]
+      },
+      "put": {
+        "operationId": "SuperUserController_setConfig",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SetConfigDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "x-role": []
+          }
+        ],
+        "summary": "Update system configuration (thresholds, limits)",
+        "tags": [
+          "Super User"
+        ]
+      }
+    }
+  },
+  "info": {
+    "title": "WARE2DOOR API",
+    "description": "## WARE2DOOR Logistics API\n\nEnd-to-end logistics platform covering warehouse management, transit hub scanning, last-mile delivery, RTO lifecycle, and super-user administration.\n\n### Authentication\nProtected endpoints require an **`x-role`** header specifying the caller's role.\n\nClick the **Authorize 🔒** button, then enter one of the allowed values:\n\n| Role Value | Access |\n|---|---|\n| `WAREHOUSE` | Warehouse management endpoints |\n| `TRANSIT_HUB` | Transit hub scan & reports endpoints |\n| `LOCAL_AGENCY` | Agency delivery & agent endpoints |\n| `SUPER_USER` | Full administrative access |\n\n> **Public endpoints** (login, verify-email, track, raise-ticket) do **not** require this header.",
+    "version": "1.0",
+    "contact": {}
+  },
+  "tags": [],
+  "servers": [],
+  "components": {
+    "securitySchemes": {
+      "x-role": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "x-role",
+        "description": "Role-based access header. Allowed values: WAREHOUSE | TRANSIT_HUB | LOCAL_AGENCY | SUPER_USER"
+      }
+    },
+    "schemas": {
+      "DispatchShipmentDto": {
+        "type": "object",
+        "properties": {
+          "orderId": {
+            "type": "string",
+            "example": "ORD-12345",
+            "description": "Order ID to dispatch"
+          },
+          "hubId": {
+            "type": "string",
+            "example": "HUB-BLR-001",
+            "description": "Transit hub ID to route through"
+          },
+          "agencyId": {
+            "type": "string",
+            "example": "AGY-BLR-001",
+            "description": "Local agency ID for last-mile delivery"
+          }
+        },
+        "required": [
+          "orderId",
+          "hubId",
+          "agencyId"
+        ]
+      },
+      "VerifyEmailDto": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "example": "user@ware2door.com",
+            "description": "Email to verify / send OTP to"
+          }
+        },
+        "required": [
+          "email"
+        ]
+      },
+      "ResetPasswordDto": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "example": "user@ware2door.com",
+            "description": "Email address to reset password for"
+          },
+          "otp": {
+            "type": "string",
+            "example": "000000",
+            "description": "6-digit OTP (use 000000 for now)"
+          },
+          "newPassword": {
+            "type": "string",
+            "example": "newSecurePass123",
+            "description": "New password (min 6 characters)"
+          }
+        },
+        "required": [
+          "email",
+          "otp",
+          "newPassword"
+        ]
+      },
+      "LoginDto": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "example": "admin@ware2door.com",
+            "description": "Registered email address"
+          },
+          "password": {
+            "type": "string",
+            "example": "password123",
+            "description": "Account password"
+          }
+        },
+        "required": [
+          "email",
+          "password"
+        ]
+      },
+      "UpdateProfileDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "John Doe",
+            "description": "Full name of the user"
+          },
+          "email": {
+            "type": "string",
+            "example": "john@ware2door.com",
+            "description": "New email address"
+          },
+          "phone": {
+            "type": "string",
+            "example": "+91 9876543210",
+            "description": "Valid 10-digit mobile number with optional country code"
+          }
+        }
+      },
+      "UpdatePasswordDto": {
+        "type": "object",
+        "properties": {
+          "currentPassword": {
+            "type": "string",
+            "example": "oldPassword123",
+            "description": "Current account password"
+          },
+          "newPassword": {
+            "type": "string",
+            "example": "newPassword456",
+            "description": "New password (min 6 characters)"
+          }
+        },
+        "required": [
+          "currentPassword",
+          "newPassword"
+        ]
+      },
+      "StockAdditionDto": {
+        "type": "object",
+        "properties": {
+          "labelID": {
+            "type": "string",
+            "example": "LBL-001",
+            "description": "Optional label ID for the stock item"
+          },
+          "itemName": {
+            "type": "string",
+            "example": "Laptop",
+            "description": "Name of the item being added to stock"
+          },
+          "quantity": {
+            "type": "number",
+            "example": 10,
+            "description": "Quantity to add (minimum 1)"
+          }
+        },
+        "required": [
+          "itemName",
+          "quantity"
+        ]
+      },
+      "CreatePendingShipmentDto": {
+        "type": "object",
+        "properties": {
+          "orderId": {
+            "type": "string",
+            "example": "ORD-12345",
+            "description": "Unique order ID"
+          },
+          "source": {
+            "type": "string",
+            "example": "WH-HYD-001",
+            "description": "Source warehouse ID"
+          },
+          "customerName": {
+            "type": "string",
+            "example": "Ravi Kumar",
+            "description": "Customer full name"
+          },
+          "customerPhone": {
+            "type": "string",
+            "example": "9876543210",
+            "description": "Customer phone (10-digit, optional country code)"
+          },
+          "customerAddress": {
+            "type": "string",
+            "example": "12, MG Road, Bangalore - 560001",
+            "description": "Full delivery address"
+          },
+          "productName": {
+            "type": "string",
+            "example": "Wireless Mouse",
+            "description": "Name of the product being shipped"
+          },
+          "sku": {
+            "type": "string",
+            "example": "SKU-WM-BLK",
+            "description": "Product SKU code"
+          },
+          "qty": {
+            "type": "number",
+            "example": 2,
+            "description": "Quantity of items (minimum 1)"
+          },
+          "priority": {
+            "type": "string",
+            "example": "HIGH",
+            "enum": [
+              "LOW",
+              "NORMAL",
+              "HIGH"
+            ],
+            "description": "Shipment priority level"
+          }
+        },
+        "required": [
+          "orderId",
+          "source",
+          "customerName",
+          "customerPhone",
+          "customerAddress",
+          "productName",
+          "qty"
+        ]
+      },
+      "RecordAttemptDto": {
+        "type": "object",
+        "properties": {
+          "failStatus": {
+            "type": "string",
+            "example": "Not Available",
+            "enum": [
+              "Not Available",
+              "Address Not Found",
+              "Customer Refused",
+              "Other"
+            ],
+            "description": "Reason delivery attempt failed"
+          },
+          "notes": {
+            "type": "string",
+            "example": "Customer was not home",
+            "description": "Additional notes about the failed attempt"
+          }
+        },
+        "required": [
+          "failStatus"
+        ]
+      },
+      "CreateTicketDto": {
+        "type": "object",
+        "properties": {
+          "trackingId": {
+            "type": "string",
+            "example": "TRK-HYD-20240001",
+            "description": "Tracking ID of the shipment"
+          },
+          "category": {
+            "type": "string",
+            "example": "Delayed Shipment",
+            "enum": [
+              "Delayed Shipment",
+              "Damaged Package",
+              "Billing & Invoices",
+              "Return to Origin",
+              "Address Change",
+              "Other Issues"
+            ],
+            "description": "Category of the support ticket"
+          },
+          "description": {
+            "type": "string",
+            "example": "My shipment has been delayed for over 5 days.",
+            "description": "Detailed description of the issue (min 10 characters)"
+          }
+        },
+        "required": [
+          "trackingId",
+          "category",
+          "description"
+        ]
+      },
+      "UpdateTicketStatusDto": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "In Progress",
+            "enum": [
+              "Open",
+              "In Progress",
+              "Resolved",
+              "Closed"
+            ],
+            "description": "New status for the ticket"
+          }
+        },
+        "required": [
+          "status"
+        ]
+      },
+      "ScanDto": {
+        "type": "object",
+        "properties": {
+          "trackingId": {
+            "type": "string",
+            "example": "TRK-HYD-20240001",
+            "description": "Tracking ID of the shipment to scan"
+          }
+        },
+        "required": [
+          "trackingId"
+        ]
+      },
+      "CreateAgentDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "Arjun Sharma",
+            "description": "Full name of the delivery agent"
+          },
+          "phone": {
+            "type": "string",
+            "example": "9876543210",
+            "description": "Valid 10-digit phone number with optional country code"
+          },
+          "email": {
+            "type": "string",
+            "example": "arjun@agency.com",
+            "description": "Agent email address (optional)"
+          },
+          "area": {
+            "type": "string",
+            "example": "Koramangala, Bangalore",
+            "description": "Delivery area assigned to the agent"
+          }
+        },
+        "required": [
+          "name",
+          "phone",
+          "area"
+        ]
+      },
+      "UpdateAgentDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "Arjun Sharma",
+            "description": "Updated name of the agent"
+          },
+          "phone": {
+            "type": "string",
+            "example": "9876543210",
+            "description": "Updated 10-digit phone number"
+          },
+          "email": {
+            "type": "string",
+            "example": "arjun@agency.com",
+            "description": "Updated email address"
+          },
+          "area": {
+            "type": "string",
+            "example": "Indiranagar, Bangalore",
+            "description": "Updated delivery area"
+          },
+          "status": {
+            "type": "string",
+            "example": "Active",
+            "enum": [
+              "Active",
+              "Busy",
+              "Offline"
+            ],
+            "description": "Current status of the agent"
+          }
+        }
+      },
+      "AssignAgentDto": {
+        "type": "object",
+        "properties": {
+          "trackingId": {
+            "type": "string",
+            "example": "TRK-HYD-20240001",
+            "description": "Tracking ID of the shipment to assign"
+          },
+          "agentId": {
+            "type": "string",
+            "example": "AGT-BLR001-1710000000000",
+            "description": "ID of the agent to assign"
+          }
+        },
+        "required": [
+          "trackingId",
+          "agentId"
+        ]
+      },
+      "CreateAdminDto": {
+        "type": "object",
+        "properties": {
+          "role": {
+            "type": "string",
+            "example": "WareHouse",
+            "enum": [
+              "WareHouse",
+              "TransitHub",
+              "LocalAgency"
+            ],
+            "description": "Role of the admin node"
+          },
+          "name": {
+            "type": "string",
+            "example": "Hyderabad Warehouse",
+            "description": "Name of the admin/facility (3-80 chars)"
+          },
+          "email": {
+            "type": "string",
+            "example": "hyd.warehouse@ware2door.com",
+            "description": "Valid email address"
+          },
+          "phone": {
+            "type": "string",
+            "example": "9876543210",
+            "description": "Valid 10-digit Indian mobile number"
+          },
+          "facility": {
+            "type": "string",
+            "example": "Hyderabad Central Warehouse",
+            "description": "Facility name (optional)"
+          },
+          "city": {
+            "type": "string",
+            "example": "Hyderabad",
+            "description": "City where the node is located"
+          },
+          "password": {
+            "type": "string",
+            "example": "Admin@123",
+            "description": "Initial password (6-64 chars, optional)"
+          }
+        },
+        "required": [
+          "role",
+          "name",
+          "email",
+          "phone",
+          "city"
+        ]
+      },
+      "UpdateAdminDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "Hyderabad Warehouse",
+            "description": "Updated name (3-80 chars)"
+          },
+          "email": {
+            "type": "string",
+            "example": "new@ware2door.com",
+            "description": "Updated email address"
+          },
+          "phone": {
+            "type": "string",
+            "example": "9876543210",
+            "description": "Updated 10-digit Indian mobile number"
+          },
+          "city": {
+            "type": "string",
+            "example": "Mumbai",
+            "description": "Updated city"
+          }
+        }
+      },
+      "SetAdminStatusDto": {
+        "type": "object",
+        "properties": {
+          "active": {
+            "type": "boolean",
+            "example": true,
+            "description": "Set to true to activate, false to deactivate the admin"
+          }
+        },
+        "required": [
+          "active"
+        ]
+      },
+      "AppendLogDto": {
+        "type": "object",
+        "properties": {
+          "admin": {
+            "type": "string",
+            "example": "Super Admin",
+            "description": "Name of the admin performing the action (max 80 chars)"
+          },
+          "module": {
+            "type": "string",
+            "example": "Shipments",
+            "description": "Module where the action was performed (max 60 chars)"
+          },
+          "action": {
+            "type": "string",
+            "example": "Cancel All Pending",
+            "description": "Action that was performed (max 100 chars)"
+          },
+          "details": {
+            "type": "string",
+            "example": "Cancelled all pending shipments for WH-HYD-001",
+            "description": "Detailed description of the action (max 500 chars)"
+          }
+        },
+        "required": [
+          "admin",
+          "module",
+          "action",
+          "details"
+        ]
+      },
+      "SetConfigDto": {
+        "type": "object",
+        "properties": {
+          "lowStockThreshold": {
+            "type": "number",
+            "example": 50,
+            "description": "Threshold below which stock is flagged as low (1-10000)"
+          },
+          "maxRtoAttempts": {
+            "type": "number",
+            "example": 3,
+            "description": "Maximum delivery attempts before initiating RTO (1-10)"
+          }
+        }
+      }
+    }
+  },
+  "security": [
+    {
+      "x-role": []
+    }
+  ]
+}

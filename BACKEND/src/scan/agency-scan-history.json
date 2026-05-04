@@ -1,0 +1,175 @@
+{
+  "agency-001": [
+    {
+      "trackingId": "TRK91925",
+      "scannedAt": "2026-05-04T11:47:13.310Z",
+      "status": "Scanned In",
+      "flagged": false,
+      "flagMsg": "",
+      "productName": "Nike Air Max 2026"
+    },
+    {
+      "trackingId": "TRK73601",
+      "scannedAt": "2026-05-04T11:30:25.656Z",
+      "status": "Scanned In",
+      "flagged": false,
+      "flagMsg": "",
+      "productName": "Nike Air Max 2026"
+    },
+    {
+      "trackingId": "TRK88874",
+      "scannedAt": "2026-05-04T11:13:33.162Z",
+      "status": "Scanned In",
+      "flagged": false,
+      "flagMsg": "",
+      "productName": "Wireless Mouse"
+    },
+    {
+      "trackingId": "TRK40972",
+      "scannedAt": "2026-05-04T10:46:55.281Z",
+      "status": "Scanned In",
+      "flagged": false,
+      "flagMsg": "",
+      "productName": "Wireless Mouse"
+    },
+    {
+      "trackingId": "TRK10589",
+      "scannedAt": "2026-05-04T09:19:32.112Z",
+      "status": "Scanned In",
+      "flagged": false,
+      "flagMsg": "",
+      "productName": "Wireless Mouse"
+    },
+    {
+      "trackingId": "TRK4016",
+      "scannedAt": "2026-05-03T18:01:07.000Z",
+      "status": "Scanned In",
+      "flagged": false,
+      "flagMsg": "",
+      "productName": "Monitor"
+    },
+    {
+      "trackingId": "TRK40116",
+      "scannedAt": "2026-05-03T18:00:42.656Z",
+      "status": "Error",
+      "flagged": true,
+      "flagMsg": "invalid tracking id"
+    },
+    {
+      "trackingId": "TRK18841",
+      "scannedAt": "2026-05-03T12:26:00.727Z",
+      "status": "Scanned In",
+      "flagged": false,
+      "flagMsg": "",
+      "productName": "Wireless Mouse"
+    },
+    {
+      "trackingId": "TRK91083",
+      "scannedAt": "2026-05-03T11:02:22.574Z",
+      "status": "Scanned In",
+      "flagged": false,
+      "flagMsg": "",
+      "productName": "Wireless Mouse"
+    },
+    {
+      "trackingId": "TRK77615",
+      "scannedAt": "2026-04-25T19:53:30.800Z",
+      "status": "Scanned In",
+      "flagged": false,
+      "flagMsg": "",
+      "productName": "Wireless Mouse"
+    },
+    {
+      "trackingId": "TRK97371",
+      "scannedAt": "2026-04-25T19:28:28.744Z",
+      "status": "Scanned In",
+      "flagged": false,
+      "flagMsg": "",
+      "productName": "Wireless Mouse"
+    },
+    {
+      "trackingId": "TRK34547",
+      "scannedAt": "2026-04-25T18:10:19.885Z",
+      "status": "Scanned In",
+      "flagged": false,
+      "flagMsg": "",
+      "productName": "Wireless Mouse"
+    },
+    {
+      "trackingId": "TRK4002",
+      "scannedAt": "2026-04-25T17:49:06.687Z",
+      "status": "Error",
+      "flagged": true,
+      "flagMsg": "wrong node came"
+    },
+    {
+      "trackingId": "xdfchgjv",
+      "scannedAt": "2026-04-25T17:48:57.330Z",
+      "status": "Error",
+      "flagged": true,
+      "flagMsg": "invalid tracking id"
+    }
+  ],
+  "agency-002": [
+    {
+      "trackingId": "TRK89535",
+      "scannedAt": "2026-05-03T06:23:37.412Z",
+      "status": "Scanned In",
+      "flagged": false,
+      "flagMsg": "",
+      "productName": "Wireless Mouse"
+    },
+    {
+      "trackingId": "TRK4002",
+      "scannedAt": "2026-05-03T06:16:31.453Z",
+      "status": "Scanned In",
+      "flagged": false,
+      "flagMsg": "",
+      "productName": "Samsung TV"
+    },
+    {
+      "trackingId": "TRK21164",
+      "scannedAt": "2026-05-03T05:31:11.579Z",
+      "status": "Error",
+      "flagged": true,
+      "flagMsg": "wrong node came"
+    }
+  ],
+  "agency-003": [
+    {
+      "trackingId": "TRK79727",
+      "scannedAt": "2026-05-03T10:29:58.168Z",
+      "status": "Scanned In",
+      "flagged": false,
+      "flagMsg": "",
+      "productName": "Wireless Mouse"
+    },
+    {
+      "trackingId": "TRK21164",
+      "scannedAt": "2026-05-03T05:32:24.446Z",
+      "status": "Scanned In",
+      "flagged": false,
+      "flagMsg": "",
+      "productName": "Wireless Mouse"
+    }
+  ],
+  "agency-004": [],
+  "agency-005": [
+    {
+      "trackingId": "TRK14829",
+      "scannedAt": "2026-05-03T10:45:34.568Z",
+      "status": "Scanned In",
+      "flagged": false,
+      "flagMsg": "",
+      "productName": "Wireless Mouse"
+    },
+    {
+      "trackingId": "TRK4005",
+      "scannedAt": "2026-05-03T06:25:38.513Z",
+      "status": "Scanned In",
+      "flagged": false,
+      "flagMsg": "",
+      "productName": "HP Printer"
+    }
+  ]
+}

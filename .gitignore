@@ -1,0 +1,19 @@
+# Dependencies
+BACKEND/node_modules/
+FRONTEND/node_modules/
+
+# Build output
+BACKEND/dist/
+
+# macOS
+.DS_Store
+Icon*
+
+# Logs
+*.log
+npm-debug.log*
+
+# Environment
+.env
+.env.*
+!.env.example

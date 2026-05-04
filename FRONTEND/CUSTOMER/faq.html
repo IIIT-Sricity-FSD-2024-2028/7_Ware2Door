@@ -1,0 +1,509 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FAQ — Ware2Door</title>
+    <meta
+      name="description"
+      content="Find answers to common questions about Ware2Door logistics, shipping, delivery, returns, and support."
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="faq.css" />
+  </head>
+  <body>
+    
+    <header class="main-header" id="main-header">
+      <nav class="navbar">
+        <div class="navbar-logo">
+          <a href="../NEW LANDING/index.html"
+            ><img src="logo.png" alt="Ware2Door Logo" class="main-logo"
+          /></a>
+        </div>
+        <div class="navbar-nav">
+          <a href="../TRACK/home.html">Track Order</a>
+          <a href="customer.html" class="nav-active">Customer Service</a>
+        </div>
+        <div class="navbar-login">
+          <a href="../AUTH/home.html">Login</a>
+        </div>
+      </nav>
+    </header>
+
+    
+    <section class="faq-hero">
+      <div class="faq-hero-overlay"></div>
+      <div class="faq-hero-content">
+        <a href="customer.html" class="back-link"
+          ><i class="fa-solid fa-arrow-left"></i> Back to Support</a
+        >
+        <h1>Frequently Asked <span class="accent">Questions</span></h1>
+        <p>
+          Find answers to common questions about Ware2Door logistics and
+          services.
+        </p>
+
+        <div class="search-bar">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <input
+            type="text"
+            id="faq-search"
+            placeholder="Search a question…"
+            autocomplete="off"
+          />
+        </div>
+      </div>
+    </section>
+
+    
+    <section class="faq-section">
+      
+      <div class="faq-tabs">
+        <button class="tab-btn active" data-cat="all">All</button>
+        <button class="tab-btn" data-cat="shipping">
+          Shipping &amp; Tracking
+        </button>
+        <button class="tab-btn" data-cat="delivery">Delivery Issues</button>
+        <button class="tab-btn" data-cat="returns">Returns &amp; RTO</button>
+        <button class="tab-btn" data-cat="account">
+          Account &amp; Support
+        </button>
+      </div>
+
+      
+      <div class="faq-grid">
+        
+        <div class="faq-card" data-cat="shipping">
+          <div class="card-category-badge">
+            <i class="fa-solid fa-truck"></i> Shipping &amp; Tracking
+          </div>
+          <div class="faq-list">
+            <div class="faq-item">
+              <button class="faq-question" aria-expanded="false">
+                <span>How do I track my shipment in real-time?</span>
+                <span class="faq-icon"
+                  ><i class="fa-solid fa-chevron-down"></i
+                ></span>
+              </button>
+              <div class="faq-answer">
+                <p>
+                  Visit the
+                  <a href="../TRACK/home.html" class="inline-link"
+                    >Track Order</a
+                  >
+                  page and enter your Tracking ID (e.g. BLR78291XQ). You'll see
+                  a live status timeline covering Warehouse → Transit Hub →
+                  Local Delivery → Delivered.
+                </p>
+              </div>
+            </div>
+
+            <div class="faq-item">
+              <button class="faq-question" aria-expanded="false">
+                <span>What are the estimated delivery times?</span>
+                <span class="faq-icon"
+                  ><i class="fa-solid fa-chevron-down"></i
+                ></span>
+              </button>
+              <div class="faq-answer">
+                <p>
+                  Standard delivery takes 3–5 business days. Express shipments
+                  are delivered within 24–48 hours. Timelines may vary based on
+                  your pin code and product category.
+                </p>
+              </div>
+            </div>
+
+            <div class="faq-item">
+              <button class="faq-question" aria-expanded="false">
+                <span>Can I change the delivery address?</span>
+                <span class="faq-icon"
+                  ><i class="fa-solid fa-chevron-down"></i
+                ></span>
+              </button>
+              <div class="faq-answer">
+                <p>
+                  Address changes are only possible before the shipment leaves
+                  the warehouse. Please
+                  <a href="ticket.html" class="inline-link"
+                    >submit a support ticket</a
+                  >
+                  immediately with your Tracking ID and new address details.
+                </p>
+              </div>
+            </div>
+          </div>
+          <a href="ticket.html" class="view-all-link"
+            >View all articles <i class="fa-solid fa-arrow-right"></i
+          ></a>
+        </div>
+
+        
+        <div class="faq-card" data-cat="delivery">
+          <div class="card-category-badge">
+            <i class="fa-solid fa-circle-exclamation"></i> Delivery Issues
+          </div>
+          <div class="faq-list">
+            <div class="faq-item">
+              <button class="faq-question" aria-expanded="false">
+                <span>What if my package is delayed?</span>
+                <span class="faq-icon"
+                  ><i class="fa-solid fa-chevron-down"></i
+                ></span>
+              </button>
+              <div class="faq-answer">
+                <p>
+                  If your package is delayed beyond the estimated date, first
+                  check the live tracker for status updates. If the status
+                  hasn't changed in 48 hours, raise a
+                  <a href="ticket.html" class="inline-link">support ticket</a>
+                  and our team will investigate within 4 hours.
+                </p>
+              </div>
+            </div>
+
+            <div class="faq-item">
+              <button class="faq-question" aria-expanded="false">
+                <span>What happens if delivery fails?</span>
+                <span class="faq-icon"
+                  ><i class="fa-solid fa-chevron-down"></i
+                ></span>
+              </button>
+              <div class="faq-answer">
+                <p>
+                  Our courier will attempt delivery up to 3 times. After each
+                  failed attempt, you'll receive a notification. If all attempts
+                  fail, the parcel is held at the local agency for 5 days before
+                  being returned to origin (RTO).
+                </p>
+              </div>
+            </div>
+
+            <div class="faq-item">
+              <button class="faq-question" aria-expanded="false">
+                <span>Can I reschedule my delivery?</span>
+                <span class="faq-icon"
+                  ><i class="fa-solid fa-chevron-down"></i
+                ></span>
+              </button>
+              <div class="faq-answer">
+                <p>
+                  Yes. Submit a
+                  <a href="ticket.html" class="inline-link">support ticket</a>
+                  with your Tracking ID and preferred delivery date/time window.
+                  Our team will coordinate with the local agency to accommodate
+                  the request.
+                </p>
+              </div>
+            </div>
+          </div>
+          <a href="ticket.html" class="view-all-link"
+            >View all articles <i class="fa-solid fa-arrow-right"></i
+          ></a>
+        </div>
+
+        
+        <div class="faq-card" data-cat="returns">
+          <div class="card-category-badge">
+            <i class="fa-solid fa-rotate-left"></i> Returns &amp; RTO
+          </div>
+          <div class="faq-list">
+            <div class="faq-item">
+              <button class="faq-question" aria-expanded="false">
+                <span>What is the return policy?</span>
+                <span class="faq-icon"
+                  ><i class="fa-solid fa-chevron-down"></i
+                ></span>
+              </button>
+              <div class="faq-answer">
+                <p>
+                  Returns are accepted within 7 days of delivery for damaged or
+                  incorrect items. Initiate a return by
+                  <a href="ticket.html" class="inline-link"
+                    >submitting a ticket</a
+                  >
+                  under the "Return to Origin" category with photos of the
+                  issue.
+                </p>
+              </div>
+            </div>
+
+            <div class="faq-item">
+              <button class="faq-question" aria-expanded="false">
+                <span>How to initiate an RTO request?</span>
+                <span class="faq-icon"
+                  ><i class="fa-solid fa-chevron-down"></i
+                ></span>
+              </button>
+              <div class="faq-answer">
+                <p>
+                  A Return-to-Origin (RTO) is automatically triggered after 3
+                  failed delivery attempts. To manually request an RTO, raise a
+                  support ticket with your Tracking ID before the shipment is
+                  out for delivery again.
+                </p>
+              </div>
+            </div>
+
+            <div class="faq-item">
+              <button class="faq-question" aria-expanded="false">
+                <span>Are there charges for failed deliveries?</span>
+                <span class="faq-icon"
+                  ><i class="fa-solid fa-chevron-down"></i
+                ></span>
+              </button>
+              <div class="faq-answer">
+                <p>
+                  There are no charges for the first failed delivery attempt.
+                  Subsequent re-attempt fees depend on your shipment plan. RTO
+                  processing may attract a nominal handling fee as per your
+                  service agreement.
+                </p>
+              </div>
+            </div>
+          </div>
+          <a href="ticket.html" class="view-all-link"
+            >View all articles <i class="fa-solid fa-arrow-right"></i
+          ></a>
+        </div>
+
+        
+        <div class="faq-card" data-cat="account">
+          <div class="card-category-badge">
+            <i class="fa-solid fa-headset"></i> Account &amp; Support
+          </div>
+          <div class="faq-list">
+            <div class="faq-item">
+              <button class="faq-question" aria-expanded="false">
+                <span
+                  >How can I partner as a Warehouse, Transit Hub, or Delivery
+                  Agency?</span
+                >
+                <span class="faq-icon"
+                  ><i class="fa-solid fa-chevron-down"></i
+                ></span>
+              </button>
+              <div class="faq-answer">
+                <p>
+                  Partner onboarding is managed by the Ware2Door operations
+                  team. Contact us via the support ticket system under "Other
+                  Issues" with your business details, location, and capacity
+                  information. Our team will reach out within 2 business days.
+                </p>
+              </div>
+            </div>
+
+            <div class="faq-item">
+              <button class="faq-question" aria-expanded="false">
+                <span>How can I contact customer support?</span>
+                <span class="faq-icon"
+                  ><i class="fa-solid fa-chevron-down"></i
+                ></span>
+              </button>
+              <div class="faq-answer">
+                <p>
+                  You can reach us via our
+                  <a href="ticket.html" class="inline-link">Support Ticket</a>
+                  system (response within 2–4 hours), or call our emergency
+                  helpline at <strong>8977568680</strong>. Our agents are
+                  available 24/7.
+                </p>
+              </div>
+            </div>
+
+            <div class="faq-item">
+              <button class="faq-question" aria-expanded="false">
+                <span>How to raise a support ticket?</span>
+                <span class="faq-icon"
+                  ><i class="fa-solid fa-chevron-down"></i
+                ></span>
+              </button>
+              <div class="faq-answer">
+                <p>
+                  Navigate to the
+                  <a href="ticket.html" class="inline-link">Submit a Ticket</a>
+                  page, enter your Tracking ID, choose an issue category, and
+                  describe your problem. We'll respond within 2–4 hours with a
+                  resolution or update.
+                </p>
+              </div>
+            </div>
+          </div>
+          <a href="ticket.html" class="view-all-link"
+            >View all articles <i class="fa-solid fa-arrow-right"></i
+          ></a>
+        </div>
+      </div>
+    </section>
+
+    
+    <section class="faq-cta">
+      <div class="cta-card">
+        <div class="cta-decor-1"></div>
+        <div class="cta-decor-2"></div>
+        <div class="cta-inner">
+          <div class="cta-icon"><i class="fa-solid fa-headset"></i></div>
+          <h2>Still Need Help?</h2>
+          <p>
+            Our logistics experts are available 24/7 to assist with complex
+            cases.
+          </p>
+          <div class="cta-buttons">
+            <a href="ticket.html"
+              ><button class="btn-teal">Submit a Ticket</button></a
+            >
+            <a href="customer.html"
+              ><button class="btn-outline-w">Back to Support</button></a
+            >
+          </div>
+        </div>
+      </div>
+    </section>
+
+    
+    <footer class="footer">
+      <div class="footer-inner">
+        <div class="footer-col">
+          <img src="logo.png" alt="Ware2Door" class="footer-logo-img" />
+        </div>
+        <div class="footer-col">
+          <h5>Explore</h5>
+          <ul>
+            <li><a href="../NEW LANDING/index.html#about-us">About Us</a></li>
+            <li>Our Warehouses</li>
+            <li>Blog</li>
+            <li>News and Media</li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h5>Legal</h5>
+          <ul>
+            <li>Terms</li>
+            <li>Privacy</li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h5>Social Media</h5>
+          <div class="social-links">
+            <a href="#" class="social-circle">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path
+                  d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"
+                ></path>
+              </svg>
+            </a>
+            <a href="#" class="social-circle">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path
+                  d="M4 4l11.733 16h4.267l-11.733 -16z M4 20l6.768 -6.768 M13.232 10.768l6.768 -6.768"
+                ></path>
+              </svg>
+            </a>
+            <a href="#" class="social-circle">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                <path
+                  d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"
+                ></path>
+                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+              </svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+
+      window.addEventListener("scroll", () => {
+        const h = document.getElementById("main-header");
+        h.classList.toggle("scrolled", window.scrollY > 50);
+      });
+
+
+      document.querySelectorAll(".faq-question").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const item = btn.closest(".faq-item");
+          const answer = item.querySelector(".faq-answer");
+          const isOpen = btn.getAttribute("aria-expanded") === "true";
+
+
+          item
+            .closest(".faq-list")
+            .querySelectorAll(".faq-item")
+            .forEach((sibling) => {
+              sibling
+                .querySelector(".faq-question")
+                .setAttribute("aria-expanded", "false");
+              sibling.querySelector(".faq-answer").style.maxHeight = null;
+              sibling.classList.remove("open");
+            });
+
+
+          if (!isOpen) {
+            btn.setAttribute("aria-expanded", "true");
+            answer.style.maxHeight = answer.scrollHeight + "px";
+            item.classList.add("open");
+          }
+        });
+      });
+
+
+      const tabBtns = document.querySelectorAll(".tab-btn");
+      const faqCards = document.querySelectorAll(".faq-card");
+
+      tabBtns.forEach((btn) => {
+        btn.addEventListener("click", () => {
+          tabBtns.forEach((b) => b.classList.remove("active"));
+          btn.classList.add("active");
+          const cat = btn.dataset.cat;
+          faqCards.forEach((card) => {
+            card.style.display =
+              cat === "all" || card.dataset.cat === cat ? "flex" : "none";
+          });
+        });
+      });
+
+
+      document
+        .getElementById("faq-search")
+        .addEventListener("input", function () {
+          const query = this.value.toLowerCase().trim();
+          document.querySelectorAll(".faq-item").forEach((item) => {
+            const text = item
+              .querySelector(".faq-question span")
+              .textContent.toLowerCase();
+            item.style.display = !query || text.includes(query) ? "" : "none";
+          });
+        });
+    </script>
+  </body>
+</html>

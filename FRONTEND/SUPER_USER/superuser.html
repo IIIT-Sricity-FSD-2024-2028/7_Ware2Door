@@ -1,0 +1,1386 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Super User — Ware2Door Control Center</title>
+    <meta
+      name="description"
+      content="Ware2Door Super User Control Center — Full system authority over all modules, admins, and data."
+    />
+    <link rel="stylesheet" href="superuser.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  </head>
+  <body>
+    <div class="sidebar">
+      <div class="logo-section">
+        <img src="logo.png" alt="Ware2Door" class="logo" />
+        <div class="su-role-chip">
+          <i class="fa-solid fa-crown"></i> SUPER USER
+        </div>
+      </div>
+      <ul class="menu">
+        <li class="menu-item active" id="nav-dashboard">
+          <div class="icon-box"><i class="fa-solid fa-gauge-high"></i></div>
+          <span>Dashboard</span>
+        </li>
+        <li class="menu-item" id="nav-admins">
+          <div class="icon-box"><i class="fa-solid fa-user-shield"></i></div>
+          <span>Admin Management</span>
+          <span class="menu-badge" id="admins-count-badge">0</span>
+        </li>
+        <li class="menu-item" id="nav-warehouses">
+          <div class="icon-box"><i class="fa-solid fa-warehouse"></i></div>
+          <span>Warehouses</span>
+        </li>
+        <li class="menu-item" id="nav-hubs">
+          <div class="icon-box"><i class="fa-solid fa-building"></i></div>
+          <span>Transit Hubs</span>
+        </li>
+        <li class="menu-item" id="nav-agencies">
+          <div class="icon-box"><i class="fa-solid fa-truck-fast"></i></div>
+          <span>Local Agencies</span>
+        </li>
+        <li class="menu-item" id="nav-performances">
+          <div class="icon-box"><i class="fa-solid fa-chart-line"></i></div>
+          <span>Performances</span>
+        </li>
+
+        <li class="menu-item" id="nav-logs">
+          <div class="icon-box"><i class="fa-solid fa-scroll"></i></div>
+          <span>System Audit Log</span>
+        </li>
+        <li class="menu-item" id="nav-config">
+          <div class="icon-box"><i class="fa-solid fa-sliders"></i></div>
+          <span>System Config</span>
+        </li>
+      </ul>
+      <div class="bottom">
+        <li class="menu-item stng-btn" id="nav-settings">
+          <div class="icon-box"><i class="fa-solid fa-gear"></i></div>
+          <span>Settings</span>
+        </li>
+      </div>
+    </div>
+
+    <div class="main">
+      <div class="header">
+        <div class="header-left">
+          <h2 id="header-title">Dashboard</h2>
+          <span class="su-authority-chip"
+            ><i class="fa-solid fa-shield-halved"></i> Full System
+            Authority</span
+          >
+        </div>
+        <div class="user">
+          <div class="user-info">
+            <p class="name" id="su-header-name"></p>
+            <p class="role">
+              Super User &nbsp;|&nbsp; <span class="online-dot"></span> Online
+            </p>
+          </div>
+          <div class="avatar su-avatar" id="top-avatar" title="Settings"></div>
+        </div>
+      </div>
+
+      <div class="dashboard-page page-content">
+        <div class="welcome-banner">
+          <div class="welcome-text">
+            <p class="welcome-label">Welcome back, Super User</p>
+            <h2 class="welcome-heading">
+              <i class="fa-solid fa-crown crown-icon"></i>
+              <span id="su-welcome-name"></span>
+              <span class="welcome-date" id="su-welcome-date"></span>
+            </h2>
+            <p class="welcome-sub">
+              You have complete system authority.
+              <span id="su-alert-count"></span> across all modules.
+            </p>
+            <div class="welcome-actions">
+              <button class="btn-primary" id="dash-add-admin-btn">
+                <i class="fa-solid fa-user-plus"></i> Add Admin
+              </button>
+              <button class="btn-secondary" id="dash-view-logs-btn">
+                <i class="fa-solid fa-scroll"></i> View Audit Log
+              </button>
+            </div>
+          </div>
+          <div class="welcome-icon-wrap"><i class="fa-solid fa-crown"></i></div>
+        </div>
+
+        <div class="stat-grid">
+          <div class="stat-card">
+            <div class="stat-top">
+              <div class="stat-icon-box stat-icon-box--gold">
+                <i class="fa-solid fa-user-shield"></i>
+              </div>
+              <span class="stat-badge stat-badge--gold">ADMINS</span>
+            </div>
+            <p class="stat-label">TOTAL ADMINS</p>
+            <p class="stat-value" id="dash-total-admins">0</p>
+            <span class="stat-unit">accounts</span>
+          </div>
+          <div class="stat-card">
+            <div class="stat-top">
+              <div class="stat-icon-box">
+                <i class="fa-solid fa-warehouse"></i>
+              </div>
+              <span
+                class="stat-badge stat-badge--green"
+                id="dash-wh-badge"
+              ></span>
+            </div>
+            <p class="stat-label">WAREHOUSES</p>
+            <p class="stat-value" id="dash-warehouses">0</p>
+            <span class="stat-unit">facilities</span>
+          </div>
+          <div class="stat-card">
+            <div class="stat-top">
+              <div class="stat-icon-box">
+                <i class="fa-solid fa-building"></i>
+              </div>
+              <span
+                class="stat-badge stat-badge--blue"
+                id="dash-hub-badge"
+              ></span>
+            </div>
+            <p class="stat-label">TRANSIT HUBS</p>
+            <p class="stat-value" id="dash-hubs">0</p>
+            <span class="stat-unit">hubs</span>
+          </div>
+          <div class="stat-card">
+            <div class="stat-top">
+              <div class="stat-icon-box">
+                <i class="fa-solid fa-truck-fast"></i>
+              </div>
+              <span
+                class="stat-badge stat-badge--orange"
+                id="dash-ag-badge"
+              ></span>
+            </div>
+            <p class="stat-label">LOCAL AGENCIES</p>
+            <p class="stat-value" id="dash-agencies">0</p>
+            <span class="stat-unit">agencies</span>
+          </div>
+        </div>
+
+        <div class="dash-bottom-grid">
+          <div class="activity-card">
+            <div class="activity-header">
+              <div>
+                <h3 class="activity-title">Recent Admin Activity</h3>
+                <p class="activity-sub">
+                  Latest actions across all admin accounts
+                </p>
+              </div>
+              <div class="live-pill"><span class="live-dot"></span> LIVE</div>
+            </div>
+            <table class="activity-table">
+              <thead>
+                <tr>
+                  <th>ADMIN</th>
+                  <th>ROLE</th>
+                  <th>ACTION</th>
+                  <th>TIME</th>
+                </tr>
+              </thead>
+              <tbody id="dash-activity-tbody"></tbody>
+            </table>
+          </div>
+          <div
+            class="system-health-card"
+            onclick="navigateTo('nav-performances')"
+            style="
+              cursor: pointer;
+              display: flex;
+              flex-direction: column;
+              padding: 20px;
+              text-align: center;
+              transition:
+                transform 0.2s,
+                box-shadow 0.2s;
+            "
+            onmouseover="this.style.boxShadow = '0 8px 16px rgba(0,0,0,0.1)'"
+            onmouseout="this.style.boxShadow = ''"
+          >
+            <style>
+              .system-health-card:hover {
+                transform: translateY(-3px);
+              }
+            </style>
+            <div
+              style="
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+              "
+            >
+              <h3 class="activity-title" style="margin-bottom: 0">
+                System Health
+              </h3>
+              <i
+                class="fa-solid fa-arrow-right-to-bracket"
+                style="color: #3b82f6"
+              ></i>
+            </div>
+            <p
+              style="
+                color: #64748b;
+                font-size: 12px;
+                margin: 4px 0 16px 0;
+                text-align: left;
+              "
+            >
+              Aggregate Entity Status Monitoring
+            </p>
+            <div
+              style="
+                flex: 1;
+                width: 100%;
+                position: relative;
+                min-height: 150px;
+              "
+            >
+              <canvas id="dashboardMiniChart"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="admins-page page-content" style="display: none">
+        <div class="page-title-row">
+          <div>
+            <h2 class="page-title">Admin Management</h2>
+            <p class="page-subtitle">
+              Create, view, edit and deactivate admin accounts across all
+              operational roles. You have full authority to manage all admins.
+            </p>
+          </div>
+          <button class="btn-primary" id="add-admin-btn">
+            <i class="fa-solid fa-user-plus"></i> Add Admin
+          </button>
+        </div>
+
+        <div class="role-tabs">
+          <button class="role-tab active" data-role="all">All Admins</button>
+          <button class="role-tab" data-role="WareHouse">Warehouse</button>
+          <button class="role-tab" data-role="TransitHub">Transit Hub</button>
+          <button class="role-tab" data-role="LocalAgency">Local Agency</button>
+        </div>
+
+        <div class="filter-row">
+          <div class="search-box" style="flex: 2">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input
+              type="text"
+              id="admin-search"
+              placeholder="Search by name, email or ID..."
+            />
+          </div>
+          <select id="admin-status-filter" class="filter-select">
+            <option value="">All Statuses</option>
+            <option value="Active">Active</option>
+            <option value="Suspended">Suspended</option>
+          </select>
+          <select id="admin-sort" class="filter-select">
+            <option value="name">Sort by Name</option>
+            <option value="role">Sort by Role</option>
+            <option value="created">Sort by Created</option>
+          </select>
+        </div>
+
+        <div class="admin-cards-grid" id="admin-cards-grid"></div>
+        <div class="pagination-bar" id="admin-pagination"></div>
+      </div>
+
+      <div class="warehouses-page page-content" style="display: none">
+        <div class="page-title-row">
+          <div>
+            <h2 class="page-title">Warehouse Overview</h2>
+            <p class="page-subtitle">
+              Monitor and manage all warehouse facilities, inventory levels, and
+              assigned administrators.
+            </p>
+          </div>
+          <div style="display: flex; gap: 10px;">
+            <button class="btn-secondary-dark" id="wh-export-btn">
+              <i class="fa-solid fa-download"></i> Export
+            </button>
+            <button class="btn-primary" onclick="openFacilityModal('WareHouse')">
+              <i class="fa-solid fa-plus"></i> Add Warehouse
+            </button>
+          </div>
+        </div>
+        <div class="stat-grid" style="margin-bottom: 24px">
+          <div class="stat-card">
+            <div class="stat-top">
+              <div class="stat-icon-box">
+                <i class="fa-solid fa-warehouse"></i>
+              </div>
+              <span class="stat-badge stat-badge--green" id="wh-active-badge">Active</span>
+            </div>
+            <p class="stat-label">TOTAL WAREHOUSES</p>
+            <p class="stat-value" id="wh-total">0</p>
+            <span class="stat-unit">facilities</span>
+          </div>
+          <div class="stat-card">
+            <div class="stat-top">
+              <div class="stat-icon-box">
+                <i class="fa-solid fa-boxes-stacked"></i>
+              </div>
+              <span class="stat-badge stat-badge--blue">Units</span>
+            </div>
+            <p class="stat-label">TOTAL INVENTORY</p>
+            <p class="stat-value" id="wh-inventory">0</p>
+            <span class="stat-unit">units</span>
+          </div>
+          <div class="stat-card">
+            <div class="stat-top">
+              <div class="stat-icon-box">
+                <i class="fa-solid fa-box-open"></i>
+              </div>
+              <span class="stat-badge stat-badge--orange">Pending</span>
+            </div>
+            <p class="stat-label">PENDING SHIPMENTS</p>
+            <p class="stat-value" id="wh-pending">0</p>
+            <span class="stat-unit">orders</span>
+          </div>
+          <div class="stat-card">
+            <div class="stat-top">
+              <div class="stat-icon-box stat-icon-box--red">
+                <i class="fa-solid fa-rotate-left"></i>
+              </div>
+              <span class="stat-badge stat-badge--red">Returns</span>
+            </div>
+            <p class="stat-label">RTO REQUESTS</p>
+            <p class="stat-value" id="wh-rto">0</p>
+            <span class="stat-unit">returns</span>
+          </div>
+        </div>
+        <div class="filter-row">
+          <div class="search-box" style="flex: 1">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input
+              type="text"
+              id="wh-search"
+              placeholder="Search warehouses..."
+            />
+          </div>
+        </div>
+        <div class="table-card">
+          <table class="data-table" id="wh-table">
+            <thead>
+              <tr>
+                <th>WAREHOUSE</th>
+                <th>ADMIN</th>
+                <th>LOCATION</th>
+                <th>INVENTORY</th>
+                <th>PENDING SHIP.</th>
+                <th>RTO</th>
+                <th>STATUS</th>
+                <th>ACTIONS</th>
+              </tr>
+            </thead>
+            <tbody id="wh-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="hubs-page page-content" style="display: none">
+        <div class="page-title-row">
+          <div>
+            <h2 class="page-title">Transit Hub Overview</h2>
+            <p class="page-subtitle">
+              Monitor all transit hub operations, scan activity, and assigned
+              administrators.
+            </p>
+          </div>
+          <div style="display: flex; gap: 10px;">
+            <button class="btn-secondary-dark">
+              <i class="fa-solid fa-download"></i> Export
+            </button>
+            <button class="btn-primary" onclick="openFacilityModal('TransitHub')">
+              <i class="fa-solid fa-plus"></i> Add Hub
+            </button>
+          </div>
+        </div>
+        <div class="stat-grid" style="margin-bottom: 24px">
+          <div class="stat-card">
+            <div class="stat-top">
+              <div class="stat-icon-box">
+                <i class="fa-solid fa-building"></i>
+              </div>
+              <span class="stat-badge stat-badge--green" id="hub-active-badge">Active</span>
+            </div>
+            <p class="stat-label">TOTAL HUBS</p>
+            <p class="stat-value" id="hub-total">0</p>
+            <span class="stat-unit">hubs</span>
+          </div>
+          <div class="stat-card">
+            <div class="stat-top">
+              <div class="stat-icon-box">
+                <i class="fa-solid fa-arrow-down-to-bracket"></i>
+              </div>
+              <span class="stat-badge stat-badge--blue">Today</span>
+            </div>
+            <p class="stat-label">TOTAL IN-SCANNED</p>
+            <p class="stat-value" id="hub-inscanned">0</p>
+            <span class="stat-unit">packages</span>
+          </div>
+          <div class="stat-card">
+            <div class="stat-top">
+              <div class="stat-icon-box">
+                <i class="fa-solid fa-arrow-up-right-from-square"></i>
+              </div>
+              <span class="stat-badge stat-badge--orange">Today</span>
+            </div>
+            <p class="stat-label">TOTAL OUT-SCANNED</p>
+            <p class="stat-value" id="hub-outscanned">0</p>
+            <span class="stat-unit">packages</span>
+          </div>
+          <div class="stat-card">
+            <div class="stat-top">
+              <div class="stat-icon-box stat-icon-box--red">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+              </div>
+            </div>
+            <p class="stat-label">FLAGGED ITEMS</p>
+            <p class="stat-value" id="hub-flagged">0</p>
+            <span class="stat-unit">items</span>
+          </div>
+        </div>
+        <div class="filter-row">
+          <div class="search-box" style="flex: 1">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" id="hub-search" placeholder="Search hubs..." />
+          </div>
+        </div>
+        <div class="table-card">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>HUB NAME</th>
+                <th>ADMIN</th>
+                <th>LOCATION</th>
+                <th>IN-SCANNED</th>
+                <th>OUT-SCANNED</th>
+                <th>CAPACITY</th>
+                <th>STATUS</th>
+                <th>ACTIONS</th>
+              </tr>
+            </thead>
+            <tbody id="hub-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="agencies-page page-content" style="display: none">
+        <div class="page-title-row">
+          <div>
+            <h2 class="page-title">Local Agency Overview</h2>
+            <p class="page-subtitle">
+              Monitor all local delivery agencies, delivery performance, and
+              assigned administrators.
+            </p>
+          </div>
+          <div style="display: flex; gap: 10px;">
+            <button class="btn-secondary-dark">
+              <i class="fa-solid fa-download"></i> Export
+            </button>
+            <button class="btn-primary" onclick="openFacilityModal('LocalAgency')">
+              <i class="fa-solid fa-plus"></i> Add Agency
+            </button>
+          </div>
+        </div>
+        <div class="stat-grid" style="margin-bottom: 24px">
+          <div class="stat-card">
+            <div class="stat-top">
+              <div class="stat-icon-box">
+                <i class="fa-solid fa-truck-fast"></i>
+              </div>
+              <span class="stat-badge stat-badge--green" id="ag-active-badge">Active</span>
+            </div>
+            <p class="stat-label">TOTAL AGENCIES</p>
+            <p class="stat-value" id="ag-total">0</p>
+            <span class="stat-unit">agencies</span>
+          </div>
+          <div class="stat-card">
+            <div class="stat-top">
+              <div class="stat-icon-box">
+                <i class="fa-solid fa-user-tie"></i>
+              </div>
+              <span class="stat-badge stat-badge--blue">On Duty</span>
+            </div>
+            <p class="stat-label">DELIVERY AGENTS</p>
+            <p class="stat-value" id="ag-agents">0</p>
+            <span class="stat-unit">agents</span>
+          </div>
+          <div class="stat-card">
+            <div class="stat-top">
+              <div class="stat-icon-box">
+                <i class="fa-solid fa-circle-check"></i>
+              </div>
+              <span class="stat-badge stat-badge--green">Today</span>
+            </div>
+            <p class="stat-label">DELIVERED TODAY</p>
+            <p class="stat-value" id="ag-delivered">0</p>
+            <span class="stat-unit">packages</span>
+          </div>
+          <div class="stat-card">
+            <div class="stat-top">
+              <div class="stat-icon-box stat-icon-box--red">
+                <i class="fa-solid fa-rotate-left"></i>
+              </div>
+            </div>
+            <p class="stat-label">RTO RAISED</p>
+            <p class="stat-value" id="ag-rto">0</p>
+            <span class="stat-unit">returns</span>
+          </div>
+        </div>
+        <div class="filter-row">
+          <div class="search-box" style="flex: 1">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input
+              type="text"
+              id="ag-search"
+              placeholder="Search agencies..."
+            />
+          </div>
+        </div>
+        <div class="table-card">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>AGENCY</th>
+                <th>ADMIN</th>
+                <th>LOCATION</th>
+                <th>AGENTS</th>
+                <th>DELIVERED</th>
+                <th>RTO</th>
+                <th>STATUS</th>
+                <th>ACTIONS</th>
+              </tr>
+            </thead>
+            <tbody id="ag-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="logs-page page-content" style="display: none">
+        <div class="page-title-row">
+          <div>
+            <h2 class="page-title">System Audit Log</h2>
+            <p class="page-subtitle">
+              Complete audit trail of all system actions across all admin
+              accounts and modules.
+            </p>
+          </div>
+          <button class="btn-primary" id="log-refresh-btn">
+            <i class="fa-solid fa-rotate"></i> Refresh
+          </button>
+        </div>
+        <div class="filter-row">
+          <div class="search-box" style="flex: 2">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input
+              type="text"
+              id="log-search"
+              placeholder="Search logs by action, admin, or module..."
+            />
+          </div>
+          <select id="log-module-filter" class="filter-select">
+            <option value="">All Modules</option>
+            <option value="Warehouse">Warehouse</option>
+            <option value="Transit Hub">Transit Hub</option>
+            <option value="Local Agency">Local Agency</option>
+            <option value="Admin Management">Admin Management</option>
+            <option value="System">System</option>
+          </select>
+        </div>
+        <div class="table-card">
+          <div class="table-header-row">
+            <div style="display: flex; align-items: center; gap: 8px">
+              <i class="fa-solid fa-scroll" style="color: #64748b"></i>
+              <strong>Audit Events</strong>
+            </div>
+            <span class="showing-label" id="log-count-label"></span>
+          </div>
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>TIMESTAMP</th>
+                <th>ADMIN</th>
+                <th>MODULE</th>
+                <th>ACTION</th>
+                <th>DETAILS</th>
+              </tr>
+            </thead>
+            <tbody id="log-tbody"></tbody>
+          </table>
+          <div class="pagination-bar" id="log-pagination"></div>
+        </div>
+      </div>
+
+      <div class="config-page page-content" style="display: none">
+        <div class="page-title-row">
+          <div>
+            <h2 class="page-title">System Configuration</h2>
+            <p class="page-subtitle">
+              Global system settings and configurations. Only the Super User can
+              modify these.
+            </p>
+          </div>
+        </div>
+        <div class="config-grid">
+          <div class="config-card">
+            <div class="config-card-header">
+              <div class="config-icon"><i class="fa-solid fa-bell"></i></div>
+              <div>
+                <h3 class="config-title">Notification Settings</h3>
+                <p class="config-sub">Control system-wide alert thresholds</p>
+              </div>
+            </div>
+            <div class="config-field">
+              <label>Low Stock Alert Threshold (units)</label>
+              <input type="number" id="cfg-low-stock" value="10" min="1" />
+            </div>
+            <div class="config-field">
+              <label>Max Delivery Attempts Before RTO</label>
+              <input
+                type="number"
+                id="cfg-max-attempts"
+                value="3"
+                min="1"
+                max="10"
+              />
+            </div>
+            <div class="config-field toggle-field">
+              <div>
+                <label>Email Alerts for Critical Events</label>
+                <p class="cfg-hint">Send emails when RTO threshold hit</p>
+              </div>
+              <div class="toggle" id="cfg-email-toggle" data-on="true">
+                <div class="toggle-knob"></div>
+              </div>
+            </div>
+            <button class="btn-primary cfg-save-btn" onclick="saveConfig()">
+              <i class="fa-solid fa-floppy-disk"></i> Save Settings
+            </button>
+          </div>
+          <div class="config-card">
+            <div class="config-card-header">
+              <div class="config-icon cfg-icon-blue">
+                <i class="fa-solid fa-shield-halved"></i>
+              </div>
+              <div>
+                <h3 class="config-title">Security Settings</h3>
+                <p class="config-sub">System-wide security configurations</p>
+              </div>
+            </div>
+            <div class="config-field toggle-field">
+              <div>
+                <label>Force 2FA for All Admins</label>
+                <p class="cfg-hint">Require two-factor authentication</p>
+              </div>
+              <div class="toggle" id="cfg-2fa-toggle" data-on="false">
+                <div class="toggle-knob"></div>
+              </div>
+            </div>
+            <div class="config-field toggle-field">
+              <div>
+                <label>Session Auto-Logout (1 hour)</label>
+                <p class="cfg-hint">Automatically log out inactive sessions</p>
+              </div>
+              <div class="toggle" id="cfg-logout-toggle" data-on="true">
+                <div class="toggle-knob"></div>
+              </div>
+            </div>
+            <div class="config-field">
+              <label>Max Failed Login Attempts</label>
+              <input type="number" id="cfg-login-attempts" value="5" min="1" />
+            </div>
+            <button class="btn-primary cfg-save-btn" onclick="saveConfig()">
+              <i class="fa-solid fa-floppy-disk"></i> Save Settings
+            </button>
+          </div>
+          <div class="config-card">
+            <div class="config-card-header">
+              <div class="config-icon cfg-icon-orange">
+                <i class="fa-solid fa-network-wired"></i>
+              </div>
+              <div>
+                <h3 class="config-title">Network Settings</h3>
+                <p class="config-sub">
+                  Configure hub and warehouse connections
+                </p>
+              </div>
+            </div>
+            <div class="config-field">
+              <label>System Name</label>
+              <input
+                type="text"
+                id="cfg-sys-name"
+                value="Ware2Door Logistics"
+              />
+            </div>
+            <div class="config-field">
+              <label>Default Hub Region</label>
+              <select
+                id="cfg-region"
+                class="filter-select"
+                style="
+                  border: 1px solid #e2e8f0;
+                  width: 100%;
+                  padding: 10px 14px;
+                "
+              >
+                <option value="south">South India</option>
+                <option value="north">North India</option>
+                <option value="east">East India</option>
+                <option value="west">West India</option>
+                <option value="all">Pan India</option>
+              </select>
+            </div>
+            <div class="config-field toggle-field">
+              <div>
+                <label>Maintenance Mode</label>
+                <p class="cfg-hint">Disable all admin logins temporarily</p>
+              </div>
+              <div class="toggle" id="cfg-maintenance-toggle" data-on="false">
+                <div class="toggle-knob"></div>
+              </div>
+            </div>
+            <button class="btn-primary cfg-save-btn" onclick="saveConfig()">
+              <i class="fa-solid fa-floppy-disk"></i> Save Settings
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="performances-page page-content" style="display: none">
+        <div
+          style="
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-bottom: 25px;
+          "
+        >
+          <div>
+            <h1 style="font-size: 24px; color: #0f172a; margin: 0 0 6px">
+              Performance Analytics
+            </h1>
+            <p style="color: #64748b; font-size: 14px; margin: 0">
+              Select any entity to track its live key metrics.
+            </p>
+          </div>
+          <div
+            style="
+              display: flex;
+              background: #e2e8f0;
+              padding: 4px;
+              border-radius: 8px;
+            "
+            id="perf-tab-group"
+          >
+            <button
+              class="perf-tab"
+              data-target="WH"
+              style="
+                border: none;
+                padding: 8px 18px;
+                border-radius: 6px;
+                font-size: 13px;
+                font-weight: 600;
+                cursor: pointer;
+                background: white;
+                color: #0f172a;
+                box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+              "
+              onclick="renderPerfChart('WH')"
+            >
+              <i class="fa-solid fa-warehouse" style="margin-right: 5px"></i
+              >Warehouses
+            </button>
+            <button
+              class="perf-tab"
+              data-target="HUB"
+              style="
+                border: none;
+                padding: 8px 18px;
+                border-radius: 6px;
+                font-size: 13px;
+                font-weight: 600;
+                cursor: pointer;
+                background: transparent;
+                color: #64748b;
+              "
+              onclick="renderPerfChart('HUB')"
+            >
+              <i class="fa-solid fa-building" style="margin-right: 5px"></i
+              >Transit Hubs
+            </button>
+            <button
+              class="perf-tab"
+              data-target="AG"
+              style="
+                border: none;
+                padding: 8px 18px;
+                border-radius: 6px;
+                font-size: 13px;
+                font-weight: 600;
+                cursor: pointer;
+                background: transparent;
+                color: #64748b;
+              "
+              onclick="renderPerfChart('AG')"
+            >
+              <i class="fa-solid fa-truck-fast" style="margin-right: 5px"></i
+              >Local Agencies
+            </button>
+          </div>
+        </div>
+
+        
+        <div id="perf-panel-WH" style="display: block">
+          <div
+            style="
+              display: flex;
+              align-items: center;
+              gap: 12px;
+              margin-bottom: 20px;
+            "
+          >
+            <label
+              style="
+                font-size: 13px;
+                font-weight: 600;
+                color: #334155;
+                white-space: nowrap;
+              "
+              ><i
+                class="fa-solid fa-warehouse"
+                style="color: #14b8a6; margin-right: 5px"
+              ></i
+              >Select Warehouse:</label
+            >
+            <select
+              id="perf-select-wh"
+              onchange="renderPerfEntityChart('WH', this.value)"
+              style="
+                flex: 1;
+                max-width: 340px;
+                padding: 9px 14px;
+                border: 1px solid #e2e8f0;
+                border-radius: 8px;
+                font-size: 13px;
+                font-family: inherit;
+                cursor: pointer;
+              "
+            ></select>
+          </div>
+          <div id="perf-metric-cards-WH"></div>
+          <div
+            style="
+              background: white;
+              border: 1px solid #e2e8f0;
+              border-radius: 12px;
+              padding: 20px;
+              box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+            "
+          >
+            <canvas
+              id="perfChart-WH"
+              style="height: 320px; width: 100%; display: block"
+            ></canvas>
+          </div>
+        </div>
+
+        
+        <div id="perf-panel-HUB" style="display: none">
+          <div
+            style="
+              display: flex;
+              align-items: center;
+              gap: 12px;
+              margin-bottom: 20px;
+            "
+          >
+            <label
+              style="
+                font-size: 13px;
+                font-weight: 600;
+                color: #334155;
+                white-space: nowrap;
+              "
+              ><i
+                class="fa-solid fa-building"
+                style="color: #3b82f6; margin-right: 5px"
+              ></i
+              >Select Transit Hub:</label
+            >
+            <select
+              id="perf-select-hub"
+              onchange="renderPerfEntityChart('HUB', this.value)"
+              style="
+                flex: 1;
+                max-width: 340px;
+                padding: 9px 14px;
+                border: 1px solid #e2e8f0;
+                border-radius: 8px;
+                font-size: 13px;
+                font-family: inherit;
+                cursor: pointer;
+              "
+            ></select>
+          </div>
+          <div id="perf-metric-cards-HUB"></div>
+          <div
+            style="
+              background: white;
+              border: 1px solid #e2e8f0;
+              border-radius: 12px;
+              padding: 20px;
+              box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+            "
+          >
+            <canvas
+              id="perfChart-HUB"
+              style="height: 320px; width: 100%; display: block"
+            ></canvas>
+          </div>
+        </div>
+
+        
+        <div id="perf-panel-AG" style="display: none">
+          <div
+            style="
+              display: flex;
+              align-items: center;
+              gap: 12px;
+              margin-bottom: 20px;
+            "
+          >
+            <label
+              style="
+                font-size: 13px;
+                font-weight: 600;
+                color: #334155;
+                white-space: nowrap;
+              "
+              ><i
+                class="fa-solid fa-truck-fast"
+                style="color: #f4a32a; margin-right: 5px"
+              ></i
+              >Select Local Agency:</label
+            >
+            <select
+              id="perf-select-ag"
+              onchange="renderPerfEntityChart('AG', this.value)"
+              style="
+                flex: 1;
+                max-width: 340px;
+                padding: 9px 14px;
+                border: 1px solid #e2e8f0;
+                border-radius: 8px;
+                font-size: 13px;
+                font-family: inherit;
+                cursor: pointer;
+              "
+            ></select>
+          </div>
+          <div id="perf-metric-cards-AG"></div>
+          <div
+            style="
+              background: white;
+              border: 1px solid #e2e8f0;
+              border-radius: 12px;
+              padding: 20px;
+              box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+            "
+          >
+            <canvas
+              id="perfChart-AG"
+              style="height: 320px; width: 100%; display: block"
+            ></canvas>
+          </div>
+        </div>
+      </div>
+
+      <div class="settings-container page-content" style="display: none">
+        <h1 class="settings-title">Super User Settings</h1>
+        <p class="settings-subtitle">
+          Manage your profile and security preferences.
+        </p>
+        <div class="profile-card">
+          <div class="profile-left">
+            <div class="profile-avatar-wrap">
+              <div
+                class="profile-avatar su-profile-avatar"
+                id="su-settings-avatar"
+              ></div>
+              <div class="avatar-badge su-avatar-badge">
+                <i class="fa-solid fa-crown"></i>
+              </div>
+            </div>
+            <div>
+              <h2
+                class="user-name settings-user-name"
+                id="su-settings-name"
+              ></h2>
+              <p class="user-meta">
+                <span
+                  ><i class="fa-solid fa-crown" style="color: #f5a623"></i>
+                  Super User &nbsp;|&nbsp; Full System Authority</span
+                >
+              </p>
+            </div>
+          </div>
+          <button class="edit-btn" id="open-edit-modal">Edit Profile</button>
+        </div>
+        <div class="info-row" style="grid-template-columns: 1fr 1fr">
+          <div class="card">
+            <h3><i class="fa-solid fa-user"></i> Personal Information</h3>
+            <p class="field-label">Email Address</p>
+            <p class="field-value" id="su-settings-email"></p>
+            <p class="field-label">Phone Number</p>
+            <p class="field-value" id="su-settings-phone"></p>
+            <p class="field-label">Password</p>
+            <p class="field-value" id="su-pwd-changed">Last changed: Never</p>
+            <button
+              class="btn-ghost"
+              id="change-pwd-btn"
+              style="margin-top: 4px; padding: 8px 16px; font-size: 13px"
+            >
+              <i class="fa-solid fa-lock" style="margin-right: 6px"></i>Change
+              Password
+            </button>
+          </div>
+          <div class="card">
+            <h3><i class="fa-solid fa-shield-halved"></i> Security</h3>
+            <div
+              style="
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                margin-top: 8px;
+              "
+            >
+              <div>
+                <p class="field-label" style="margin-bottom: 2px">
+                  Two-Factor Authentication
+                </p>
+                <p style="font-size: 12px; color: #94a3b8">
+                  Add an extra layer of security
+                </p>
+              </div>
+              <div
+                id="tfa-toggle"
+                style="
+                  cursor: pointer;
+                  width: 44px;
+                  height: 24px;
+                  border-radius: 12px;
+                  background: #e2e8f0;
+                  position: relative;
+                  transition: background 0.2s;
+                  flex-shrink: 0;
+                "
+              >
+                <div
+                  id="tfa-knob"
+                  style="
+                    position: absolute;
+                    top: 2px;
+                    left: 2px;
+                    width: 20px;
+                    height: 20px;
+                    border-radius: 50%;
+                    background: white;
+                    transition: left 0.2s;
+                    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+                  "
+                ></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="session-card">
+          <div class="session-info">
+            <div class="session-icon"><i class="fa-solid fa-display"></i></div>
+            <div>
+              <p class="session-title">Active Session</p>
+              <p class="session-subtitle">
+                You are currently logged in as Super User on this device.
+              </p>
+            </div>
+          </div>
+          <button class="logout-btn" id="logout-btn">Logout</button>
+        </div>
+        <div class="footer-links">
+          <a href="#">Privacy Policy</a>
+          <a href="#">Terms of Service</a>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="modal-overlay" id="facility-access-modal">
+      <div class="modal" style="max-width: 640px; width: 95%;">
+        <div class="modal-header" id="fac-modal-header" style="background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); border-radius: 12px 12px 0 0; padding: 20px 24px;">
+          <div style="display:flex; align-items:center; gap:12px;">
+            <div id="fac-icon-circle" style="width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;background:rgba(255,255,255,0.15);color:white;flex-shrink:0;"></div>
+            <div>
+              <h3 id="fac-modal-title" style="margin:0;color:white;font-size:16px;font-weight:700;">Facility Access Control</h3>
+              <p id="fac-modal-subtitle" style="margin:0;color:rgba(255,255,255,0.6);font-size:12px;"></p>
+            </div>
+          </div>
+          <button class="modal-close" id="close-facility-access-modal" style="color:rgba(255,255,255,0.7);"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="modal-body" style="padding: 24px;">
+
+          <div style="display:flex;align-items:center;justify-content:space-between;background:#f8fafc;padding:14px 16px;border-radius:10px;margin-bottom:20px;border:1px solid #e2e8f0;">
+            <div style="display:flex;align-items:center;gap:10px;">
+              <i class="fa-solid fa-power-off" style="color:#64748b;"></i>
+              <div>
+                <p style="margin:0;font-size:13px;font-weight:700;color:#0f172a;">Facility Status</p>
+                <p style="margin:0;font-size:11px;color:#64748b;">Toggle to enable or disable this facility system-wide</p>
+              </div>
+            </div>
+            <label class="ac-toggle-wrap">
+              <input type="checkbox" id="fac-status-toggle" checked>
+              <span class="ac-slider"></span>
+            </label>
+          </div>
+
+
+          <h4 style="margin:0 0 14px;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#94a3b8;font-weight:600;">
+            <i class="fa-solid fa-shield-halved" style="margin-right:6px;"></i>Operational Permissions
+          </h4>
+          <div id="fac-permissions-grid" style="display:flex;flex-direction:column;gap:10px;"></div>
+
+
+          <h4 style="margin:20px 0 14px;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#94a3b8;font-weight:600;">
+            <i class="fa-solid fa-layer-group" style="margin-right:6px;"></i>Department Access
+          </h4>
+          <div id="fac-dept-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:10px;"></div>
+
+          <div style="margin-top:22px;padding-top:18px;border-top:1px solid #f1f5f9;display:flex;justify-content:flex-end;gap:10px;">
+            <button class="modal-cancel" id="cancel-facility-access-modal">Cancel</button>
+            <button class="modal-save" id="save-facility-access-modal" onclick="saveFacilityAccess()">
+              <i class="fa-solid fa-shield-check"></i> Apply Permissions
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-overlay" id="add-admin-modal">
+      <div class="modal modal--wide">
+        <div class="modal-header">
+          <h3 id="admin-modal-title">Add New Admin</h3>
+          <button class="modal-close" id="close-add-admin-modal">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="modal-field" style="margin-bottom: 14px">
+            <label>Admin Role</label>
+            <select id="admin-role-select">
+              <option value="WareHouse">Warehouse Admin</option>
+              <option value="TransitHub">Transit Hub Admin</option>
+              <option value="LocalAgency">Local Agency Admin</option>
+            </select>
+          </div>
+          <div class="modal-grid-2">
+            <div class="modal-field">
+              <label>Full Name</label>
+              <input
+                type="text"
+                id="admin-name-input"
+                placeholder="e.g. Ramesh Kumar"
+              />
+              <span class="error-msg" id="err-admin-name" style="color: #ef4444; font-size: 11px; margin-top: 4px; display: none;"></span>
+            </div>
+            <div class="modal-field">
+              <label>Email Address</label>
+              <input
+                type="email"
+                id="admin-email-input"
+                placeholder="admin@ware2door.com"
+              />
+              <span class="error-msg" id="err-admin-email" style="color: #ef4444; font-size: 11px; margin-top: 4px; display: none;"></span>
+            </div>
+            <div class="modal-field">
+              <label>Phone Number</label>
+              <input
+                type="tel"
+                id="admin-phone-input"
+                placeholder="+91 9XXXXXXXXX"
+              />
+              <span class="error-msg" id="err-admin-phone" style="color: #ef4444; font-size: 11px; margin-top: 4px; display: none;"></span>
+            </div>
+            <div class="modal-field">
+              <label>Facility / Location</label>
+              <input
+                type="text"
+                id="admin-facility-input"
+                placeholder="e.g. Chennai Main Warehouse"
+              />
+              <span class="error-msg" id="err-admin-facility" style="color: #ef4444; font-size: 11px; margin-top: 4px; display: none;"></span>
+            </div>
+            <div class="modal-field">
+              <label>City</label>
+              <input
+                type="text"
+                id="admin-city-input"
+                placeholder="e.g. Chennai"
+              />
+              <span class="error-msg" id="err-admin-city" style="color: #ef4444; font-size: 11px; margin-top: 4px; display: none;"></span>
+            </div>
+            <div class="modal-field">
+              <label>Access Level</label>
+              <select id="admin-access-select">
+                <option value="Full">Full Access</option>
+                <option value="Read-Only">Read Only</option>
+                <option value="Restricted">Restricted</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="modal-cancel" id="cancel-add-admin-modal">
+            Cancel
+          </button>
+          <button class="modal-save" id="save-add-admin-modal">
+            <i class="fa-solid fa-user-plus"></i> Create Admin
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-overlay" id="view-admin-modal">
+      <div class="modal modal--wide">
+        <div class="modal-header">
+          <h3 id="view-admin-title">Admin Details</h3>
+          <button class="modal-close" id="close-view-admin-modal">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+        <div class="modal-body" id="view-admin-body"></div>
+        <div class="modal-footer">
+          <button class="modal-cancel" id="cancel-view-admin-modal">
+            Close
+          </button>
+          <button class="modal-save" id="edit-from-view-btn">
+            <i class="fa-solid fa-pen"></i> Edit Admin
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-overlay" id="confirm-modal">
+      <div class="modal" style="max-width: 420px">
+        <div class="modal-header">
+          <h3 id="confirm-modal-title">Confirm Action</h3>
+          <button class="modal-close" id="close-confirm-modal">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p
+            id="confirm-modal-msg"
+            style="font-size: 14px; color: #334155; margin: 0; line-height: 1.6"
+          ></p>
+        </div>
+        <div class="modal-footer">
+          <button class="modal-cancel" id="cancel-confirm-modal">Cancel</button>
+          <button
+            class="modal-save modal-save--danger"
+            id="proceed-confirm-modal"
+          >
+            Confirm
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-overlay" id="edit-modal">
+      <div class="modal">
+        <div class="modal-header">
+          <h3>Edit Profile</h3>
+          <button class="modal-close" id="close-edit-modal">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+        <div class="modal-avatar-row">
+          <div class="modal-avatar su-modal-avatar" id="modal-su-avatar"></div>
+          <div>
+            <p class="modal-avatar-name" id="modal-display-name"></p>
+            <p class="modal-avatar-role">Super User</p>
+          </div>
+        </div>
+        <div class="modal-body">
+          <div class="modal-field">
+            <label>Full Name</label
+            ><input type="text" id="edit-name" placeholder="Your full name" />
+          </div>
+          <div class="modal-field">
+            <label>Email Address</label
+            ><input type="email" id="edit-email" placeholder="your@email.com" />
+          </div>
+          <div class="modal-field">
+            <label>Phone Number</label
+            ><input type="tel" id="edit-phone" placeholder="+91 XXXXXXXXXX" />
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="modal-cancel" id="cancel-edit-modal">Cancel</button>
+          <button class="modal-save" id="save-edit-modal">Save Changes</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-overlay" id="pwd-modal">
+      <div class="modal">
+        <div class="modal-header">
+          <h3>Change Password</h3>
+          <button class="modal-close" id="close-pwd-modal">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="modal-field">
+            <label>Current Password</label
+            ><input type="password" id="pwd-current" placeholder="••••••••" />
+          </div>
+          <div class="modal-field">
+            <label>New Password</label
+            ><input type="password" id="pwd-new" placeholder="••••••••" />
+          </div>
+          <div class="modal-field">
+            <label>Confirm New Password</label
+            ><input type="password" id="pwd-confirm" placeholder="••••••••" />
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="modal-cancel" id="cancel-pwd-modal">Cancel</button>
+          <button class="modal-save" id="save-pwd-modal">
+            <i class="fa-solid fa-lock"></i> Update Password
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div id="toast"></div>
+    <script src="superuser.js"></script>
+  </body>
+</html>

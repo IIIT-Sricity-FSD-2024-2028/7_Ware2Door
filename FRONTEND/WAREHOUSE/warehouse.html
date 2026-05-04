@@ -1,0 +1,807 @@
+<!doctype html>
+<html>
+  <head>
+    <link rel="stylesheet" href="warehouse.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+  </head>
+  <body>
+    <div class="sidebar">
+      <div class="logo-section">
+        <img src="logo.png" class="logo" alt="Ware2Door" />
+      </div>
+      <ul class="menu">
+        <li class="menu-item active">
+          <div class="icon-box"><i class="fa-solid fa-table-columns"></i></div>
+          <span>Dashboard</span>
+        </li>
+        <li class="menu-item">
+          <div class="icon-box"><i class="fa-solid fa-box"></i></div>
+          <span>Shipment Requests</span>
+        </li>
+        <li class="menu-item">
+          <div class="icon-box"><i class="fa-solid fa-truck"></i></div>
+          <span>Manage RTO</span>
+        </li>
+        <li class="dropdown">
+          <div class="menu-item dropdown-header">
+            <div class="icon-box">
+              <i class="fa-solid fa-boxes-stacked"></i>
+            </div>
+            <span>Manage Inventory</span>
+            <i class="fa-solid fa-chevron-down arrow"></i>
+          </div>
+          <ul class="submenu">
+            <li class="submenu-item">Pre-Alert</li>
+            <li class="submenu-item">Outbound</li>
+            <li class="submenu-item">Inventory Overview</li>
+            <li class="submenu-item">Stock Addition</li>
+          </ul>
+        </li>
+      </ul>
+      <div class="bottom">
+        <li class="menu-item stng-btn">
+          <div class="icon-box"><i class="fa-solid fa-gear"></i></div>
+          <span>Settings</span>
+        </li>
+      </div>
+    </div>
+
+    <div class="main">
+      <div class="header">
+        <h2>Dashboard</h2>
+        <div class="user">
+          <div>
+            <p class="name"></p>
+            <p class="role"></p>
+          </div>
+          <div
+            class="avatar"
+            id="top-avatar"
+            style="cursor: pointer"
+            title="Go to Settings"
+          ></div>
+        </div>
+      </div>
+
+      <div class="dashboard-page page-content">
+        <div class="welcome-banner">
+          <div class="welcome-text">
+            <p class="welcome-label">Welcome back,</p>
+            <h2 class="welcome-heading">
+              Good Day, <span class="welcome-name-dynamic"></span>
+              <span class="welcome-date"></span>
+            </h2>
+            <p class="welcome-sub">
+              Everything looks steady across all zones today. You have
+              <span class="alert-count"></span> that require attention.
+            </p>
+            <div class="welcome-actions">
+              <button class="btn-primary dash-new-shipment-btn">
+                <i class="fa-solid fa-plus"></i> New Shipment
+              </button>
+              <button class="btn-secondary dash-export-btn">
+                <i class="fa-solid fa-bell"></i> Pre-Alerts
+              </button>
+            </div>
+          </div>
+          <div class="welcome-icon-wrap">
+            <i class="fa-solid fa-chart-simple welcome-icon"></i>
+          </div>
+        </div>
+
+        <div class="stat-grid">
+          <div class="stat-card">
+            <div class="stat-top">
+              <div class="stat-icon-box">
+                <i class="fa-solid fa-clipboard-check"></i>
+              </div>
+              <span class="stat-badge stat-badge--green"></span>
+            </div>
+            <p class="stat-label">TOTAL INVENTORY</p>
+            <p class="stat-value" id="dash-inventory"></p>
+            <span class="stat-unit">units</span>
+          </div>
+          <div class="stat-card">
+            <div class="stat-top">
+              <div class="stat-icon-box">
+                <i class="fa-solid fa-box-open"></i>
+              </div>
+              <span
+                class="stat-badge stat-badge--orange"
+                id="dash-shipment-badge"
+              ></span>
+            </div>
+            <p class="stat-label">PENDING SHIPMENTS</p>
+            <p class="stat-value" id="dash-shipments"></p>
+            <span class="stat-unit">orders</span>
+          </div>
+          <div class="stat-card">
+            <div class="stat-top">
+              <div class="stat-icon-box">
+                <i class="fa-solid fa-arrow-up-right-from-square"></i>
+              </div>
+              <span
+                class="stat-badge stat-badge--blue"
+                id="dash-outbound-badge"
+              ></span>
+            </div>
+            <p class="stat-label">OUTBOUND TODAY</p>
+            <p class="stat-value" id="dash-outbound"></p>
+            <span class="stat-unit">dispatches</span>
+          </div>
+          <div class="stat-card">
+            <div class="stat-top">
+              <div class="stat-icon-box stat-icon-box--red">
+                <i class="fa-solid fa-rotate-left"></i>
+              </div>
+              <span class="stat-badge"></span>
+            </div>
+            <p class="stat-label">RTO REQUESTS</p>
+            <p class="stat-value" id="dash-rto"></p>
+            <span class="stat-unit">returns</span>
+          </div>
+        </div>
+
+        <div class="activity-card">
+          <div class="activity-header">
+            <div>
+              <h3 class="activity-title">Warehouse Activity</h3>
+              <p class="activity-sub">
+                Monitoring shipments currently in transit
+              </p>
+            </div>
+            <div class="live-pill">
+              <span class="live-dot"></span> LIVE UPDATES
+            </div>
+          </div>
+          <table class="activity-table">
+            <thead>
+              <tr>
+                <th>TRACKING ID</th>
+                <th>LAST UPDATE</th>
+                <th>STATUS</th>
+              </tr>
+            </thead>
+            <tbody id="activity-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="shipment-page page-content" style="display: none">
+        <div class="page-title-row">
+          <div>
+            <h2 class="page-title">Shipment Requests</h2>
+            <p class="page-subtitle">
+              Incoming shipment requests from external platforms awaiting
+              warehouse processing. Filter and approve to start fulfillment.
+            </p>
+          </div>
+          <button class="btn-primary" id="accept-selected-btn" disabled>
+            <i class="fa-solid fa-check"></i> Accept Selected (<span
+              id="selected-count"
+              >0</span
+            >)
+          </button>
+        </div>
+
+        <div class="filter-row">
+          <div class="search-box" style="flex: 2">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input
+              type="text"
+              id="shipment-search"
+              placeholder="Search by order ID, product name, or SKU..."
+            />
+          </div>
+          <select id="filter-source" class="filter-select">
+            <option value="">All Platforms</option>
+            <option value="Amazon">Amazon</option>
+            <option value="Shopsy">Shopsy</option>
+            <option value="Flipkart">Flipkart</option>
+            <option value="Meesho">Meesho</option>
+          </select>
+          <select id="filter-priority" class="filter-select">
+            <option value="">All Priorities</option>
+            <option value="express">Express</option>
+            <option value="normal">Normal</option>
+          </select>
+          <select id="filter-stock" class="filter-select">
+            <option value="">All Stock Levels</option>
+            <option value="in">In Stock</option>
+            <option value="low">Low Stock</option>
+            <option value="out">Out of Stock</option>
+          </select>
+        </div>
+
+        <div class="table-card">
+          <table class="data-table" id="shipment-table">
+            <thead>
+              <tr>
+                <th><input type="checkbox" id="select-all-shipments" /></th>
+                <th>ORDER ID</th>
+                <th>SOURCE</th>
+                <th>CUSTOMER</th>
+                <th>PRODUCT</th>
+                <th>QTY</th>
+                <th>AVAILABILITY</th>
+                <th>DESTINATION</th>
+                <th>PRIORITY</th>
+                <th>TIME</th>
+                <th>ACTIONS</th>
+              </tr>
+            </thead>
+            <tbody id="shipment-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="rto-page page-content" style="display: none">
+        <div class="page-title-row">
+          <div>
+            <h2 class="page-title">Manage RTO</h2>
+            <p class="page-subtitle">
+              Track and manage return-to-origin shipments from local delivery
+              agencies.
+            </p>
+          </div>
+          <button class="btn-secondary-dark">
+            <i class="fa-solid fa-download"></i> Export Data
+          </button>
+        </div>
+
+        <div class="stat-grid rto-stat-grid" style="margin-bottom: 24px">
+          <div class="stat-card">
+            <div class="stat-top">
+              <div class="stat-icon-box stat-icon-box--red">
+                <i class="fa-solid fa-rotate-left"></i>
+              </div>
+              <span class="stat-badge stat-badge--orange"></span>
+            </div>
+            <p class="stat-label">TOTAL RTO REQUESTS</p>
+            <p class="stat-value" id="rto-total">0</p>
+            <span class="stat-unit">returns</span>
+          </div>
+          <div class="stat-card">
+            <div class="stat-top">
+              <div class="stat-icon-box"><i class="fa-solid fa-truck"></i></div>
+              <span class="stat-badge stat-badge--blue"></span>
+            </div>
+            <p class="stat-label">IN TRANSIT</p>
+            <p class="stat-value" id="rto-transit">0</p>
+            <span class="stat-unit">shipments</span>
+          </div>
+          <div class="stat-card">
+            <div class="stat-top">
+              <div class="stat-icon-box" style="background: #dcfce7">
+                <i class="fa-solid fa-box-archive" style="color: #16a34a"></i>
+              </div>
+              <span class="stat-badge stat-badge--green"></span>
+            </div>
+            <p class="stat-label">RECEIVED TO STOCK</p>
+            <p class="stat-value" id="rto-received">0</p>
+            <span class="stat-unit">restocked</span>
+          </div>
+        </div>
+
+        <div class="filter-row" style="margin-bottom: 20px">
+          <div class="search-box" style="flex: 1">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input
+              type="text"
+              id="rto-search"
+              placeholder="Search by tracking ID, order ID or customer..."
+            />
+          </div>
+          <select id="rto-status-filter" class="filter-select">
+            <option value="">All Statuses</option>
+            <option value="RTO Initiated">RTO Initiated</option>
+            <option value="RTO At Hub">RTO At Hub</option>
+            <option value="RTO In Transit to Warehouse">In Transit to Warehouse</option>
+            <option value="Returned to Warehouse">Returned to Warehouse</option>
+          </select>
+          <select id="rto-reason-filter" class="filter-select">
+            <option value="">All Reasons</option>
+            <option value="Customer Unavailable">Customer Unavailable</option>
+            <option value="Incorrect Address">Incorrect Address</option>
+            <option value="Refused by Customer">Refused by Customer</option>
+            <option value="3 OTP Failures">3 OTP Failures</option>
+          </select>
+        </div>
+
+
+        <div class="card-white" style="margin-bottom:24px;border-left:4px solid #f4a32a;">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">
+            <div style="width:36px;height:36px;border-radius:10px;background:#fff7e6;display:flex;align-items:center;justify-content:center;">
+              <i class="fa-solid fa-barcode" style="color:#f4a32a;font-size:16px;"></i>
+            </div>
+            <div>
+              <h3 style="margin:0;font-size:15px;font-weight:600;color:#1e293b;">RTO Warehouse Inscan</h3>
+              <p style="margin:0;font-size:12px;color:#94a3b8;">Scan returned shipment to restore it to warehouse stock</p>
+            </div>
+          </div>
+          <div style="display:flex;gap:12px;align-items:center;">
+            <div class="search-box" style="flex:1;margin:0;">
+              <i class="fa-solid fa-rotate-left" style="color:#f4a32a;"></i>
+              <input type="text" id="rto-inscan-input" placeholder="Enter RTO ID (e.g. RTOID-1746280000-001)" style="font-family:'Poppins',sans-serif;"/>
+            </div>
+            <button class="btn-primary" onclick="doRtoInscan()" style="white-space:nowrap;padding:10px 20px;">
+              <i class="fa-solid fa-qrcode"></i> Inscan RTO
+            </button>
+          </div>
+        </div>
+
+        <div class="table-card">
+          <div class="table-header-row">
+            <div style="display: flex; align-items: center; gap: 8px">
+              <i class="fa-solid fa-rotate-left" style="color: #ef4444"></i>
+              <strong>RTO Shipments</strong>
+            </div>
+          </div>
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>TRACKING ID</th>
+                <th>CUSTOMER</th>
+                <th>RTO REASON</th>
+                <th>RETURN STATUS</th>
+                <th>LAST SCANNED</th>
+                <th>DATE</th>
+              </tr>
+            </thead>
+            <tbody id="rto-tbody"></tbody>
+          </table>
+          <div class="pagination-bar" id="rto-pagination"></div>
+        </div>
+      </div>
+
+
+      <div class="outbound-page page-content" style="display: none">
+        <div class="page-title-row">
+          <div>
+            <h2 class="page-title">Outbound</h2>
+            <p class="page-subtitle">
+              Monitor shipments leaving the warehouse to transit hubs.
+            </p>
+          </div>
+          <button class="btn-secondary-dark">
+            <i class="fa-solid fa-download"></i> Export Data
+          </button>
+        </div>
+        <div class="table-card">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>TRACKING ID</th>
+                <th>DESTINATION HUB</th>
+                <th>LOCAL AGENCY</th>
+                <th>DEPARTURE TIME</th>
+                <th>DRIVER &amp; VEHICLE</th>
+              </tr>
+            </thead>
+            <tbody id="outbound-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="prealert-page page-content" style="display: none">
+        <div class="page-title-row">
+          <div>
+            <h2 class="page-title">Transit Hub Pre-Alerts</h2>
+            <p class="page-subtitle">
+              Outbound shipments from this warehouse grouped by transit hub.
+              Click a hub to view shipments and send pre-alerts.
+            </p>
+          </div>
+        </div>
+
+        <div class="stat-grid pa-stat-grid" style="margin-bottom: 28px">
+          <div class="stat-card">
+            <div class="stat-top">
+              <div class="stat-icon-box">
+                <i class="fa-solid fa-location-dot" style="color: #f4a32a"></i>
+              </div>
+              <span class="stat-badge stat-badge--green">Active</span>
+            </div>
+            <p class="stat-label">ACTIVE TRANSIT HUBS</p>
+            <p class="stat-value" id="pa-active-hubs">0</p>
+            <span class="stat-unit">hubs</span>
+          </div>
+          <div class="stat-card">
+            <div class="stat-top">
+              <div class="stat-icon-box">
+                <i
+                  class="fa-solid fa-arrow-up-right-from-square"
+                  style="color: #2563eb"
+                ></i>
+              </div>
+              <span class="stat-badge stat-badge--blue">Today</span>
+            </div>
+            <p class="stat-label">TOTAL OUT-SCANNED</p>
+            <p class="stat-value" id="pa-total-shipments">0</p>
+            <span class="stat-unit">shipments</span>
+          </div>
+        </div>
+
+        <h3
+          style="
+            margin: 0 0 16px;
+            font-size: 16px;
+            font-weight: 600;
+            color: #1e293b;
+          "
+        >
+          Transit Hubs
+        </h3>
+        <div class="pa-hub-grid" id="pa-hub-grid"></div>
+      </div>
+
+      <div class="inventory-overview-page page-content" style="display: none">
+        <div class="page-title-row">
+          <div>
+            <h2 class="page-title">Inventory Overview</h2>
+            <p class="page-subtitle">
+              View and manage all shipments currently stored in warehouse
+              inventory.
+            </p>
+          </div>
+          <button class="btn-primary" id="inv-add-stock-btn">
+            <i class="fa-solid fa-plus"></i> Add Stock
+          </button>
+        </div>
+        <div class="stat-grid" style="margin-bottom: 24px">
+          <div class="stat-card inv-stat">
+            <div class="inv-stat-icon">
+              <i class="fa-solid fa-boxes-stacked"></i>
+            </div>
+            <p class="inv-stat-num" id="inv-total-shipments">0</p>
+            <p class="inv-stat-label">Total Items</p>
+          </div>
+          <div class="stat-card inv-stat">
+            <div class="inv-stat-icon inv-blue">
+              <i class="fa-solid fa-cubes"></i>
+            </div>
+            <p class="inv-stat-num" id="inv-total-qty">0</p>
+            <p class="inv-stat-label">Total Quantity</p>
+          </div>
+          <div class="stat-card inv-stat">
+            <div class="inv-stat-icon inv-orange">
+              <i class="fa-solid fa-arrow-trend-up"></i>
+            </div>
+            <p class="inv-stat-num" id="inv-low-stock">0</p>
+            <p class="inv-stat-label">Low Stock</p>
+          </div>
+          <div class="stat-card inv-stat">
+            <div class="inv-stat-icon inv-red">
+              <i class="fa-solid fa-triangle-exclamation"></i>
+            </div>
+            <p class="inv-stat-num" id="inv-critical">0</p>
+            <p class="inv-stat-label">Critical</p>
+          </div>
+        </div>
+        <div class="filter-row" style="margin-bottom: 20px">
+          <div class="search-box" style="flex: 1">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input
+              type="text"
+              id="inv-search"
+              placeholder="Search by item name or label ID..."
+            />
+          </div>
+          <select id="inv-status-filter" class="filter-select">
+            <option value="">All Statuses</option>
+            <option value="In Stock">In Stock</option>
+            <option value="Low Stock">Low Stock</option>
+            <option value="Critical">Critical</option>
+          </select>
+        </div>
+        <div class="table-card">
+          <div class="table-header-row">
+            <div style="display: flex; align-items: center; gap: 8px">
+              <i class="fa-solid fa-boxes-stacked" style="color: #64748b"></i>
+              <strong>Shipments in Inventory</strong>
+            </div>
+            <span class="showing-label" id="inv-showing"></span>
+          </div>
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>LABEL ID</th>
+                <th>ITEM NAME</th>
+                <th>QUANTITY</th>
+                <th>STATUS</th>
+                <th>LAST UPDATED</th>
+              </tr>
+            </thead>
+            <tbody id="inv-tbody"></tbody>
+          </table>
+          <div class="pagination-bar" id="inv-pagination"></div>
+        </div>
+      </div>
+
+      <div class="stock-addition-page page-content" style="display: none">
+        <div class="page-title-row">
+          <div>
+            <h2 class="page-title">Warehouse Stock Addition</h2>
+            <p class="page-subtitle">
+              Add new items to warehouse inventory by manually entering shipment
+              details.
+            </p>
+          </div>
+        </div>
+
+        <div class="card-white" style="max-width: 720px">
+          <h3 class="card-section-title">
+            <i class="fa-solid fa-box"></i> Add Item to Warehouse Inventory
+          </h3>
+          <div class="stock-form-grid">
+            <div class="stock-field">
+              <label>Shipment Label ID</label>
+              <input
+                type="text"
+                id="stock-label-id"
+                placeholder="e.g. SHP-2026-00412"
+              />
+            </div>
+            <div class="stock-field">
+              <label>Item Name / Label Name</label>
+              <input
+                type="text"
+                id="stock-item-name"
+                placeholder="e.g. Samsung Galaxy S26"
+              />
+            </div>
+          </div>
+          <div class="stock-field" style="margin-top: 14px">
+            <label>Quantity of Shipments</label>
+            <input type="number" id="stock-qty" placeholder="e.g. 25" min="1" />
+          </div>
+          <div class="stock-form-actions">
+            <button class="btn-primary" id="stock-submit-btn">
+              <i class="fa-solid fa-plus"></i> Add to Inventory
+            </button>
+            <button class="btn-ghost" id="stock-reset-btn">
+              <i class="fa-solid fa-rotate"></i> Reset Form
+            </button>
+          </div>
+        </div>
+
+        <div class="table-card" style="margin-top: 24px">
+          <div class="table-header-row">
+            <div style="display: flex; align-items: center; gap: 8px">
+              <i class="fa-solid fa-boxes-stacked" style="color: #64748b"></i>
+              <strong>Recently Added Stock</strong>
+            </div>
+            <span class="showing-label" id="stock-count-label">0 items</span>
+          </div>
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>SHIPMENT LABEL ID</th>
+                <th>ITEM NAME</th>
+                <th>QTY</th>
+                <th>ADDED TIME</th>
+                <th>ACTION</th>
+              </tr>
+            </thead>
+            <tbody id="stock-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="settings-container page-content" style="display: none">
+        <h1 class="settings-title">Account Settings</h1>
+        <p class="settings-subtitle">
+          Manage your profile and security preferences.
+        </p>
+        <div class="profile-card">
+          <div class="profile-left">
+            <div class="profile-avatar-wrap">
+              <div class="profile-avatar"></div>
+              <div class="avatar-badge"></div>
+            </div>
+            <div>
+              <h2 class="user-name settings-user-name"></h2>
+              <p class="user-meta">
+                <span
+                  ><i class="fa-solid fa-warehouse"></i>
+                  <span class="settings-user-role"></span
+                ></span>
+              </p>
+            </div>
+          </div>
+          <button class="edit-btn" id="open-edit-modal">Edit Profile</button>
+        </div>
+        <div class="info-row" style="grid-template-columns: 1fr 1fr">
+          <div class="card">
+            <h3><i class="fa-solid fa-user"></i> Personal Information</h3>
+            <p class="field-label">Email Address</p>
+            <p class="field-value settings-email"></p>
+            <p class="field-label">Phone Number</p>
+            <p class="field-value settings-phone"></p>
+            <p class="field-label">Password</p>
+            <p class="field-value" id="s-pwd-changed">Last changed: Never</p>
+            <button
+              class="btn-ghost"
+              id="change-pwd-btn"
+              style="margin-top: 4px; padding: 8px 16px; font-size: 13px"
+            >
+              <i class="fa-solid fa-lock" style="margin-right: 6px"></i>Change
+              Password
+            </button>
+          </div>
+          <div class="card">
+            <h3><i class="fa-solid fa-shield-halved"></i> Security</h3>
+            <div
+              style="
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                margin-top: 8px;
+              "
+            >
+              <div>
+                <p class="field-label" style="margin-bottom: 2px">
+                  Two-Factor Authentication
+                </p>
+                <p style="font-size: 12px; color: #94a3b8">
+                  Add an extra layer of security
+                </p>
+              </div>
+              <div
+                id="tfa-toggle"
+                style="
+                  cursor: pointer;
+                  width: 44px;
+                  height: 24px;
+                  border-radius: 12px;
+                  background: #e2e8f0;
+                  position: relative;
+                  transition: background 0.2s;
+                  flex-shrink: 0;
+                "
+              >
+                <div
+                  id="tfa-knob"
+                  style="
+                    position: absolute;
+                    top: 2px;
+                    left: 2px;
+                    width: 20px;
+                    height: 20px;
+                    border-radius: 50%;
+                    background: white;
+                    transition: left 0.2s;
+                    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+                  "
+                ></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="session-card">
+          <div class="session-info">
+            <div class="session-icon"><i class="fa-solid fa-display"></i></div>
+            <div>
+              <p class="session-title">Active Sessions</p>
+              <p class="session-subtitle">
+                You are currently logged in on this device.
+              </p>
+            </div>
+          </div>
+          <button class="logout-btn">Logout</button>
+        </div>
+        <div class="footer-links">
+          <a href="#">Privacy Policy</a>
+          <a href="#">Terms of Service</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-overlay" id="hub-modal">
+      <div class="modal">
+        <div class="modal-header">
+          <h3>Assign Transit Hub &amp; Agency</h3>
+          <button class="modal-close" id="close-hub-modal">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p style="font-size: 13px; color: #64748b; margin: 0 0 18px">
+            Order <strong id="hub-modal-order-id"></strong> — select the next
+            transit hub and local delivery agency.
+          </p>
+          <div class="modal-field">
+            <label>Transit Hub</label>
+            <select id="hub-select"></select>
+          </div>
+          <div class="modal-field" style="margin-top: 14px">
+            <label>Local Delivery Agency</label>
+            <select id="agency-select"></select>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="modal-cancel" id="cancel-hub-modal">Cancel</button>
+          <button class="modal-save" id="confirm-dispatch-btn">
+            Confirm Dispatch
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-overlay" id="edit-modal">
+      <div class="modal">
+        <div class="modal-header">
+          <h3>Edit Profile</h3>
+          <button class="modal-close" id="close-edit-modal">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+        <div class="modal-avatar-row">
+          <div class="modal-avatar"></div>
+          <div>
+            <p class="modal-avatar-name" id="modal-display-name"></p>
+            <p class="modal-avatar-role" id="modal-display-role"></p>
+          </div>
+        </div>
+        <div class="modal-body">
+          <div class="modal-field">
+            <label>Full Name</label>
+            <input type="text" id="edit-name" placeholder="Your full name" />
+          </div>
+          <div class="modal-field">
+            <label>Email Address</label>
+            <input type="email" id="edit-email" placeholder="your@email.com" />
+          </div>
+          <div class="modal-field">
+            <label>Phone Number</label>
+            <input type="tel" id="edit-phone" placeholder="+91 XXXXXXXXXX" />
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="modal-cancel" id="cancel-edit-modal">Cancel</button>
+          <button class="modal-save" id="save-edit-modal">Save Changes</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-overlay" id="pwd-modal">
+      <div class="modal">
+        <div class="modal-header">
+          <h3>Change Password</h3>
+          <button class="modal-close" id="close-pwd-modal">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="modal-field">
+            <label>Current Password</label
+            ><input type="password" id="pwd-current" placeholder="••••••••" />
+          </div>
+          <div class="modal-field">
+            <label>New Password</label
+            ><input type="password" id="pwd-new" placeholder="••••••••" />
+          </div>
+          <div class="modal-field">
+            <label>Confirm New Password</label
+            ><input type="password" id="pwd-confirm" placeholder="••••••••" />
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="modal-cancel" id="cancel-pwd-modal">Cancel</button>
+          <button class="modal-save" id="save-pwd-modal">
+            <i class="fa-solid fa-lock"></i> Update Password
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script src="warehouse.js"></script>
+  </body>
+</html>

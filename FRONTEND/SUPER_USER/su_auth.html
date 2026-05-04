@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>WARE2DOOR — Super User Login</title>
+    <link rel="stylesheet" href="su_auth.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+  </head>
+
+  <body>
+    <div class="logo-img">
+      <a href="../NEW LANDING/index.html"
+        ><img src="logo.png" alt="Ware2Door Logo"
+      /></a>
+    </div>
+
+    <div class="form-element">
+      <h2>Welcome Back</h2>
+      <span class="sub-title">Super User Control Center Access</span>
+
+      <div class="su-role-display">
+        <i class="fa-solid fa-crown su-crown-icon"></i>
+        <span class="su-role-label">SUPER USER</span>
+      </div>
+
+      <span class="sp-txt">Email Address</span>
+      <div class="input-group">
+        <i class="fa-regular fa-envelope"></i>
+        <input
+          type="email"
+          id="su-email"
+          placeholder="su@ware2door.com"
+          class="email-input"
+          autocomplete="off"
+        />
+      </div>
+
+      <span class="sp-txt">Password</span>
+      <div class="input-group">
+        <i class="fa-solid fa-lock"></i>
+        <input
+          type="password"
+          id="su-password"
+          placeholder="Enter password"
+          class="password-input"
+        />
+        <i class="fa-regular fa-eye toggle-password" id="toggle-pwd"></i>
+      </div>
+
+      <button class="login-btn" id="login-btn">Login to Portal</button>
+    </div>
+
+    <script src="su_auth.js"></script>
+  </body>
+</html>

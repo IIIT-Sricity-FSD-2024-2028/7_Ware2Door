@@ -1,0 +1,1481 @@
+<!doctype html>
+<html>
+  <head>
+    <link rel="stylesheet" href="agency.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+  </head>
+  <body>
+    <div class="sidebar">
+      <div class="logo-section"><img src="logo.png" /></div>
+      <ul class="menu">
+        <li class="menu-item active" id="nav-dashboard">
+          <div class="icon-box"><i class="fa-solid fa-table-columns"></i></div>
+          <span>Dashboard</span>
+        </li>
+        <li class="menu-item" id="nav-shipments">
+          <div class="icon-box"><i class="fa-solid fa-list-check"></i></div>
+          <span>Shipment List</span>
+        </li>
+        <li class="menu-item" id="nav-scan">
+          <div class="icon-box"><i class="fa-solid fa-barcode"></i></div>
+          <span>Scan Operations</span>
+        </li>
+        <li class="menu-item" id="nav-agents">
+          <div class="icon-box">
+            <i class="fa-solid fa-people-carry-box"></i>
+          </div>
+          <span>Delivery Agents</span>
+        </li>
+        <li class="menu-item" id="nav-rto">
+          <div class="icon-box"><i class="fa-solid fa-rotate-left"></i></div>
+          <span>RTO Management</span>
+        </li>
+        <li class="menu-item" id="nav-delivery">
+          <div class="icon-box"><i class="fa-solid fa-truck-fast"></i></div>
+          <span>Shipment Delivery</span>
+        </li>
+        <li class="menu-item" id="nav-support">
+          <div class="icon-box"><i class="fa-solid fa-headset"></i></div>
+          <span>Support Tickets</span>
+        </li>
+      </ul>
+      <div class="bottom">
+        <li class="menu-item stng-btn" id="nav-settings">
+          <div class="icon-box"><i class="fa-solid fa-gear"></i></div>
+          <span>Settings</span>
+        </li>
+      </div>
+    </div>
+
+    <div class="main">
+      <div class="header">
+        <h2 id="header-title">Dashboard</h2>
+        <div class="header-right">
+          <div class="user">
+            <div>
+              <p class="name"></p>
+              <p class="role"></p>
+            </div>
+            <div
+              class="avatar"
+              id="top-avatar"
+              style="cursor: pointer"
+              title="Go to Settings"
+            ></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="dashboard-page page-content">
+        <div class="welcome-banner">
+          <div class="welcome-text">
+            <p class="welcome-label">Welcome back,</p>
+            <h2 class="welcome-heading">
+              Good Day, <span class="welcome-name-dynamic"></span
+              ><span class="welcome-date"></span>
+            </h2>
+            <p class="welcome-sub">
+              Everything looks steady across all zones today. You have
+              <span class="alert-count"></span> that require attention.
+            </p>
+            <div class="welcome-actions">
+              <button class="btn-primary dash-scan-btn">
+                <i class="fa-solid fa-barcode"></i> Scan Package
+              </button>
+            </div>
+          </div>
+          <div class="welcome-icon-wrap">
+            <i class="fa-solid fa-truck-fast welcome-icon"></i>
+          </div>
+        </div>
+        <div class="stat-grid">
+          <div class="stat-card">
+            <div class="stat-top">
+              <div class="stat-icon-box">
+                <i class="fa-solid fa-clipboard-list"></i>
+              </div>
+              <span class="stat-badge stat-badge--blue">+12%↑</span>
+            </div>
+            <p class="stat-label">TOTAL SHIPMENTS</p>
+            <p class="stat-value" id="dash-total-shipments">0</p>
+            <span class="stat-unit">packages</span>
+          </div>
+          <div class="stat-card">
+            <div class="stat-top">
+              <div class="stat-icon-box">
+                <i class="fa-solid fa-box-open"></i>
+              </div>
+              <span class="stat-badge stat-badge--orange">Today</span>
+            </div>
+            <p class="stat-label">PENDING DELIVERIES</p>
+            <p class="stat-value" id="dash-pending">0</p>
+            <span class="stat-unit">packages</span>
+          </div>
+          <div class="stat-card">
+            <div class="stat-top">
+              <div class="stat-icon-box"><i class="fa-solid fa-truck"></i></div>
+              <span class="stat-badge stat-badge--blue">In Transit</span>
+            </div>
+            <p class="stat-label">OUT FOR DELIVERY</p>
+            <p class="stat-value" id="dash-out-delivery">0</p>
+            <span class="stat-unit">packages</span>
+          </div>
+          <div class="stat-card">
+            <div class="stat-top">
+              <div class="stat-icon-box stat-icon-box--red">
+                <i class="fa-solid fa-rotate-left"></i>
+              </div>
+              <span class="stat-badge stat-badge--orange">Action Needed</span>
+            </div>
+            <p class="stat-label">RTO PENDING</p>
+            <p class="stat-value" id="dash-rto-pending">0</p>
+            <span class="stat-unit">returns</span>
+          </div>
+        </div>
+        <div class="dash-bottom-grid">
+          <div class="activity-card" style="flex: 2">
+            <div class="activity-header">
+              <div>
+                <h3 class="activity-title">Active Deliveries</h3>
+                <p class="activity-sub">
+                  Monitoring shipments currently in transit
+                </p>
+              </div>
+              <button
+                class="btn-ghost"
+                onclick="document.getElementById('nav-shipments').click()"
+              >
+                View All
+              </button>
+            </div>
+            <table class="activity-table">
+              <thead>
+                <tr>
+                  <th>TRACKING ID</th>
+                  <th>CUSTOMER</th>
+                  <th>AGENT</th>
+                  <th>STATUS</th>
+                </tr>
+              </thead>
+              <tbody id="dash-activity-tbody"></tbody>
+            </table>
+          </div>
+          <div class="quick-actions-card">
+            <h3 class="activity-title" style="margin-bottom: 16px">
+              Quick Actions
+            </h3>
+            <div
+              class="qa-item"
+              onclick="document.getElementById('nav-rto').click()"
+            >
+              <div class="qa-icon qa-icon--red">
+                <i class="fa-solid fa-rotate-left"></i>
+              </div>
+              <span>Raise RTO Request</span
+              ><i class="fa-solid fa-chevron-right qa-arrow"></i>
+            </div>
+            <div
+              class="qa-item"
+              onclick="showToast('OTP verification modal coming soon')"
+            >
+              <div class="qa-icon qa-icon--orange">
+                <i class="fa-solid fa-shield-check"></i>
+              </div>
+              <span>Verify OTP</span
+              ><i class="fa-solid fa-chevron-right qa-arrow"></i>
+            </div>
+            <div class="agent-avail-section">
+              <h4 class="agent-avail-title">AGENT AVAILABILITY</h4>
+              <div class="agent-avail-row">
+                <span class="avail-dot avail-green"></span
+                ><span class="avail-label">On Duty</span
+                ><span class="avail-count" id="agents-on-duty">0</span>
+              </div>
+              <div class="agent-avail-row">
+                <span class="avail-dot avail-orange"></span
+                ><span class="avail-label">Busy</span
+                ><span class="avail-count" id="agents-busy">0</span>
+              </div>
+              <div class="agent-avail-row">
+                <span class="avail-dot avail-grey"></span
+                ><span class="avail-label">Off Duty</span
+                ><span class="avail-count" id="agents-off">0</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="shipments-page page-content" style="display: none">
+        <div class="page-title-row">
+          <div>
+            <h2 class="page-title">Shipments</h2>
+            <p class="page-subtitle">Manage shipments from transit hubs</p>
+          </div>
+        </div>
+        <div class="tab-row">
+          <button class="tab-btn tab-active" data-tab="all">
+            All Shipments
+          </button>
+          <button class="tab-btn" data-tab="out">Out for Delivery</button>
+          <button class="tab-btn" data-tab="completed">Completed</button>
+          <button class="tab-btn" data-tab="failed">Failed</button>
+          <button class="tab-btn" data-tab="rto">RTO</button>
+        </div>
+        <div class="table-card">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>TRACKING ID</th>
+                <th>ORIGIN WAREHOUSE</th>
+                <th>CUSTOMER NAME</th>
+                <th>DELIVERY ADDRESS</th>
+                <th>ASSIGNED AGENT</th>
+                <th>ATTEMPTS</th>
+                <th>STATUS</th>
+              </tr>
+            </thead>
+            <tbody id="shipments-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="scan-page page-content" style="display: none">
+        <div class="page-title-row">
+          <div>
+            <h2 class="page-title" id="scan-page-title">In-Scan Operations</h2>
+            <p class="page-subtitle" id="scan-page-subtitle">
+              Register incoming packages and update real-time inventory.
+            </p>
+          </div>
+        </div>
+
+        <div id="scan-input-bar" class="card-white" style="margin-bottom: 24px">
+          <p
+            style="
+              margin: 0 0 8px;
+              font-size: 11px;
+              font-weight: 600;
+              color: #94a3b8;
+              letter-spacing: 0.06em;
+            "
+          >
+            TRACKING ID
+          </p>
+          <div style="display: flex; gap: 12px; align-items: center">
+            <div
+              style="
+                flex: 1;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                border: 2px solid #f4a32a;
+                border-radius: 10px;
+                padding: 12px 16px;
+                background: white;
+              "
+            >
+              <i
+                class="fa-solid fa-barcode"
+                style="color: #94a3b8; font-size: 16px; flex-shrink: 0"
+              ></i>
+              <input
+                type="text"
+                id="scan-tracking-input"
+                placeholder="Enter or scan tracking number (e.g, WD-8892-XT)"
+                style="
+                  border: none;
+                  outline: none;
+                  flex: 1;
+                  font-family: &quot;Poppins&quot;, sans-serif;
+                  font-size: 14px;
+                  color: #334155;
+                  background: transparent;
+                "
+              />
+            </div>
+            <button
+              class="btn-primary"
+              id="scan-submit-btn"
+              style="padding: 13px 22px; font-size: 14px; white-space: nowrap"
+            >
+              <i class="fa-solid fa-barcode"></i> In-Scan Package
+            </button>
+          </div>
+          <p style="margin: 8px 0 0; font-size: 12px; color: #94a3b8">
+            <i class="fa-solid fa-circle-info" style="margin-right: 4px"></i>
+            Supports 1D and 2D barcodes. Scanned items will appear in the table
+            below immediately.
+          </p>
+        </div>
+
+        <div
+          class="stat-grid"
+          style="grid-template-columns: repeat(3, 1fr); margin-bottom: 24px"
+        >
+          <div class="stat-card">
+            <div class="stat-top">
+              <div class="stat-icon-box"><i class="fa-solid fa-box"></i></div>
+              <span class="stat-badge stat-badge--blue">Today</span>
+            </div>
+            <p class="stat-label">TOTAL TODAY</p>
+            <p class="stat-value" id="scan-total-today">0</p>
+            <span class="stat-unit">packages</span>
+          </div>
+          <div class="stat-card">
+            <div class="stat-top">
+              <div class="stat-icon-box" style="background: #dcfce7">
+                <i class="fa-solid fa-circle-check" style="color: #16a34a"></i>
+              </div>
+              <span class="stat-badge stat-badge--green"></span>
+            </div>
+            <p class="stat-label">SUCCESSFUL SCANS</p>
+            <p class="stat-value" id="scan-successful">0</p>
+            <span class="stat-unit">scanned</span>
+          </div>
+          <div class="stat-card">
+            <div class="stat-top">
+              <div class="stat-icon-box stat-icon-box--red">
+                <i
+                  class="fa-solid fa-triangle-exclamation"
+                  style="color: #ef4444"
+                ></i>
+              </div>
+              <span class="stat-badge stat-badge--orange">Action Needed</span>
+            </div>
+            <p class="stat-label">FLAGGED ERRORS</p>
+            <p class="stat-value" id="scan-flagged-errors">0</p>
+            <span class="stat-unit">errors</span>
+          </div>
+        </div>
+
+        <div class="table-card">
+          <div class="table-header-row">
+            <div
+              style="
+                display: flex;
+                gap: 4px;
+                background: #f1f5f9;
+                padding: 4px;
+                border-radius: 10px;
+              "
+            >
+              <button id="scan-tab-inscan" class="scan-tab scan-tab-active">
+                In-scan
+              </button>
+              <button id="scan-tab-outscan" class="scan-tab">Out-scan</button>
+            </div>
+            <div class="search-box" style="width: 220px">
+              <i class="fa-solid fa-magnifying-glass"></i>
+              <input
+                type="text"
+                id="scan-search-input"
+                placeholder="Search Package ID..."
+              />
+            </div>
+          </div>
+
+          <table class="data-table" id="inscan-table">
+            <thead>
+              <tr>
+                <th>TRACKING ID</th>
+                <th>STATUS</th>
+                <th>ORIGIN</th>
+                <th>TIMESTAMP</th>
+              </tr>
+            </thead>
+            <tbody id="inscan-tbody"></tbody>
+          </table>
+
+          <table class="data-table" id="outscan-table" style="display: none">
+            <thead>
+              <tr>
+                <th>TRACKING ID</th>
+                <th>DESTINATION AGENCY</th>
+                <th>TIMESTAMP</th>
+                <th>ASSIGNED AGENT</th>
+                <th>ACTION</th>
+              </tr>
+            </thead>
+            <tbody id="outscan-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="agents-page page-content" style="display: none">
+        <div class="page-title-row">
+          <div>
+            <h2 class="page-title">Delivery Agents</h2>
+            <p class="page-subtitle">
+              Manage and track your last-mile delivery personnel.
+            </p>
+          </div>
+          <button class="btn-primary" id="add-agent-btn">
+            <i class="fa-solid fa-user-plus"></i> Add New Agent
+          </button>
+        </div>
+        <div class="filter-row">
+          <div class="search-box" style="flex: 1">
+            <i class="fa-solid fa-magnifying-glass"></i
+            ><input
+              type="text"
+              id="agent-search"
+              placeholder="Search agents by name or ID..."
+            />
+          </div>
+          <select id="agent-status-filter" class="filter-select">
+            <option value="">All Status</option>
+            <option value="Active">Active</option>
+            <option value="Busy">Busy</option>
+            <option value="Offline">Offline</option>
+          </select>
+        </div>
+        <div class="table-card">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>AGENT NAME</th>
+                <th>PHONE NUMBER</th>
+                <th>ASSIGNED SHIPMENTS</th>
+                <th>STATUS</th>
+                <th>AREA COVERAGE</th>
+                <th>ACTIONS</th>
+              </tr>
+            </thead>
+            <tbody id="agents-tbody"></tbody>
+          </table>
+          <div class="table-footer-row">
+            <span
+              id="agents-showing-label"
+              style="font-size: 12px; color: #94a3b8"
+            ></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="rto-page page-content" style="display: none">
+        <div class="page-title-row">
+          <div>
+            <h2 class="page-title">RTO Management</h2>
+            <p class="page-subtitle">
+              Initiate and track return-to-origin requests for failed
+              deliveries.
+            </p>
+          </div>
+        </div>
+        <div class="stat-grid rto-stat-grid" style="margin-bottom: 24px">
+          <div class="stat-card">
+            <div class="stat-top">
+              <div class="stat-icon-box stat-icon-box--red">
+                <i class="fa-solid fa-rotate-left"></i>
+              </div>
+              <span class="stat-badge stat-badge--orange"></span>
+            </div>
+            <p class="stat-label">TOTAL RTO REQUESTS</p>
+            <p class="stat-value" id="rto-total">0</p>
+            <span class="stat-unit">requests</span>
+          </div>
+          <div class="stat-card">
+            <div class="stat-top">
+              <div class="stat-icon-box"><i class="fa-solid fa-truck"></i></div>
+              <span class="stat-badge stat-badge--blue"></span>
+            </div>
+            <p class="stat-label">IN TRANSIT BACK</p>
+            <p class="stat-value" id="rto-transit">0</p>
+            <span class="stat-unit">packages</span>
+          </div>
+          <div class="stat-card">
+            <div class="stat-top">
+              <div class="stat-icon-box" style="background: #dcfce7">
+                <i class="fa-solid fa-check-circle" style="color: #16a34a"></i>
+              </div>
+              <span class="stat-badge stat-badge--green"></span>
+            </div>
+            <p class="stat-label">APPROVED</p>
+            <p class="stat-value" id="rto-approved">0</p>
+            <span class="stat-unit">requests</span>
+          </div>
+        </div>
+        <div class="table-card">
+          <div class="table-header-row">
+            <div style="display: flex; align-items: center; gap: 8px">
+              <i class="fa-solid fa-rotate-left" style="color: #ef4444"></i
+              ><strong>RTO Requests</strong>
+            </div>
+            <button
+              class="btn-primary"
+              id="new-rto-btn"
+              style="padding: 8px 14px; font-size: 12px"
+            >
+              <i class="fa-solid fa-plus"></i> New RTO Request
+            </button>
+          </div>
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>TRACKING ID</th>
+                <th>CUSTOMER</th>
+                <th>AGENT</th>
+                <th>REASON</th>
+                <th>STATUS</th>
+                <th>DATE</th>
+                <th>ACTIONS</th>
+              </tr>
+            </thead>
+            <tbody id="rto-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="delivery-page page-content" style="display: none">
+        <div class="page-title-row">
+          <div>
+            <h2 class="page-title">Shipment Delivery</h2>
+            <p class="page-subtitle">
+              Update delivery status and manage last-mile delivery operations.
+            </p>
+          </div>
+        </div>
+        <div class="table-card">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>TRACKING ID</th>
+                <th>CUSTOMER</th>
+                <th>ADDRESS</th>
+                <th>AGENT</th>
+                <th>STATUS</th>
+                <th>ATTEMPTS</th>
+                <th>ACTIONS</th>
+              </tr>
+            </thead>
+            <tbody id="delivery-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="support-page page-content" style="display: none">
+        <div id="ticket-list-view">
+          <div class="page-title-row">
+            <div>
+              <h2 class="page-title">Support Tickets</h2>
+              <p class="page-subtitle">
+                Manage and track customer support requests across your logistics
+                network.
+              </p>
+            </div>
+          </div>
+          <div class="filter-row">
+            <div class="search-box" style="flex: 1">
+              <i class="fa-solid fa-magnifying-glass"></i
+              ><input
+                type="text"
+                id="ticket-search"
+                placeholder="Search by Ticket ID, Tracking ID or Subject..."
+              />
+            </div>
+            <button class="ticket-filter-btn ticket-filter-active" data-filter="Open">
+              ● Open
+            </button>
+            <button class="ticket-filter-btn" data-filter="Resolved">
+              ● Resolved
+            </button>
+            <button class="ticket-filter-btn" data-filter="In Progress">
+              ● In Progress
+            </button>
+            <button class="ticket-filter-btn" data-filter="Pending">
+              ● Pending
+            </button>
+          </div>
+          <div class="table-card">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>TICKET ID</th>
+                  <th>TRACKING ID</th>
+                  <th>SUBJECT</th>
+                  <th>STATUS</th>
+                  <th>CREATED DATE</th>
+                  <th>ACTION</th>
+                </tr>
+              </thead>
+              <tbody id="tickets-tbody"></tbody>
+            </table>
+            <div class="table-footer-row">
+              <span
+                id="tickets-showing-label"
+                style="font-size: 12px; color: #94a3b8"
+              ></span>
+              <div class="pagination" id="tickets-pagination"></div>
+            </div>
+          </div>
+        </div>
+        <div id="ticket-detail-view" style="display: none">
+          <div class="page-title-row" style="margin-bottom: 20px">
+            <button class="back-btn" id="back-to-tickets">
+              <i class="fa-solid fa-arrow-left"></i> Back to Tickets
+            </button>
+            <div style="display: flex; gap: 10px">
+              <button class="btn-ghost" id="ticket-update-status-btn">
+                <i class="fa-solid fa-arrows-rotate"></i> Update Status
+              </button>
+              <button class="btn-primary" id="ticket-resolve-btn">
+                <i class="fa-solid fa-circle-check"></i> Mark as Resolved
+              </button>
+            </div>
+          </div>
+          <div class="ticket-detail-header">
+            <h2 class="ticket-detail-title" id="detail-ticket-id"></h2>
+            <span class="ticket-status-badge" id="detail-status-badge"></span>
+          </div>
+          <p style="font-size: 13px; color: #64748b; margin: 4px 0 24px">
+            Assigned to: <strong id="detail-assigned"></strong> &bull; Priority:
+            <strong id="detail-priority"></strong>
+          </p>
+          <div class="ticket-detail-grid">
+            <div>
+              <div class="card-white" style="margin-bottom: 16px">
+                <div
+                  style="
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    margin-bottom: 18px;
+                  "
+                >
+                  <h3 class="card-section-title" style="margin: 0">
+                    <i class="fa-solid fa-circle-info"></i> Ticket Details
+                  </h3>
+                  <span
+                    style="font-size: 12px; color: #94a3b8"
+                    id="detail-updated"
+                  ></span>
+                </div>
+                <div class="detail-fields-grid">
+                  <div>
+                    <p class="field-label-sm">TICKET ID</p>
+                    <p class="field-val-sm" id="detail-tkt-id"></p>
+                  </div>
+                  <div>
+                    <p class="field-label-sm">TRACKING ID</p>
+                    <p class="field-val-sm" id="detail-trk-id"></p>
+                  </div>
+                  <div>
+                    <p class="field-label-sm">CATEGORY</p>
+                    <p class="field-val-sm" id="detail-ord-id"></p>
+                  </div>
+                  <div>
+                    <p class="field-label-sm">CREATED DATE</p>
+                    <p class="field-val-sm" id="detail-created"></p>
+                  </div>
+                </div>
+              </div>
+              <div class="card-white" style="margin-bottom: 16px">
+                <h3 class="card-section-title">
+                  <i class="fa-solid fa-user"></i> Customer Information
+                </h3>
+                <div class="customer-info-row">
+                  <div class="customer-avatar" id="detail-cust-avatar"></div>
+                  <div>
+                    <p class="customer-name" id="detail-cust-name"></p>
+                  </div>
+                </div>
+                <div class="detail-fields-grid" style="margin-top: 14px">
+                  <div>
+                    <p class="field-label-sm">PHONE</p>
+                    <p class="field-val-sm" id="detail-cust-phone"></p>
+                  </div>
+                  <div>
+                    <p class="field-label-sm">DELIVERY ADDRESS</p>
+                    <p class="field-val-sm" id="detail-cust-addr"></p>
+                  </div>
+                </div>
+              </div>
+              <div class="card-white">
+                <h3 class="card-section-title">
+                  <i class="fa-solid fa-file-lines"></i> Issue Description
+                </h3>
+                <div class="issue-description-box" id="detail-issue"></div>
+              </div>
+            </div>
+            <div>
+              <div class="card-white">
+                <h3 class="card-section-title">
+                  <i class="fa-solid fa-timeline"></i> Shipment Timeline
+                </h3>
+                <div class="timeline" id="detail-timeline"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="settings-container page-content" style="display: none">
+        <h1 class="settings-title">Account Settings</h1>
+        <p class="settings-subtitle">
+          Manage your profile and security preferences.
+        </p>
+        <div class="profile-card">
+          <div class="profile-left">
+            <div class="profile-avatar-wrap">
+              <div class="profile-avatar"></div>
+              <div class="avatar-badge"></div>
+            </div>
+            <div>
+              <h2 class="user-name settings-user-name"></h2>
+              <p class="user-meta">
+                <span
+                  ><i class="fa-solid fa-truck-fast"></i
+                  ><span class="settings-user-role"></span
+                ></span>
+              </p>
+            </div>
+          </div>
+          <button class="edit-btn" id="open-edit-modal">Edit Profile</button>
+        </div>
+        <div class="info-row" style="grid-template-columns: 1fr 1fr">
+          <div class="card">
+            <h3><i class="fa-solid fa-user"></i> Personal Information</h3>
+            <p class="field-label">Email Address</p>
+            <p class="field-value settings-email"></p>
+            <p class="field-label">Phone Number</p>
+            <p class="field-value settings-phone"></p>
+            <p class="field-label">Password</p>
+            <p class="field-value" id="s-pwd-changed">Last changed: Never</p>
+            <button
+              class="btn-ghost"
+              id="change-pwd-btn"
+              style="margin-top: 4px; padding: 8px 16px; font-size: 13px"
+            >
+              <i class="fa-solid fa-lock" style="margin-right: 6px"></i>Change
+              Password
+            </button>
+          </div>
+          <div class="card">
+            <h3><i class="fa-solid fa-shield-halved"></i> Security</h3>
+            <div
+              style="
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                margin-top: 8px;
+              "
+            >
+              <div>
+                <p class="field-label" style="margin-bottom: 2px">
+                  Two-Factor Authentication
+                </p>
+                <p style="font-size: 12px; color: #94a3b8">
+                  Add an extra layer of security
+                </p>
+              </div>
+              <div
+                id="tfa-toggle"
+                style="
+                  cursor: pointer;
+                  width: 44px;
+                  height: 24px;
+                  border-radius: 12px;
+                  background: #e2e8f0;
+                  position: relative;
+                  transition: background 0.2s;
+                  flex-shrink: 0;
+                "
+              >
+                <div
+                  id="tfa-knob"
+                  style="
+                    position: absolute;
+                    top: 2px;
+                    left: 2px;
+                    width: 20px;
+                    height: 20px;
+                    border-radius: 50%;
+                    background: white;
+                    transition: left 0.2s;
+                    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+                  "
+                ></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="session-card">
+          <div class="session-info">
+            <div class="session-icon"><i class="fa-solid fa-display"></i></div>
+            <div>
+              <p class="session-title">Active Sessions</p>
+              <p class="session-subtitle">
+                You are currently logged in on this device.
+              </p>
+            </div>
+          </div>
+          <a href="../AUTH/home.html"
+            ><button class="logout-btn" id="logout-btn">Logout</button></a
+          >
+        </div>
+        <div class="footer-links">
+          <a href="#">Privacy Policy</a><a href="#">Terms of Service</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-overlay" id="add-agent-modal">
+      <div class="modal">
+        <div class="modal-header modal-header--dark">
+          <div style="display: flex; align-items: center; gap: 10px">
+            <i
+              class="fa-solid fa-user-plus"
+              style="color: white; font-size: 16px"
+            ></i>
+            <div>
+              <h3 style="color: white">Add New Agent</h3>
+              <p
+                style="
+                  margin: 2px 0 0;
+                  font-size: 12px;
+                  color: rgba(255, 255, 255, 0.65);
+                "
+              >
+                Add a new delivery agent to your fleet
+              </p>
+            </div>
+          </div>
+          <button class="modal-close modal-close--light" id="close-agent-modal">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="modal-field">
+            <label>Full Name *</label>
+            <div class="input-icon-wrap">
+              <i class="fa-solid fa-hashtag"></i
+              ><input
+                type="text"
+                id="agent-name-input"
+                placeholder="Enter agent's full name"
+              />
+            </div>
+          </div>
+          <div
+            style="
+              display: grid;
+              grid-template-columns: 1fr 1fr;
+              gap: 14px;
+              margin-bottom: 18px;
+            "
+          >
+            <div class="modal-field" style="margin: 0">
+              <label>Phone Number *</label>
+              <div class="input-icon-wrap">
+                <i class="fa-solid fa-phone"></i
+                ><input
+                  type="tel"
+                  id="agent-phone-input"
+                  placeholder="+91 XXXXXXXXXX"
+                />
+              </div>
+            </div>
+            <div class="modal-field" style="margin: 0">
+              <label>Email Address *</label>
+              <div class="input-icon-wrap">
+                <i class="fa-solid fa-envelope"></i
+                ><input
+                  type="email"
+                  id="agent-email-input"
+                  placeholder="agent@ware2door.com"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="modal-field">
+            <label>Area Coverage *</label>
+            <div class="input-icon-wrap">
+              <i class="fa-solid fa-location-dot"></i
+              ><input
+                type="text"
+                id="agent-area-input"
+                placeholder="e.g., North Sector, Downtown"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="modal-cancel" id="cancel-agent-modal">Cancel</button
+          ><button class="modal-save modal-save--orange" id="save-agent-modal">
+            Add Agent
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="modal-overlay" id="edit-agent-modal">
+      <div class="modal">
+        <div class="modal-header modal-header--dark">
+          <div style="display: flex; align-items: center; gap: 10px">
+            <i class="fa-solid fa-user-pen" style="color: white; font-size: 16px"></i>
+            <div>
+              <h3 style="color: white">Edit Agent</h3>
+              <p style="margin: 2px 0 0; font-size: 12px; color: rgba(255, 255, 255, 0.65);">
+                Update delivery agent details
+              </p>
+            </div>
+          </div>
+          <button class="modal-close modal-close--light" id="close-edit-agent-modal">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+        <div class="modal-body">
+          <input type="hidden" id="edit-agent-id-input" />
+          <div class="modal-field">
+            <label>Full Name *</label>
+            <div class="input-icon-wrap">
+              <i class="fa-solid fa-hashtag"></i>
+              <input type="text" id="edit-agent-name-input" placeholder="Enter agent's full name" />
+            </div>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 18px;">
+            <div class="modal-field" style="margin: 0">
+              <label>Phone Number *</label>
+              <div class="input-icon-wrap">
+                <i class="fa-solid fa-phone"></i>
+                <input type="tel" id="edit-agent-phone-input" placeholder="+91 XXXXXXXXXX" />
+              </div>
+            </div>
+            <div class="modal-field" style="margin: 0">
+              <label>Email Address *</label>
+              <div class="input-icon-wrap">
+                <i class="fa-solid fa-envelope"></i>
+                <input type="email" id="edit-agent-email-input" placeholder="agent@ware2door.com" />
+              </div>
+            </div>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 18px;">
+            <div class="modal-field" style="margin: 0">
+              <label>Area Coverage *</label>
+              <div class="input-icon-wrap">
+                <i class="fa-solid fa-location-dot"></i>
+                <input type="text" id="edit-agent-area-input" placeholder="e.g., North Sector, Downtown" />
+              </div>
+            </div>
+            <div class="modal-field" style="margin: 0">
+              <label>Status</label>
+              <select id="edit-agent-status-select" style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #cbd5e1; outline: none;">
+                <option value="Active">Active</option>
+                <option value="Busy">Busy</option>
+                <option value="Offline">Offline</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="modal-cancel" id="cancel-edit-agent-modal">Cancel</button>
+          <button class="modal-save modal-save--orange" id="save-edit-agent-modal">
+            Update Agent
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="modal-overlay" id="agent-picker-modal">
+      <div class="modal" style="width: 680px; max-width: 95vw">
+        <div class="modal-header modal-header--dark">
+          <div style="display: flex; align-items: center; gap: 10px">
+            <i
+              class="fa-solid fa-people-carry-box"
+              style="color: white; font-size: 16px"
+            ></i>
+            <div>
+              <h3 style="color: white">Select Delivery Agent</h3>
+              <p
+                style="
+                  margin: 2px 0 0;
+                  font-size: 12px;
+                  color: rgba(255, 255, 255, 0.65);
+                "
+              >
+                Choose an agent to assign this shipment
+              </p>
+            </div>
+          </div>
+          <button
+            class="modal-close modal-close--light"
+            id="close-agent-picker"
+          >
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+        <div class="modal-body" style="padding: 20px">
+          <div
+            id="agent-picker-grid"
+            style="
+              display: grid;
+              grid-template-columns: 1fr 1fr;
+              gap: 12px;
+              max-height: 400px;
+              overflow-y: auto;
+            "
+          ></div>
+        </div>
+        <div class="modal-footer">
+          <span
+            id="agent-picker-selected-label"
+            style="font-size: 13px; color: #64748b; flex: 1"
+            >No agent selected</span
+          >
+          <button class="modal-cancel" id="cancel-agent-picker">Cancel</button>
+          <button
+            class="modal-save modal-save--orange"
+            id="agent-picker-confirm-btn"
+            disabled
+          >
+            Confirm Agent
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-overlay" id="new-rto-modal">
+      <div class="modal">
+        <div class="modal-header">
+          <h3>Return to Origin Details</h3>
+          <button class="modal-close" id="close-rto-modal">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p style="font-size: 13px; color: #64748b; margin: 0 0 16px">
+            Initiate a return process for shipments that could not be delivered
+            successfully.
+          </p>
+          <div
+            style="
+              display: grid;
+              grid-template-columns: 1fr 1fr;
+              gap: 14px;
+              margin-bottom: 14px;
+            "
+          >
+            <div class="modal-field" style="margin: 0">
+              <label>Tracking ID</label
+              ><input
+                type="text"
+                id="rto-tracking-input"
+                placeholder="#W2D-XXXXX"
+              />
+            </div>
+            <div class="modal-field" style="margin: 0">
+              <label>Customer Name</label
+              ><input
+                type="text"
+                id="rto-customer-input"
+                placeholder="Customer name"
+              />
+            </div>
+          </div>
+          <div class="modal-field">
+            <label>Delivery Agent</label
+            ><select id="rto-agent-select"></select>
+          </div>
+          <div class="modal-field">
+            <label>Reason for RTO</label
+            ><textarea
+              id="rto-reason-input"
+              rows="3"
+              placeholder="Customer unavailable after 3 delivery attempts..."
+              style="
+                width: 100%;
+                padding: 10px 14px;
+                border: 1px solid #e2e8f0;
+                border-radius: 8px;
+                font-family: &quot;Poppins&quot;, sans-serif;
+                font-size: 13px;
+                color: #334155;
+                background: #f8fafc;
+                outline: none;
+                resize: none;
+              "
+            ></textarea>
+          </div>
+          <div class="rto-confirm-check">
+            <input type="checkbox" id="rto-confirm-cb" /><label
+              for="rto-confirm-cb"
+              style="font-size: 12px; color: #64748b; line-height: 1.5"
+              >Confirm that delivery attempt limit has been exceeded. By
+              checking this, you verify that all standard delivery procedures
+              were followed before requesting an RTO.</label
+            >
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="modal-cancel" id="cancel-rto-modal">Cancel</button
+          ><button class="modal-save modal-save--orange" id="save-rto-modal">
+            <i class="fa-solid fa-paper-plane"></i> Submit RTO Request
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-overlay" id="edit-modal">
+      <div class="modal">
+        <div class="modal-header">
+          <h3>Edit Profile</h3>
+          <button class="modal-close" id="close-edit-modal">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+        <div class="modal-avatar-row">
+          <div class="modal-avatar"></div>
+          <div>
+            <p class="modal-avatar-name" id="modal-display-name"></p>
+            <p class="modal-avatar-role" id="modal-display-role"></p>
+          </div>
+        </div>
+        <div class="modal-body">
+          <div class="modal-field">
+            <label>Full Name</label
+            ><input type="text" id="edit-name" placeholder="Your full name" />
+          </div>
+          <div class="modal-field">
+            <label>Email Address</label
+            ><input type="email" id="edit-email" placeholder="your@email.com" />
+          </div>
+          <div class="modal-field">
+            <label>Phone Number</label
+            ><input type="tel" id="edit-phone" placeholder="+91 XXXXXXXXXX" />
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="modal-cancel" id="cancel-edit-modal">Cancel</button
+          ><button class="modal-save" id="save-edit-modal">Save Changes</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-overlay" id="otp-modal">
+      <div class="modal otp-modal-inner" style="position: relative;">
+        <div class="otp-header-bar"></div>
+        <button class="modal-close" id="close-otp-modal" style="position: absolute; right: 16px; top: 16px; color: #64748b; background: transparent; border: none; cursor: pointer; font-size: 18px;">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+        <div class="otp-modal-body">
+          <div class="otp-avatar-wrap">
+            <div class="otp-avatar-icon">
+              <i class="fa-solid fa-shield-halved"></i>
+            </div>
+          </div>
+          <h2 class="otp-title">Verify Delivery</h2>
+          <p class="otp-subtitle">
+            Please enter the 6-digit code provided by the customer
+          </p>
+
+          <div class="otp-info-row">
+            <div class="otp-info-cell">
+              <span class="otp-info-label">TRACKING ID</span>
+              <span class="otp-info-val" id="otp-tracking-id"></span>
+            </div>
+            <div class="otp-info-cell">
+              <span class="otp-info-label">CUSTOMER</span>
+              <span class="otp-info-val" id="otp-customer"></span>
+            </div>
+            <div class="otp-info-cell">
+              <span class="otp-info-label">AGENT</span>
+              <span class="otp-info-val" id="otp-agent"></span>
+            </div>
+          </div>
+
+          <p class="otp-code-label">6-Digit OTP Code</p>
+          <div class="otp-boxes" id="otp-boxes">
+            <input
+              class="otp-box"
+              maxlength="1"
+              type="text"
+              inputmode="numeric"
+            />
+            <input
+              class="otp-box"
+              maxlength="1"
+              type="text"
+              inputmode="numeric"
+            />
+            <input
+              class="otp-box"
+              maxlength="1"
+              type="text"
+              inputmode="numeric"
+            />
+            <input
+              class="otp-box"
+              maxlength="1"
+              type="text"
+              inputmode="numeric"
+            />
+            <input
+              class="otp-box"
+              maxlength="1"
+              type="text"
+              inputmode="numeric"
+            />
+            <input
+              class="otp-box"
+              maxlength="1"
+              type="text"
+              inputmode="numeric"
+            />
+          </div>
+          <p class="otp-attempts-msg" id="otp-attempts-msg"></p>
+          <p class="otp-resend">Resend OTP Code</p>
+          <button class="otp-verify-btn" id="otp-verify-btn">Verify OTP</button>
+          <div class="otp-footer-row">
+            <span class="otp-location"
+              ><i
+                class="fa-solid fa-location-dot"
+                style="color: #f4a32a; margin-right: 4px"
+              ></i
+              >Chennai, IN</span
+            >
+            <span class="otp-last-attempt" id="otp-last-attempt"
+              >Last OTP attempt: just now</span
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-overlay" id="delivery-status-modal">
+      <div class="modal delivery-status-modal-inner">
+        <div class="modal-header">
+          <h3>Update Delivery Status</h3>
+          <button class="modal-close" id="close-delivery-status-modal">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+
+        <div class="modal-body">
+          <div class="delivery-tracking-bar">
+            <p
+              style="
+                margin: 0 0 8px;
+                font-size: 11px;
+                font-weight: 600;
+                color: #94a3b8;
+                letter-spacing: 0.06em;
+              "
+            >
+              TRACKING ID
+            </p>
+            <div style="display: flex; gap: 12px; align-items: center">
+              <div
+                style="
+                  flex: 1;
+                  display: flex;
+                  align-items: center;
+                  gap: 10px;
+                  border: 2px solid #f4a32a;
+                  border-radius: 10px;
+                  padding: 11px 16px;
+                  background: #fff7ed;
+                "
+              >
+                <i
+                  class="fa-solid fa-barcode"
+                  style="color: #f4a32a; font-size: 15px"
+                ></i>
+                <input
+                  type="text"
+                  id="delivery-tracking-input"
+                  placeholder="Enter tracking number (e.g. #SHIP-4421)"
+                  style="
+                    border: none;
+                    outline: none;
+                    flex: 1;
+                    font-family: &quot;Poppins&quot;, sans-serif;
+                    font-size: 13px;
+                    color: #334155;
+                    background: transparent;
+                  "
+                />
+              </div>
+              <button
+                class="btn-primary"
+                id="delivery-lookup-btn"
+                style="padding: 12px 20px"
+              >
+                Enter
+              </button>
+            </div>
+            <p
+              class="otp-attempts-msg"
+              id="delivery-lookup-msg"
+              style="margin-top: 8px; min-height: 18px"
+            ></p>
+          </div>
+
+          <div id="delivery-status-section" style="display: none">
+            <p
+              style="
+                font-size: 13px;
+                font-weight: 600;
+                color: #1e293b;
+                margin: 0 0 14px;
+              "
+            >
+              Select Delivery Status
+            </p>
+            <div class="delivery-status-grid">
+              <div
+                class="delivery-status-card"
+                id="dsc-delivered"
+                onclick="selectDeliveryStatus('Delivered')"
+              >
+                <div class="dsc-icon dsc-green">
+                  <i class="fa-solid fa-circle-check"></i>
+                </div>
+                <span>Delivered</span>
+              </div>
+              <div
+                class="delivery-status-card"
+                id="dsc-notavail"
+                onclick="selectDeliveryStatus('Not Available')"
+              >
+                <div class="dsc-icon dsc-grey">
+                  <i class="fa-solid fa-user-slash"></i>
+                </div>
+                <span>Not Available</span>
+              </div>
+              <div
+                class="delivery-status-card"
+                id="dsc-address"
+                onclick="selectDeliveryStatus('Address Not Found')"
+              >
+                <div class="dsc-icon dsc-grey">
+                  <i class="fa-solid fa-map-location-dot"></i>
+                </div>
+                <span>Address Not Found</span>
+              </div>
+              <div
+                class="delivery-status-card"
+                id="dsc-refused"
+                onclick="selectDeliveryStatus('Customer Refused')"
+              >
+                <div class="dsc-icon dsc-grey">
+                  <i class="fa-solid fa-hand"></i>
+                </div>
+                <span>Customer Refused</span>
+              </div>
+            </div>
+            <div style="margin-top: 16px">
+              <p
+                style="
+                  margin: 0 0 6px;
+                  font-size: 12px;
+                  font-weight: 600;
+                  color: #f4a32a;
+                "
+              >
+                Internal Delivery Notes (Optional)
+              </p>
+              <textarea
+                id="delivery-notes"
+                rows="3"
+                placeholder="Add any details about the attempt..."
+                style="
+                  width: 100%;
+                  padding: 12px 14px;
+                  border: 1px solid #e2e8f0;
+                  border-radius: 10px;
+                  font-family: &quot;Poppins&quot;, sans-serif;
+                  font-size: 13px;
+                  color: #334155;
+                  background: #f8fafc;
+                  outline: none;
+                  resize: none;
+                  box-sizing: border-box;
+                "
+              ></textarea>
+            </div>
+          </div>
+        </div>
+
+        <div
+          class="modal-footer"
+          id="delivery-status-footer"
+          style="display: none"
+        >
+          <button class="modal-cancel" id="cancel-delivery-status">
+            Cancel
+          </button>
+          <button
+            class="modal-save modal-save--orange"
+            id="confirm-delivery-status-btn"
+          >
+            Confirm Status
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-overlay" id="pwd-modal">
+      <div class="modal">
+        <div class="modal-header">
+          <h3>Change Password</h3>
+          <button class="modal-close" id="close-pwd-modal">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="modal-field">
+            <label>Current Password</label
+            ><input type="password" id="pwd-current" placeholder="••••••••" />
+          </div>
+          <div class="modal-field">
+            <label>New Password</label
+            ><input type="password" id="pwd-new" placeholder="••••••••" />
+          </div>
+          <div class="modal-field">
+            <label>Confirm New Password</label
+            ><input type="password" id="pwd-confirm" placeholder="••••••••" />
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="modal-cancel" id="cancel-pwd-modal">Cancel</button>
+          <button class="modal-save" id="save-pwd-modal">
+            <i class="fa-solid fa-lock"></i> Update Password
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-overlay" id="update-status-modal">
+      <div class="modal">
+        <div class="modal-header">
+          <h3>Update Ticket Status</h3>
+          <button class="modal-close" id="close-status-modal">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="modal-field">
+            <label>Select New Status</label>
+            <select id="update-status-select" style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #cbd5e1; outline: none; margin-top: 8px;">
+              <option value="Open">Open</option>
+              <option value="In Progress">In Progress</option>
+              <option value="Pending">Pending</option>
+              <option value="Resolved">Resolved</option>
+            </select>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="modal-cancel" id="cancel-status-modal">Cancel</button>
+          <button class="modal-save modal-save--orange" id="confirm-status-modal">Update</button>
+        </div>
+      </div>
+    </div>
+    <script src="agency.js"></script>
+  </body>
+</html>

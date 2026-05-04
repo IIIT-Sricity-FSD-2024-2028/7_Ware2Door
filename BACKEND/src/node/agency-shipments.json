@@ -1,0 +1,306 @@
+{
+  "agency-001": {
+    "agentAssignments": {
+      "TRK4001": {
+        "agentId": "AGT-A001-03",
+        "agentName": "Priya Venka"
+      },
+      "TRK20334": {
+        "agentId": "AGT-A001-04"
+      },
+      "TRK34547": {
+        "agentId": "AGT-A001-03"
+      },
+      "TRK97371": {
+        "agentId": "AGT-AGENCY-001-1777134630291"
+      },
+      "TRK77615": {
+        "agentId": "AGT-A001-04"
+      },
+      "TRK91083": {
+        "agentId": "AGT-AGENCY-001-1777149132101",
+        "agentName": "Bharath Babess"
+      },
+      "TRK18841": {
+        "agentId": "AGT-AGENCY-001-1777149132101",
+        "agentName": "Bharath Babess"
+      },
+      "TRK4016": {
+        "agentId": "AGT-AGENCY-001-1777134630291",
+        "agentName": "Raghuveer"
+      },
+      "TRK10589": {
+        "agentId": "AGT-AGENCY-001-1777134630291",
+        "agentName": "Raghuveer"
+      },
+      "TRK40972": {
+        "agentId": "AGT-AGENCY-001-1777134630291",
+        "agentName": "Raghuveer"
+      },
+      "TRK88874": {
+        "agentId": "AGT-A001-03",
+        "agentName": "Priya Venka"
+      },
+      "TRK73601": {
+        "agentId": "AGT-A001-03",
+        "agentName": "Priya Venka"
+      },
+      "TRK91925": {
+        "agentId": "AGT-AGENCY-001-1777134630291",
+        "agentName": "Raghuveer"
+      }
+    },
+    "deliveries": [
+      {
+        "trackingId": "TRK4001",
+        "agentId": "AGT-AGENCY-001-1777134630291",
+        "customerName": "Ramesh Pillai",
+        "customerAddress": "12 Adyar Main Rd, Chennai 600020",
+        "status": "Delivered",
+        "attemptCount": 0,
+        "notes": "",
+        "createdAt": "2026-04-25T17:44:34.246Z"
+      },
+      {
+        "trackingId": "TRK34547",
+        "agentId": "AGT-A001-03",
+        "status": "Delivered",
+        "attemptCount": 0,
+        "notes": "",
+        "createdAt": "2026-04-25T18:10:31.253Z"
+      },
+      {
+        "trackingId": "TRK97371",
+        "agentId": "AGT-AGENCY-001-1777134630291",
+        "customerName": "Rahul Sharma",
+        "customerAddress": "Chennai",
+        "status": "Delivered",
+        "attemptCount": 0,
+        "notes": "",
+        "createdAt": "2026-04-25T19:28:51.196Z"
+      },
+      {
+        "trackingId": "TRK77615",
+        "agentId": "AGT-A001-04",
+        "customerName": "Rahul Sharma",
+        "customerAddress": "Chennai,Near Marina beach Road number 2 502 house number",
+        "status": "Delivered",
+        "attemptCount": 0,
+        "notes": "",
+        "createdAt": "2026-04-25T19:53:54.927Z"
+      },
+      {
+        "trackingId": "TRK91083",
+        "agentId": "AGT-AGENCY-001-1777149132101",
+        "customerName": "Tharun Sharma",
+        "customerAddress": "Chennai,Near Marina beach Road number 2 502 house number",
+        "status": "RTO",
+        "attemptCount": 0,
+        "notes": "",
+        "createdAt": "2026-05-03T11:02:33.158Z"
+      },
+      {
+        "trackingId": "TRK18841",
+        "agentId": "AGT-AGENCY-001-1777149132101",
+        "customerName": "Tharun Sharma",
+        "customerAddress": "Chennai,Near Marina beach Road number 2 502 house number",
+        "status": "Delivered",
+        "attemptCount": 0,
+        "notes": "",
+        "createdAt": "2026-05-03T12:26:14.361Z"
+      },
+      {
+        "trackingId": "TRK4016",
+        "agentId": "AGT-AGENCY-001-1777134630291",
+        "customerName": "Meena Rajan",
+        "customerAddress": "78 Gandhi Nagar, Adyar, Chennai 600020",
+        "status": "RTO",
+        "attemptCount": 4,
+        "notes": "",
+        "createdAt": "2026-05-03T18:01:24.490Z"
+      },
+      {
+        "trackingId": "TRK10589",
+        "agentId": "AGT-AGENCY-001-1777134630291",
+        "customerName": "Rahul Sharma",
+        "customerAddress": "Chennai,Near Marina beach Road number 2 502 house number",
+        "status": "RTO",
+        "attemptCount": 0,
+        "notes": "",
+        "createdAt": "2026-05-04T09:20:18.761Z"
+      },
+      {
+        "trackingId": "TRK40972",
+        "agentId": "AGT-AGENCY-001-1777134630291",
+        "customerName": "Rahul Sharma",
+        "customerAddress": "Chennai,Near Marina beach Road number 2 502 house number",
+        "status": "RTO",
+        "attemptCount": 0,
+        "notes": "",
+        "createdAt": "2026-05-04T10:47:17.875Z"
+      },
+      {
+        "trackingId": "TRK88874",
+        "agentId": "AGT-A001-03",
+        "customerName": "Rakshitha",
+        "customerAddress": "Chennai,Near Marina beach Road number 2 502 house number",
+        "status": "RTO",
+        "attemptCount": 1,
+        "notes": "",
+        "createdAt": "2026-05-04T11:14:05.379Z"
+      },
+      {
+        "trackingId": "TRK73601",
+        "agentId": "AGT-A001-03",
+        "customerName": "Rakshitha",
+        "customerAddress": "Chennai,Near Marina beach Road number 2 502 house number",
+        "status": "RTO",
+        "attemptCount": 2,
+        "notes": "",
+        "createdAt": "2026-05-04T11:31:00.057Z"
+      },
+      {
+        "trackingId": "TRK91925",
+        "agentId": "AGT-AGENCY-001-1777134630291",
+        "customerName": "Rakshitha",
+        "customerAddress": "Chennai,Near Marina beach Road number 2 502 house number",
+        "status": "RTO",
+        "attemptCount": 2,
+        "notes": "",
+        "createdAt": "2026-05-04T11:48:27.157Z"
+      }
+    ],
+    "rto": [
+      {
+        "id": "RTO-1777831332458",
+        "trackingId": "TRK4016",
+        "customerName": "Meena Rajan",
+        "agentId": "AGT-AGENCY-001-1777134630291",
+        "agentName": "Raghuveer",
+        "reason": "Not Available — exceeded 4 delivery attempts",
+        "status": "In Transit",
+        "date": "2026-05-03"
+      }
+    ]
+  },
+  "agency-002": {
+    "agentAssignments": {
+      "TRK4002": {
+        "agentId": "AGT-AGENCY-002-1777786221999",
+        "agentName": "Raghuveer"
+      },
+      "TRK89535": {
+        "agentId": "AGT-A002-04",
+        "agentName": "Deepa Krishnan"
+      }
+    },
+    "deliveries": [
+      {
+        "trackingId": "TRK4002",
+        "agentId": "AGT-AGENCY-002-1777786221999",
+        "customerName": "Ravi Shankar",
+        "customerAddress": "22 Whitefield Main Rd, Bangalore 560066",
+        "status": "RTO",
+        "attemptCount": 3,
+        "notes": "",
+        "createdAt": "2026-05-03T06:16:35.700Z"
+      },
+      {
+        "trackingId": "TRK89535",
+        "agentId": "AGT-A002-04",
+        "customerName": "Rahul Sharma",
+        "customerAddress": "Chennai,Near Marina beach Road number 2 502 house number",
+        "status": "RTO",
+        "attemptCount": 0,
+        "notes": "",
+        "createdAt": "2026-05-03T06:23:45.129Z"
+      }
+    ],
+    "rto": []
+  },
+  "agency-003": {
+    "agentAssignments": {
+      "TRK21164": {
+        "agentId": "AGT-AGENCY-003-1777786374933",
+        "agentName": "Raghuveer"
+      },
+      "TRK79727": {
+        "agentId": "AGT-A003-01",
+        "agentName": "Mohammad Iqbal"
+      }
+    },
+    "deliveries": [
+      {
+        "trackingId": "TRK21164",
+        "agentId": "AGT-AGENCY-003-1777786374933",
+        "customerName": "Krishna Sharma",
+        "customerAddress": "Chennai,Near Marina beach Road number 2 502 house number",
+        "status": "RTO",
+        "attemptCount": 1,
+        "notes": "",
+        "createdAt": "2026-05-03T05:35:45.743Z"
+      },
+      {
+        "trackingId": "TRK79727",
+        "agentId": "AGT-A003-01",
+        "customerName": "Chetan Sharma",
+        "customerAddress": "Chennai,Near Marina beach Road number 2 502 house number",
+        "status": "RTO",
+        "attemptCount": 0,
+        "notes": "",
+        "createdAt": "2026-05-03T10:30:05.817Z"
+      }
+    ],
+    "rto": [
+      {
+        "id": "RTO-1777788287406",
+        "trackingId": "TRK21164",
+        "customerName": "Krishna Sharma",
+        "agentId": null,
+        "reason": "Customer Refused: House was locked",
+        "status": "In Transit",
+        "date": "2026-05-03"
+      }
+    ]
+  },
+  "agency-004": {
+    "agentAssignments": {},
+    "deliveries": [],
+    "rto": []
+  },
+  "agency-005": {
+    "agentAssignments": {
+      "TRK4005": {
+        "agentId": "AGT-A005-03",
+        "agentName": "Vijay Kumar"
+      },
+      "TRK14829": {
+        "agentId": "AGT-A005-03",
+        "agentName": "Vijay Kumar"
+      }
+    },
+    "deliveries": [
+      {
+        "trackingId": "TRK4005",
+        "agentId": "AGT-A005-03",
+        "customerName": "Ankit Verma",
+        "customerAddress": "3 Karol Bagh Mkt, Delhi 110005",
+        "status": "Delivered",
+        "attemptCount": 0,
+        "notes": "",
+        "createdAt": "2026-05-03T06:25:43.179Z"
+      },
+      {
+        "trackingId": "TRK14829",
+        "agentId": "AGT-A005-03",
+        "customerName": "Varshith Sharma",
+        "customerAddress": "Chennai,Near Marina beach Road number 2 502 house number",
+        "status": "RTO",
+        "attemptCount": 0,
+        "notes": "",
+        "createdAt": "2026-05-03T10:45:42.954Z"
+      }
+    ],
+    "rto": []
+  }
+}

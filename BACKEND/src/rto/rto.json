@@ -1,0 +1,221 @@
+[
+  {
+    "rtoId": "RTOID-1777802926098-759",
+    "trackingId": "TRK4002",
+    "agencyId": "agency-002",
+    "warehouseId": "wh-001",
+    "hubId": "hub-002",
+    "productName": "Samsung TV",
+    "customerName": "Ravi Shankar",
+    "customerPhone": "+91 9876542001",
+    "agentId": null,
+    "reason": "Customer Refused: Don't want it anymore",
+    "status": "Returned to Warehouse",
+    "createdAt": "2026-05-03T10:08:46.098Z",
+    "updatedAt": [
+      "2026-05-03T10:08:54.491Z",
+      "2026-05-03T10:09:02.653Z",
+      "2026-05-03T10:09:09.969Z"
+    ]
+  },
+  {
+    "rtoId": "RTOID-1777803347008-845",
+    "trackingId": "TRK89535",
+    "agencyId": "agency-002",
+    "warehouseId": "wh-001",
+    "hubId": "hub-001",
+    "productName": "Wireless Mouse",
+    "customerName": "Rahul Sharma",
+    "customerPhone": "9876543210",
+    "agentId": null,
+    "agentName": "Deepa Krishnan",
+    "reason": "Customer Refused: ewds",
+    "status": "Returned to Warehouse",
+    "date": "3/5/2026",
+    "createdAt": "2026-05-03T10:15:47.008Z",
+    "updatedAt": [
+      "2026-05-03T10:17:49.809Z",
+      "2026-05-03T10:18:03.568Z",
+      "2026-05-03T10:20:32.103Z"
+    ]
+  },
+  {
+    "rtoId": "RTOID-1777804240688-439",
+    "trackingId": "TRK79727",
+    "agencyId": "agency-003",
+    "warehouseId": "wh-001",
+    "hubId": "hub-003",
+    "productName": "Wireless Mouse",
+    "customerName": "Chetan Sharma",
+    "customerPhone": "9876543210",
+    "agentId": "AGT-A003-01",
+    "agentName": null,
+    "reason": "Customer Refused: Customer don't want it anymore",
+    "status": "Returned to Warehouse",
+    "date": "3/5/2026",
+    "createdAt": "2026-05-03T10:30:40.688Z",
+    "updatedAt": [
+      "2026-05-03T10:32:45.165Z",
+      "2026-05-03T10:33:10.214Z",
+      "2026-05-03T10:33:59.861Z"
+    ]
+  },
+  {
+    "rtoId": "RTOID-1777805188721-320",
+    "trackingId": "TRK14829",
+    "agencyId": "agency-005",
+    "warehouseId": "wh-001",
+    "hubId": "hub-005",
+    "productName": "Wireless Mouse",
+    "customerName": "Varshith Sharma",
+    "customerPhone": "9876543210",
+    "agentId": "AGT-A005-03",
+    "agentName": null,
+    "reason": "Customer Refused: The customer is not happy with shipment saftey packing",
+    "status": "Returned to Warehouse",
+    "date": "3/5/2026",
+    "createdAt": "2026-05-03T10:46:28.721Z",
+    "updatedAt": [
+      "2026-05-03T10:48:42.851Z",
+      "2026-05-03T10:49:16.682Z",
+      "2026-05-03T10:50:12.130Z"
+    ]
+  },
+  {
+    "rtoId": "RTOID-1777806187394-142",
+    "trackingId": "TRK91083",
+    "agencyId": "agency-001",
+    "warehouseId": "wh-001",
+    "hubId": "hub-001",
+    "productName": "Wireless Mouse",
+    "customerName": "Tharun Sharma",
+    "customerPhone": "9876543210",
+    "agentId": "AGT-AGENCY-001-1777149132101",
+    "agentName": null,
+    "reason": "Customer Refused: Customer is not satisfied with the shipment packing",
+    "status": "Returned to Warehouse",
+    "date": "3/5/2026",
+    "createdAt": "2026-05-03T11:03:07.394Z",
+    "updatedAt": [
+      "2026-05-03T11:11:46.018Z",
+      "2026-05-03T11:12:00.503Z",
+      "2026-05-03T11:12:50.446Z"
+    ]
+  },
+  {
+    "rtoId": "RTOID-1777810319688-795",
+    "agencyId": "LA-001",
+    "warehouseId": null,
+    "hubId": null,
+    "productName": null,
+    "customerName": null,
+    "customerPhone": null,
+    "agentId": null,
+    "agentName": null,
+    "status": "RTO Initiated",
+    "date": "3/5/2026",
+    "createdAt": "2026-05-03T12:11:59.688Z",
+    "updatedAt": []
+  },
+  {
+    "rtoId": "RTOID-1777886577519-074",
+    "trackingId": "TRK10589",
+    "agencyId": "agency-001",
+    "warehouseId": "wh-001",
+    "hubId": "hub-001",
+    "productName": "Wireless Mouse",
+    "customerName": "Rahul Sharma",
+    "customerPhone": "9876543210",
+    "agentId": "AGT-AGENCY-001-1777134630291",
+    "agentName": null,
+    "reason": "Customer Refused: odhu anta",
+    "status": "Returned to Warehouse",
+    "date": "4/5/2026",
+    "createdAt": "2026-05-04T09:22:57.519Z",
+    "updatedAt": [
+      "2026-05-04T09:24:53.035Z",
+      "2026-05-04T09:25:38.080Z",
+      "2026-05-04T09:26:44.212Z"
+    ]
+  },
+  {
+    "rtoId": "RTOID-1777891692631-232",
+    "trackingId": "TRK40972",
+    "agencyId": "agency-001",
+    "warehouseId": "wh-001",
+    "hubId": "hub-001",
+    "productName": "Wireless Mouse",
+    "customerName": "Rahul Sharma",
+    "customerPhone": "9876543210",
+    "agentId": "AGT-AGENCY-001-1777134630291",
+    "agentName": null,
+    "reason": "Customer Refused: not needed",
+    "status": "RTO Initiated",
+    "date": "4/5/2026",
+    "createdAt": "2026-05-04T10:48:12.631Z",
+    "updatedAt": []
+  },
+  {
+    "rtoId": "RTOID-1777893386045-021",
+    "trackingId": "TRK88874",
+    "agencyId": "agency-001",
+    "warehouseId": "wh-001",
+    "hubId": "hub-001",
+    "productName": "Wireless Mouse",
+    "customerName": "Rakshitha",
+    "customerPhone": "9876543210",
+    "agentId": "AGT-A001-03",
+    "agentName": null,
+    "reason": "Customer Refused: yhrtbevfdscreft54rgefd",
+    "status": "Returned to Warehouse",
+    "date": "4/5/2026",
+    "createdAt": "2026-05-04T11:16:26.045Z",
+    "updatedAt": [
+      "2026-05-04T11:17:39.962Z",
+      "2026-05-04T11:17:59.829Z",
+      "2026-05-04T11:18:40.561Z"
+    ]
+  },
+  {
+    "rtoId": "RTOID-1777894310174-227",
+    "trackingId": "TRK73601",
+    "agencyId": "agency-001",
+    "warehouseId": "wh-001",
+    "hubId": "hub-001",
+    "productName": "Nike Air Max 2026",
+    "customerName": "Rakshitha",
+    "customerPhone": "7093966705",
+    "agentId": "AGT-A001-03",
+    "agentName": null,
+    "reason": "Customer Refused: The shipment is not good",
+    "status": "Returned to Warehouse",
+    "date": "4/5/2026",
+    "createdAt": "2026-05-04T11:31:50.174Z",
+    "updatedAt": [
+      "2026-05-04T11:32:52.489Z",
+      "2026-05-04T11:33:09.406Z",
+      "2026-05-04T11:33:50.770Z"
+    ]
+  },
+  {
+    "rtoId": "RTOID-1777895363612-522",
+    "trackingId": "TRK91925",
+    "agencyId": "agency-001",
+    "warehouseId": "wh-001",
+    "hubId": "hub-001",
+    "productName": "Nike Air Max 2026",
+    "customerName": "Rakshitha",
+    "customerPhone": "7093966705",
+    "agentId": "AGT-AGENCY-001-1777134630291",
+    "agentName": null,
+    "reason": "Customer Refused: The shipment is not good",
+    "status": "Returned to Warehouse",
+    "date": "4/5/2026",
+    "createdAt": "2026-05-04T11:49:23.612Z",
+    "updatedAt": [
+      "2026-05-04T11:50:13.511Z",
+      "2026-05-04T11:50:21.477Z",
+      "2026-05-04T11:51:00.911Z"
+    ]
+  }
+]

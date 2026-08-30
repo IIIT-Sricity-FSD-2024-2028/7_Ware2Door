@@ -1,0 +1,48 @@
+{
+  "drivers": [
+    {
+      "id": "drv-001",
+      "name": "Mohan Sashank ",
+      "phone": "8977568680",
+      "licenseNo": "DL01AB1234",
+      "vehicleType": "Truck",
+      "fromNodeId": "wh-001",
+      "fromNodeType": "WAREHOUSE",
+      "fromNodeName": "Delhi Warehouse ",
+      "toNodeId": "hub-001",
+      "toNodeType": "TRANSIT_HUB",
+      "toNodeName": "Telangana Hub ",
+      "routeKey": "wh-001_hub-001",
+      "subscription": {
+        "startDate": "2026-08-28",
+        "endDate": "2026-09-27",
+        "monthlyFee": 1000,
+        "isActive": true
+      },
+      "isActive": true,
+      "createdAt": "2026-08-28T14:12:43.987Z"
+    },
+    {
+      "id": "drv-002",
+      "name": "Himesh ",
+      "phone": "8977568680",
+      "licenseNo": "TG07AB1234",
+      "vehicleType": "Truck",
+      "fromNodeId": "hub-001",
+      "fromNodeType": "TRANSIT_HUB",
+      "fromNodeName": "Telangana Hub ",
+      "toNodeId": "agency-001",
+      "toNodeType": "LOCAL_AGENCY",
+      "toNodeName": "LB Nagar Agency ",
+      "routeKey": "hub-001_agency-001",
+      "subscription": {
+        "startDate": "2026-08-28",
+        "endDate": "2026-09-28",
+        "monthlyFee": 10000,
+        "isActive": true
+      },
+      "isActive": true,
+      "createdAt": "2026-08-28T14:38:10.701Z"
+    }
+  ]
+}

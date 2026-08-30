@@ -1,0 +1,157 @@
+<!doctype html>
+
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="home.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&family=Inter:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+  </head>
+
+  <body>
+    <header class="main-header" id="main-header">
+      <nav class="navbar">
+        <div class="navbar-logo">
+          <a href="../NEW%20LANDING/index.html"
+            ><img src="logo.png" alt="Ware2Door Logo" class="main-logo"
+          /></a>
+        </div>
+        <div class="navbar-nav">
+          <a href="../TRACK/home.html" class="nav-active">Track Order</a>
+          <a href="../CUSTOMER/customer.html">Customer Service</a>
+        </div>
+        <div class="navbar-login">
+          <a href="../AUTH/home.html">Login</a>
+        </div>
+      </nav>
+    </header>
+
+    
+    <section class="track-hero">
+      <div class="track-hero-content">
+        <h1 class="body-1">Track your <span class="accent">Shipment</span></h1>
+        <p class="track-sub">
+          Enter your tracking ID below to get real-time updates on your
+          package's location and delivery status.
+        </p>
+        <div class="body-2">
+          <input type="search" placeholder="e.g. TRK4001" class="searcher" />
+          <button class="tracker">Track</button>
+        </div>
+        <div class="track-hint">
+          Try:
+          <span
+            onclick="document.querySelector('.searcher').value = 'TRK4001'"
+            >TRK4001</span
+          >
+          <span
+            onclick="document.querySelector('.searcher').value = 'TRK4006'"
+            >TRK4006</span
+          >
+          <span
+            onclick="document.querySelector('.searcher').value = 'TRK4011'"
+            >TRK4011</span
+          >
+        </div>
+      </div>
+    </section>
+
+    
+    <div class="results-outer">
+      <div class="body-3">
+        <div class="empty-state">
+          <img src="track.png" />
+          <p class="empty-msg">Your tracking results will appear here.</p>
+        </div>
+
+        <div class="result-section">
+          <div class="tracking-summary"></div>
+          <div class="live-tracking"></div>
+          <div class="shipment-journey"></div>
+          <div class="event-log"></div>
+        </div>
+      </div>
+    </div>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        <div class="footer-col">
+          <img src="logo.png" alt="Ware2Door" class="footer-logo-img" />
+        </div>
+        <div class="footer-col">
+          <h5>Explore</h5>
+          <ul>
+            <li><a href="../NEW%20LANDING/index.html#about-us">About Us</a></li>
+            <li>Our Warehouses</li>
+            <li>Blog</li>
+            <li>News and Media</li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h5>Legal</h5>
+          <ul>
+            <li>Terms</li>
+            <li>Privacy</li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h5>Social Media</h5>
+          <div class="social-links">
+            <a href="#" class="social-circle">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path
+                  d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"
+                ></path>
+              </svg>
+            </a>
+            <a href="#" class="social-circle">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path
+                  d="M4 4l11.733 16h4.267l-11.733 -16z M4 20l6.768 -6.768 M13.232 10.768l6.768 -6.768"
+                ></path>
+              </svg>
+            </a>
+            <a href="#" class="social-circle">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                <path
+                  d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"
+                ></path>
+                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+              </svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <script src="home.js"></script>
+  </body>
+</html>

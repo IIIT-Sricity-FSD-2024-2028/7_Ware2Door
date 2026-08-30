@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json.schemastore.org/nest-cli",
+  "collection": "@nestjs/schematics",
+  "sourceRoot": "src",
+  "compilerOptions": {
+    "deleteOutDir": true,
+    "assets": [
+      "node/*.json",
+      "workers/*.json",
+      "shipments/*.json",
+      "tickets/*.json",
+      "rto/*.json",
+      "scan/*.json",
+      "superuser/*.json"
+    ],
+    "watchAssets": true,
+    "plugins": [
+      "@nestjs/swagger"
+    ]
+  }
+}

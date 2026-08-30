@@ -1,0 +1,778 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Teams — Ware2Door</title>
+  <meta name="description" content="Admin Teams Portal — Node Subscriptions, Fleet, Escalation Desk." />
+  <link rel="stylesheet" href="admin_teams.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body>
+
+  <!-- ── SIDEBAR ── -->
+  <div class="sidebar">
+    <div class="logo-section">
+      <img src="logo.png" alt="Ware2Door" />
+      <div class="at-role-chip"><i class="fa-solid fa-users-gear"></i> ADMIN TEAMS</div>
+    </div>
+    <ul class="menu">
+      <li class="menu-item active" id="nav-partners" onclick="showSection('partners')">
+        <div class="icon-box"><i class="fa-solid fa-handshake"></i></div>
+        <span>Third Party</span>
+      </li>
+      <li class="menu-item" id="nav-subscriptions" onclick="showSection('subscriptions')">
+        <div class="icon-box"><i class="fa-solid fa-building-circle-check"></i></div>
+        <span>Node Partners</span>
+      </li>
+      <li class="menu-item" id="nav-fleet" onclick="showSection('fleet')">
+        <div class="icon-box"><i class="fa-solid fa-truck-moving"></i></div>
+        <span>Fleet Management</span>
+      </li>
+      <li class="menu-item" id="nav-analytics" onclick="showSection('analytics')">
+        <div class="icon-box"><i class="fa-solid fa-chart-bar"></i></div>
+        <span>Node Analytics</span>
+      </li>
+      <li class="menu-item" id="nav-escalation" onclick="showSection('escalation')">
+        <div class="icon-box"><i class="fa-solid fa-triangle-exclamation"></i></div>
+        <span>Escalation Desk</span>
+      </li>
+    </ul>
+    <div class="sidebar-footer">
+      <button class="logout-btn" onclick="doLogout()">
+        <i class="fa-solid fa-right-from-bracket"></i> Logout
+      </button>
+    </div>
+  </div>
+
+  <!-- ── MAIN ── -->
+  <div class="main">
+    <div class="header">
+      <div class="header-left">
+        <h2 id="header-title">Node Partners</h2>
+        <span class="at-authority-chip"><i class="fa-solid fa-users-gear"></i> Admin Teams</span>
+      </div>
+      <div class="user">
+        <div class="user-info">
+          <p class="name">Operations Admin</p>
+          <p class="role-label"><span class="online-dot"></span>&nbsp; Online</p>
+        </div>
+        <div class="avatar">AT</div>
+      </div>
+    </div>
+
+    <div class="page-content">
+
+      <!-- ══ SECTION 1 — NODE SUBSCRIPTIONS ══ -->
+      <div class="section active" id="section-subscriptions">
+
+        <div class="welcome-banner">
+          <div>
+            <p class="welcome-label">Admin Teams Portal</p>
+            <h2 class="welcome-heading"><i class="fa-solid fa-building-circle-check" style="color:var(--gold)"></i> Node Partner Licences</h2>
+            <p class="welcome-sub">Manage Warehouses, Transit Hubs, and Local Agencies — extend subscriptions, upload legal documents, and control active status.</p>
+            <div class="welcome-actions">
+              <button class="btn-primary" onclick="openModal('modal-add-node')"><i class="fa-solid fa-plus"></i> Add New Node</button>
+              <button class="btn-ghost" onclick="loadNodes()"><i class="fa-solid fa-rotate"></i> Refresh</button>
+            </div>
+          </div>
+          <div class="welcome-icon-wrap"><i class="fa-solid fa-building-circle-check"></i></div>
+        </div>
+
+        <!-- Quick stats -->
+        <div class="stat-row" id="sub-stat-row">
+          <div class="quick-stat">
+            <i class="fa-solid fa-warehouse" style="color:var(--gold)"></i>
+            <div><p class="qs-label">Warehouses</p><p class="qs-val" id="stat-wh">—</p></div>
+          </div>
+          <div class="quick-stat">
+            <i class="fa-solid fa-building" style="color:var(--blue)"></i>
+            <div><p class="qs-label">Transit Hubs</p><p class="qs-val" id="stat-hub">—</p></div>
+          </div>
+          <div class="quick-stat">
+            <i class="fa-solid fa-truck-fast" style="color:var(--green)"></i>
+            <div><p class="qs-label">Local Agencies</p><p class="qs-val" id="stat-agency">—</p></div>
+          </div>
+          <div class="quick-stat">
+            <i class="fa-solid fa-circle-pause" style="color:var(--red)"></i>
+            <div><p class="qs-label">Inactive</p><p class="qs-val" id="stat-inactive">—</p></div>
+          </div>
+          <div class="quick-stat">
+            <i class="fa-solid fa-clock" style="color:var(--orange)"></i>
+            <div><p class="qs-label">Expired</p><p class="qs-val" id="stat-expired">—</p></div>
+          </div>
+        </div>
+
+        <!-- Filter bar -->
+        <div class="filter-row">
+          <div class="search-box">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" id="sub-search" placeholder="Search by name, city, email…" oninput="filterNodes()" />
+          </div>
+          <select class="filter-select" id="sub-type-filter" onchange="filterNodes()">
+            <option value="">All Types</option>
+            <option value="WAREHOUSE">Warehouse</option>
+            <option value="TRANSIT_HUB">Transit Hub</option>
+            <option value="LOCAL_AGENCY">Local Agency</option>
+          </select>
+          <select class="filter-select" id="sub-status-filter" onchange="filterNodes()">
+            <option value="">All Status</option>
+            <option value="active">Active</option>
+            <option value="inactive">Inactive</option>
+            <option value="expired">Expired</option>
+          </select>
+        </div>
+
+        <!-- Node card grid -->
+        <div class="node-grid" id="node-grid">
+          <div class="loading-placeholder"><i class="fa-solid fa-spinner fa-spin"></i> Loading nodes…</div>
+        </div>
+      </div>
+
+      <!-- ══ SECTION 2 — FLEET MANAGEMENT ══ -->
+      <div class="section" id="section-fleet">
+        <div class="welcome-banner" style="background:linear-gradient(135deg,#2e1065 0%,#4c1d95 55%,#6d28d9 100%)">
+          <div>
+            <p class="welcome-label">Admin Teams Portal</p>
+            <h2 class="welcome-heading"><i class="fa-solid fa-truck-moving" style="color:#c4b5fd"></i> Fleet Management</h2>
+            <p class="welcome-sub">Register drivers, assign inter-node routes (Warehouse → Hub → Agency), and manage platform subscription billing.</p>
+            <div class="welcome-actions">
+              <button class="btn-purple" onclick="openModal('modal-add-driver')"><i class="fa-solid fa-plus"></i> Add Driver</button>
+              <button class="btn-ghost" onclick="loadDrivers()"><i class="fa-solid fa-rotate"></i> Refresh</button>
+            </div>
+          </div>
+          <div class="welcome-icon-wrap" style="color:#7c3aed"><i class="fa-solid fa-id-card"></i></div>
+        </div>
+
+        <div class="stat-row">
+          <div class="quick-stat"><i class="fa-solid fa-user-tie" style="color:var(--purple)"></i><div><p class="qs-label">Total Drivers</p><p class="qs-val" id="stat-drivers">—</p></div></div>
+          <div class="quick-stat"><i class="fa-solid fa-circle-check" style="color:var(--green)"></i><div><p class="qs-label">Active Subs</p><p class="qs-val" id="stat-active-drv">—</p></div></div>
+          <div class="quick-stat"><i class="fa-solid fa-route" style="color:var(--gold)"></i><div><p class="qs-label">WH → Hub</p><p class="qs-val" id="stat-drv-wh-hub">—</p></div></div>
+          <div class="quick-stat"><i class="fa-solid fa-route" style="color:var(--blue)"></i><div><p class="qs-label">Hub → Agency</p><p class="qs-val" id="stat-drv-hub-agency">—</p></div></div>
+        </div>
+
+        <div class="filter-row">
+          <div class="search-box"><i class="fa-solid fa-magnifying-glass"></i><input type="text" id="fleet-search" placeholder="Search by name, phone, license…" oninput="filterDrivers()" /></div>
+          <select class="filter-select" id="fleet-vehicle-filter" onchange="filterDrivers()">
+            <option value="">All Vehicles</option>
+            <option value="Bike">Bike</option>
+            <option value="Van">Van</option>
+            <option value="Truck">Truck</option>
+            <option value="Auto">Auto</option>
+          </select>
+        </div>
+
+        <div class="table-card">
+          <div class="table-header-row"><span>Registered Drivers <span class="showing-label" id="fleet-count-label"></span></span></div>
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>DRIVER</th><th>CONTACT</th><th>LICENSE</th><th>VEHICLE</th>
+                <th>ROUTE</th><th>MONTHLY FEE</th><th>VALID UNTIL</th><th>STATUS</th><th>ACTIONS</th>
+              </tr>
+            </thead>
+            <tbody id="fleet-table-body">
+              <tr><td colspan="9" class="empty-msg"><i class="fa-solid fa-spinner fa-spin"></i> Loading…</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ══ SECTION 3 — NODE ANALYTICS ══ -->
+      <div class="section" id="section-analytics">
+        <div class="welcome-banner" style="background:linear-gradient(135deg,#0c2340 0%,#1e3a5f 55%,#2563eb 100%)">
+          <div>
+            <p class="welcome-label">Admin Teams Portal</p>
+            <h2 class="welcome-heading"><i class="fa-solid fa-chart-bar" style="color:#93c5fd"></i> Node Performance Analytics</h2>
+            <p class="welcome-sub">Monitor live key metrics for Warehouses, Transit Hubs, and Local Agencies — inventory, scan counts, delivery rates, and capacity usage.</p>
+            <div class="welcome-actions">
+              <button class="btn-primary" onclick="loadNodePerformance()"><i class="fa-solid fa-rotate"></i> Refresh Data</button>
+            </div>
+          </div>
+          <div class="welcome-icon-wrap" style="color:#2563eb"><i class="fa-solid fa-chart-bar"></i></div>
+        </div>
+
+        <!-- Perf Tab Switcher -->
+        <div style="display:flex;background:#e2e8f0;padding:4px;border-radius:8px;gap:4px;margin-bottom:20px;width:fit-content" id="perf-tab-group">
+          <button class="perf-tab active-tab" data-target="WH" onclick="switchPerfTab('WH')" style="border:none;padding:9px 20px;border-radius:6px;font-size:13px;font-weight:600;cursor:pointer;background:white;color:#0f172a;box-shadow:0 1px 3px rgba(0,0,0,.1);font-family:inherit">
+            <i class="fa-solid fa-warehouse" style="margin-right:5px;color:#14b8a6"></i>Warehouses
+          </button>
+          <button class="perf-tab" data-target="HUB" onclick="switchPerfTab('HUB')" style="border:none;padding:9px 20px;border-radius:6px;font-size:13px;font-weight:600;cursor:pointer;background:transparent;color:#64748b;font-family:inherit">
+            <i class="fa-solid fa-building" style="margin-right:5px"></i>Transit Hubs
+          </button>
+          <button class="perf-tab" data-target="AG" onclick="switchPerfTab('AG')" style="border:none;padding:9px 20px;border-radius:6px;font-size:13px;font-weight:600;cursor:pointer;background:transparent;color:#64748b;font-family:inherit">
+            <i class="fa-solid fa-truck-fast" style="margin-right:5px"></i>Local Agencies
+          </button>
+        </div>
+
+        <!-- Warehouse Panel -->
+        <div id="perf-panel-WH" style="display:block">
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px">
+            <label style="font-size:13px;font-weight:600;color:#334155;white-space:nowrap"><i class="fa-solid fa-warehouse" style="color:#14b8a6;margin-right:5px"></i>Select Warehouse:</label>
+            <select id="perf-select-wh" onchange="renderPerfEntityChart('WH', this.value)" style="flex:1;max-width:340px;padding:9px 14px;border:1px solid #e2e8f0;border-radius:8px;font-size:13px;font-family:inherit;cursor:pointer"></select>
+          </div>
+          <div id="perf-metric-cards-WH" style="margin-bottom:20px"></div>
+          <div style="background:white;border:1px solid #e2e8f0;border-radius:12px;padding:20px;box-shadow:0 1px 3px rgba(0,0,0,.05)">
+            <canvas id="perfChart-WH" style="height:320px;width:100%;display:block"></canvas>
+          </div>
+        </div>
+
+        <!-- Hub Panel -->
+        <div id="perf-panel-HUB" style="display:none">
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px">
+            <label style="font-size:13px;font-weight:600;color:#334155;white-space:nowrap"><i class="fa-solid fa-building" style="color:#3b82f6;margin-right:5px"></i>Select Transit Hub:</label>
+            <select id="perf-select-hub" onchange="renderPerfEntityChart('HUB', this.value)" style="flex:1;max-width:340px;padding:9px 14px;border:1px solid #e2e8f0;border-radius:8px;font-size:13px;font-family:inherit;cursor:pointer"></select>
+          </div>
+          <div id="perf-metric-cards-HUB" style="margin-bottom:20px"></div>
+          <div style="background:white;border:1px solid #e2e8f0;border-radius:12px;padding:20px;box-shadow:0 1px 3px rgba(0,0,0,.05)">
+            <canvas id="perfChart-HUB" style="height:320px;width:100%;display:block"></canvas>
+          </div>
+        </div>
+
+        <!-- Agency Panel -->
+        <div id="perf-panel-AG" style="display:none">
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px">
+            <label style="font-size:13px;font-weight:600;color:#334155;white-space:nowrap"><i class="fa-solid fa-truck-fast" style="color:#f59e0b;margin-right:5px"></i>Select Local Agency:</label>
+            <select id="perf-select-ag" onchange="renderPerfEntityChart('AG', this.value)" style="flex:1;max-width:340px;padding:9px 14px;border:1px solid #e2e8f0;border-radius:8px;font-size:13px;font-family:inherit;cursor:pointer"></select>
+          </div>
+          <div id="perf-metric-cards-AG" style="margin-bottom:20px"></div>
+          <div style="background:white;border:1px solid #e2e8f0;border-radius:12px;padding:20px;box-shadow:0 1px 3px rgba(0,0,0,.05)">
+            <canvas id="perfChart-AG" style="height:320px;width:100%;display:block"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══ SECTION 5 — THIRD PARTY PARTNERS ══ -->
+      <div class="section" id="section-partners">
+        <div class="welcome-banner" style="background:linear-gradient(135deg,#1e1b4b 0%,#312e81 55%,#4f46e5 100%)">
+          <div>
+            <p class="welcome-label">Admin Teams Portal</p>
+            <h2 class="welcome-heading"><i class="fa-solid fa-handshake" style="color:#a5b4fc"></i> Third Party Partners</h2>
+            <p class="welcome-sub">Manage external businesses (Amazon, Flipkart, Meesho…) integrated into the Ware2Door network via API. Control tiers, API keys, and activation status.</p>
+            <div class="welcome-actions">
+              <button class="btn-primary" onclick="openModal('modal-add-partner')"><i class="fa-solid fa-plus"></i> Add Partner</button>
+              <button class="btn-ghost" onclick="loadPartners()"><i class="fa-solid fa-rotate"></i> Refresh</button>
+            </div>
+          </div>
+          <div class="welcome-icon-wrap" style="color:#4f46e5"><i class="fa-solid fa-handshake"></i></div>
+        </div>
+
+        <!-- Stats Row -->
+        <div class="stat-row">
+          <div class="quick-stat"><i class="fa-solid fa-handshake" style="color:#6366f1"></i><div><p class="qs-label">Total Partners</p><p class="qs-val" id="stat-tp-total">—</p></div></div>
+          <div class="quick-stat"><i class="fa-solid fa-circle-check" style="color:var(--green)"></i><div><p class="qs-label">Active</p><p class="qs-val" id="stat-tp-active">—</p></div></div>
+          <div class="quick-stat"><i class="fa-solid fa-circle-pause" style="color:var(--orange)"></i><div><p class="qs-label">Inactive</p><p class="qs-val" id="stat-tp-inactive">—</p></div></div>
+          <div class="quick-stat"><i class="fa-solid fa-key" style="color:#a855f7"></i><div><p class="qs-label">API Calls (This Month)</p><p class="qs-val" id="stat-tp-usage">—</p></div></div>
+        </div>
+
+        <!-- Filter Row -->
+        <div class="filter-row">
+          <div class="search-box"><i class="fa-solid fa-magnifying-glass"></i><input type="text" id="tp-search" placeholder="Search by name, email, tier…" oninput="filterPartners()" /></div>
+          <select class="filter-select" id="tp-tier-filter" onchange="filterPartners()">
+            <option value="">All Tiers</option>
+            <option value="Starter">Starter</option>
+            <option value="Growth">Growth</option>
+            <option value="Business">Business</option>
+            <option value="Enterprise">Enterprise</option>
+          </select>
+          <select class="filter-select" id="tp-status-filter" onchange="filterPartners()">
+            <option value="">All Status</option>
+            <option value="active">Active</option>
+            <option value="inactive">Inactive</option>
+          </select>
+        </div>
+
+        <!-- Table -->
+        <div class="table-card">
+          <div class="table-header-row"><span>Registered Partners <span class="showing-label" id="tp-count-label"></span></span></div>
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>PARTNER</th><th>TIER</th><th>API KEY</th><th>USAGE THIS MONTH</th><th>CONTACT</th><th>JOINED</th><th>STATUS</th><th>ACTIONS</th>
+              </tr>
+            </thead>
+            <tbody id="tp-table-body">
+              <tr><td colspan="8" class="empty-msg"><i class="fa-solid fa-spinner fa-spin"></i> Loading…</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ══ SECTION 6 — ESCALATION DESK ══ -->
+      <div class="section" id="section-escalation">
+        <div class="welcome-banner" style="background:linear-gradient(135deg,#064e3b 0%,#065f46 55%,#047857 100%)">
+          <div>
+            <p class="welcome-label">Admin Teams Portal</p>
+            <h2 class="welcome-heading"><i class="fa-solid fa-shield-halved" style="color:#6ee7b7"></i> Central Escalation Desk</h2>
+            <p class="welcome-sub">Handle tickets escalated from Local Agencies. Assign officers, coordinate across nodes, and resolve cross-network issues.</p>
+            <div class="welcome-actions">
+              <button class="btn-emerald" onclick="loadEscalations()"><i class="fa-solid fa-rotate"></i> Refresh</button>
+            </div>
+          </div>
+          <div class="welcome-icon-wrap" style="color:var(--emerald)"><i class="fa-solid fa-headset"></i></div>
+        </div>
+
+        <div class="stat-row">
+          <div class="quick-stat"><i class="fa-solid fa-ticket" style="color:var(--orange)"></i><div><p class="qs-label">Total Escalated</p><p class="qs-val" id="stat-esc-total">—</p></div></div>
+          <div class="quick-stat"><i class="fa-solid fa-eye" style="color:var(--blue)"></i><div><p class="qs-label">Under Review</p><p class="qs-val" id="stat-esc-reviewing">—</p></div></div>
+          <div class="quick-stat"><i class="fa-solid fa-check-double" style="color:var(--green)"></i><div><p class="qs-label">Resolved</p><p class="qs-val" id="stat-esc-resolved">—</p></div></div>
+          <div class="quick-stat"><i class="fa-solid fa-fire" style="color:var(--red)"></i><div><p class="qs-label">High Priority</p><p class="qs-val" id="stat-esc-high">—</p></div></div>
+        </div>
+
+        <div class="filter-row">
+          <div class="search-box"><i class="fa-solid fa-magnifying-glass"></i><input type="text" id="esc-search" placeholder="Search Ticket ID, Tracking ID, Agency…" oninput="filterEscalations()" /></div>
+          <select class="filter-select" id="esc-priority-filter" onchange="filterEscalations()">
+            <option value="">All Priorities</option>
+            <option value="High">High</option>
+            <option value="Medium">Medium</option>
+            <option value="Low">Low</option>
+          </select>
+          <select class="filter-select" id="esc-status-filter" onchange="filterEscalations()">
+            <option value="">All Status</option>
+            <option value="Pending">Pending</option>
+            <option value="Reviewing">Under Review</option>
+            <option value="Resolved">Resolved</option>
+          </select>
+        </div>
+
+        <div class="table-card">
+          <div class="table-header-row"><span>Escalated Tickets <span class="showing-label" id="esc-count-label"></span></span></div>
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>TICKET ID</th><th>TRACKING ID</th><th>AGENCY</th><th>SUBJECT</th>
+                <th>PRIORITY</th><th>ESCALATED ON</th><th>ESC. STATUS</th><th>NOTE</th><th>ACTIONS</th>
+              </tr>
+            </thead>
+            <tbody id="esc-table-body">
+              <tr><td colspan="9" class="empty-msg"><i class="fa-solid fa-spinner fa-spin"></i> Loading…</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div><!-- /page-content -->
+  </div><!-- /main -->
+
+  <!-- ════════════════ MODALS ════════════════ -->
+
+  <!-- NODE DETAIL PANEL -->
+  <div class="modal-overlay" id="modal-node-detail">
+    <div class="modal modal-lg">
+      <div class="modal-header">
+        <div>
+          <h3 class="modal-title" id="nd-title">Node Detail</h3>
+          <p class="modal-subtitle" id="nd-id-label">ID: —</p>
+        </div>
+        <button class="modal-close" onclick="closeModal('modal-node-detail')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <!-- Status + type row -->
+        <div style="display:flex;gap:10px;align-items:center;margin-bottom:20px">
+          <span id="nd-type-badge" class="type-badge"></span>
+          <span id="nd-active-badge" class="sub-status"></span>
+          <span id="nd-sub-status-badge" class="sub-status" style="margin-left:auto"></span>
+        </div>
+
+        <!-- Info grid -->
+        <div class="info-grid">
+          <div class="info-item"><span class="info-label">Name</span><span class="info-val" id="nd-name">—</span></div>
+          <div class="info-item"><span class="info-label">Email</span><span class="info-val" id="nd-email">—</span></div>
+          <div class="info-item"><span class="info-label">Phone</span><span class="info-val" id="nd-phone">—</span></div>
+          <div class="info-item"><span class="info-label">City</span><span class="info-val" id="nd-city">—</span></div>
+          <div class="info-item full"><span class="info-label">Address</span><span class="info-val" id="nd-address">—</span></div>
+          <div class="info-item"><span class="info-label">Subscription Start</span><span class="info-val" id="nd-sub-start">—</span></div>
+          <div class="info-item"><span class="info-label">Subscription End</span><span class="info-val" id="nd-sub-end">—</span></div>
+          <div class="info-item"><span class="info-label">Monthly Rate</span><span class="info-val" id="nd-rate">—</span></div>
+          <div class="info-item"><span class="info-label">Legal Documents</span><span class="info-val" id="nd-docs-count">—</span></div>
+        </div>
+
+        <!-- Legal docs gallery -->
+        <div id="nd-docs-gallery" class="docs-gallery" style="margin-top:12px"></div>
+
+        <!-- Action strip -->
+        <div class="action-strip">
+          <button class="btn-primary" onclick="openExtendSub()"><i class="fa-solid fa-calendar-plus"></i> Extend Subscription</button>
+          <button class="btn-ghost" onclick="openUploadDocs()"><i class="fa-solid fa-file-arrow-up"></i> Upload Legal Docs</button>
+          <button class="btn-toggle" id="btn-toggle-active" onclick="toggleActive()"></button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- EXTEND SUBSCRIPTION -->
+  <div class="modal-overlay" id="modal-extend-sub">
+    <div class="modal">
+      <div class="modal-header">
+        <div>
+          <h3 class="modal-title"><i class="fa-solid fa-calendar-plus"></i> Extend Subscription</h3>
+          <p class="modal-subtitle" id="ext-sub-node-name">Node: —</p>
+        </div>
+        <button class="modal-close" onclick="closeModal('modal-extend-sub')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-grid">
+          <div class="form-group">
+            <label>New End Date *</label>
+            <input type="date" id="ext-end-date" />
+          </div>
+          <div class="form-group">
+            <label>Monthly Rate (₹) *</label>
+            <input type="number" id="ext-rate" min="0" placeholder="e.g. 3000" />
+          </div>
+        </div>
+        <p style="font-size:12px;color:var(--text-muted);margin-top:10px"><i class="fa-solid fa-circle-info"></i> This will extend the subscription end date and update the monthly billing rate.</p>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-ghost" onclick="closeModal('modal-extend-sub')">Cancel</button>
+        <button class="btn-primary" onclick="submitExtendSub()"><i class="fa-solid fa-check"></i> Confirm Extension</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- UPLOAD LEGAL DOCS -->
+  <div class="modal-overlay" id="modal-upload-docs">
+    <div class="modal">
+      <div class="modal-header">
+        <div>
+          <h3 class="modal-title"><i class="fa-solid fa-file-arrow-up"></i> Legal Documents</h3>
+          <p class="modal-subtitle" id="upload-docs-node-name">Node: —</p>
+        </div>
+        <button class="modal-close" onclick="closeModal('modal-upload-docs')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="file-drop-zone" id="file-drop-zone"
+          onclick="document.getElementById('legal-file-input').click()"
+          ondragover="handleDragOver(event)"
+          ondrop="handleDrop(event)"
+          ondragleave="this.classList.remove('dragover')">
+          <i class="fa-solid fa-cloud-arrow-up"></i>
+          <p>Click to browse or drag &amp; drop files here</p>
+          <span>Supports: PDF, JPG, PNG · Max 10 MB per file</span>
+          <input type="file" id="legal-file-input" multiple accept=".pdf,.jpg,.jpeg,.png" onchange="handleFileSelect(this.files)" />
+        </div>
+        <div class="file-list" id="selected-file-list"></div>
+
+        <div id="existing-docs-section" style="margin-top:20px;display:none">
+          <p class="form-section-title" style="margin-top:0">EXISTING DOCUMENTS</p>
+          <div class="docs-gallery" id="existing-docs-gallery"></div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-ghost" onclick="closeModal('modal-upload-docs')">Cancel</button>
+        <button class="btn-primary" onclick="submitUploadDocs()" id="btn-upload-submit"><i class="fa-solid fa-upload"></i> Upload Files</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ADD NEW NODE -->
+  <div class="modal-overlay" id="modal-add-node">
+    <div class="modal modal-lg">
+      <div class="modal-header">
+        <div>
+          <h3 class="modal-title"><i class="fa-solid fa-plus-circle"></i> Add New Node Partner</h3>
+          <p class="modal-subtitle">Register a new Warehouse, Transit Hub, or Local Agency</p>
+        </div>
+        <button class="modal-close" onclick="closeModal('modal-add-node')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <form id="form-add-node" onsubmit="submitAddNode(event)">
+          <div class="form-grid">
+            <div class="form-section-title">NODE DETAILS</div>
+            <div class="form-group">
+              <label>Node Type *</label>
+              <select id="node-type" required>
+                <option value="">Select type…</option>
+                <option value="WareHouse">Warehouse</option>
+                <option value="TransitHub">Transit Hub</option>
+                <option value="LocalAgency">Local Agency</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Node Name *</label>
+              <input type="text" id="node-name" placeholder="e.g. Mumbai West Warehouse" required />
+            </div>
+            <div class="form-group">
+              <label>Email *</label>
+              <input type="email" id="node-email" placeholder="node@example.com" required />
+            </div>
+            <div class="form-group">
+              <label>Password *</label>
+              <input type="password" id="node-password" placeholder="Secure password" required />
+            </div>
+            <div class="form-group">
+              <label>Phone *</label>
+              <input type="text" id="node-phone" placeholder="9876543210" required />
+            </div>
+            <div class="form-group">
+              <label>City *</label>
+              <input type="text" id="node-city" placeholder="e.g. Mumbai" required />
+            </div>
+            <div class="form-group full">
+              <label>Address *</label>
+              <input type="text" id="node-address" placeholder="Full street address" required />
+            </div>
+            <div class="form-group">
+              <label>Latitude</label>
+              <input type="text" id="node-lat" placeholder="e.g. 19.0760" />
+            </div>
+            <div class="form-group">
+              <label>Longitude</label>
+              <input type="text" id="node-lng" placeholder="e.g. 72.8777" />
+            </div>
+            <div class="form-section-title">SUBSCRIPTION</div>
+            <div class="form-group">
+              <label>Monthly Rate (₹) *</label>
+              <input type="number" id="node-rate" placeholder="2000" min="0" required />
+            </div>
+            <div class="form-group">
+              <label>Start Date *</label>
+              <input type="date" id="node-start" required />
+            </div>
+            <div class="form-group">
+              <label>End Date *</label>
+              <input type="date" id="node-end" required />
+            </div>
+          </div>
+
+          <!-- Legal Docs Upload -->
+          <div style="margin-top:20px">
+            <div class="form-section-title">LEGAL DOCUMENTS <span style="font-weight:400;color:var(--text-light);font-size:10px">(optional — can also upload later)</span></div>
+            <div class="file-drop-zone" id="add-node-drop-zone"
+              onclick="document.getElementById('add-node-file-input').click()"
+              ondragover="event.preventDefault();this.classList.add('dragover')"
+              ondragleave="this.classList.remove('dragover')"
+              ondrop="handleAddNodeDrop(event)">
+              <i class="fa-solid fa-file-arrow-up"></i>
+              <p>Drag &amp; drop legal documents here</p>
+              <span>or click to browse — PDF, JPG, PNG supported</span>
+              <input type="file" id="add-node-file-input" multiple accept=".pdf,.jpg,.jpeg,.png"
+                onchange="handleAddNodeFileSelect(this.files)" />
+            </div>
+            <div class="file-list" id="add-node-file-list"></div>
+          </div>
+
+          <div class="modal-footer" style="border:none;padding:20px 0 0">
+            <button type="button" class="btn-ghost" onclick="closeModal('modal-add-node')">Cancel</button>
+            <button type="submit" class="btn-primary" id="btn-add-node-submit"><i class="fa-solid fa-check"></i> Create Node</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- ADD DRIVER -->
+  <div class="modal-overlay" id="modal-add-driver">
+    <div class="modal modal-lg">
+      <div class="modal-header">
+        <div>
+          <h3 class="modal-title"><i class="fa-solid fa-user-plus"></i> Register New Driver</h3>
+          <p class="modal-subtitle">Add a fleet driver and assign their inter-node route</p>
+        </div>
+        <button class="modal-close" onclick="closeModal('modal-add-driver')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <form id="form-add-driver" onsubmit="submitAddDriver(event)">
+          <div class="form-grid">
+            <div class="form-section-title">DRIVER DETAILS</div>
+            <div class="form-group">
+              <label>Full Name *</label>
+              <input type="text" id="drv-name" placeholder="e.g. Rajan Kumar" required />
+            </div>
+            <div class="form-group">
+              <label>Phone *</label>
+              <input type="text" id="drv-phone" placeholder="9876543210" required />
+            </div>
+            <div class="form-group">
+              <label>License Number *</label>
+              <input type="text" id="drv-license" placeholder="TN01AB1234" required />
+            </div>
+            <div class="form-group">
+              <label>Vehicle Type *</label>
+              <select id="drv-vehicle" required>
+                <option value="">Select…</option>
+                <option value="Bike">Bike</option>
+                <option value="Van">Van</option>
+                <option value="Truck">Truck</option>
+                <option value="Auto">Auto</option>
+              </select>
+            </div>
+            <div class="form-section-title">ROUTE ASSIGNMENT</div>
+            <div class="form-group full">
+              <label>From Node *</label>
+              <select id="drv-from-node" required onchange="updateToNodeOptions()">
+                <option value="">Select origin node…</option>
+              </select>
+            </div>
+            <div class="form-group full">
+              <label>To Node *</label>
+              <select id="drv-to-node" required>
+                <option value="">Select destination node…</option>
+              </select>
+            </div>
+            <div class="form-section-title">SUBSCRIPTION</div>
+            <div class="form-group">
+              <label>Monthly Fee (₹) *</label>
+              <input type="number" id="drv-fee" placeholder="200" min="0" required />
+            </div>
+            <div class="form-group">
+              <label>Start Date *</label>
+              <input type="date" id="drv-start" required />
+            </div>
+            <div class="form-group">
+              <label>End Date *</label>
+              <input type="date" id="drv-end" required />
+            </div>
+          </div>
+          <div class="modal-footer" style="border:none;padding:20px 0 0">
+            <button type="button" class="btn-ghost" onclick="closeModal('modal-add-driver')">Cancel</button>
+            <button type="submit" class="btn-purple"><i class="fa-solid fa-check"></i> Register Driver</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- EDIT DRIVER -->
+  <div class="modal-overlay" id="modal-edit-driver">
+    <div class="modal">
+      <div class="modal-header">
+        <div>
+          <h3 class="modal-title"><i class="fa-solid fa-pen-to-square"></i> Edit Driver</h3>
+          <p class="modal-subtitle" id="edit-drv-id-label">Driver ID: —</p>
+        </div>
+        <button class="modal-close" onclick="closeModal('modal-edit-driver')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-grid">
+          <div class="form-group"><label>Full Name</label><input type="text" id="edit-drv-name" /></div>
+          <div class="form-group"><label>Phone</label><input type="text" id="edit-drv-phone" /></div>
+          <div class="form-group"><label>License No.</label><input type="text" id="edit-drv-license" /></div>
+          <div class="form-group">
+            <label>Vehicle Type</label>
+            <select id="edit-drv-vehicle">
+              <option value="Bike">Bike</option><option value="Van">Van</option>
+              <option value="Truck">Truck</option><option value="Auto">Auto</option>
+            </select>
+          </div>
+          <div class="form-group"><label>Monthly Fee (₹)</label><input type="number" id="edit-drv-fee" /></div>
+          <div class="form-group"><label>Subscription End Date</label><input type="date" id="edit-drv-end" /></div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-ghost" onclick="closeModal('modal-edit-driver')">Cancel</button>
+        <button class="btn-purple" onclick="submitEditDriver()"><i class="fa-solid fa-check"></i> Save Changes</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- UPDATE ESCALATION -->
+  <div class="modal-overlay" id="modal-update-esc">
+    <div class="modal">
+      <div class="modal-header">
+        <div>
+          <h3 class="modal-title"><i class="fa-solid fa-headset"></i> Update Escalation</h3>
+          <p class="modal-subtitle" id="esc-ticket-id-label">Ticket: —</p>
+        </div>
+        <button class="modal-close" onclick="closeModal('modal-update-esc')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-grid col-1">
+          <div class="form-group">
+            <label>Escalation Status</label>
+            <select id="esc-new-status">
+              <option value="Pending">Pending</option>
+              <option value="Reviewing">Under Review</option>
+              <option value="Resolved">Resolved</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Assigned Officer / Team</label>
+            <input type="text" id="esc-assign" placeholder="e.g. Desk Officer — Priya" />
+          </div>
+          <div class="form-group">
+            <label>Resolution Note</label>
+            <textarea id="esc-resolution-note" placeholder="Describe action taken…"></textarea>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-ghost" onclick="closeModal('modal-update-esc')">Cancel</button>
+        <button class="btn-emerald" onclick="submitUpdateEsc()"><i class="fa-solid fa-check"></i> Update</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast-container" id="toast-container"></div>
+  <script src="admin_teams.js"></script>
+
+  <!-- ══ MODAL: ADD THIRD PARTY PARTNER ══ -->
+  <div class="modal-overlay" id="modal-add-partner">
+    <div class="modal" style="max-width:540px">
+      <div class="modal-header">
+        <h3 class="modal-title"><i class="fa-solid fa-handshake" style="color:#6366f1;margin-right:8px"></i>Add Third Party Partner</h3>
+        <button class="modal-close" onclick="closeModal('modal-add-partner')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-grid" style="grid-template-columns:1fr 1fr;display:grid;gap:14px">
+          <div class="form-group" style="grid-column:1/-1">
+            <label class="form-label">Company / Platform Name *</label>
+            <input class="form-input" type="text" id="tp-name" placeholder="e.g. Amazon India, Flipkart" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Business Email *</label>
+            <input class="form-input" type="email" id="tp-email" placeholder="api@company.com" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Address / HQ</label>
+            <input class="form-input" type="text" id="tp-address" placeholder="City or HQ address" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Contact Person Name</label>
+            <input class="form-input" type="text" id="tp-contact-name" placeholder="John Doe" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Contact Phone</label>
+            <input class="form-input" type="text" id="tp-contact-phone" placeholder="+91 98XXXXXXXX" />
+          </div>
+          <div class="form-group" style="grid-column:1/-1">
+            <label class="form-label">Subscription Tier *</label>
+            <select class="form-input" id="tp-tier">
+              <option value="Starter">Starter — 100 shipments/month — ₹2,000/mo</option>
+              <option value="Growth">Growth — 500 shipments/month — ₹8,000/mo</option>
+              <option value="Business">Business — 2,000 shipments/month — ₹25,000/mo</option>
+              <option value="Enterprise">Enterprise — 10,000 shipments/month — ₹50,000/mo</option>
+            </select>
+          </div>
+        </div>
+        <div id="tp-add-error" style="color:#ef4444;font-size:13px;margin-top:10px;display:none"></div>
+      </div>
+      <div class="modal-footer" style="display:flex;gap:10px;justify-content:flex-end;padding:16px 24px;border-top:1px solid #e2e8f0">
+        <button type="button" class="btn-ghost" onclick="closeModal('modal-add-partner')">Cancel</button>
+        <button type="button" class="btn-primary" onclick="submitAddPartner()"><i class="fa-solid fa-plus"></i> Add &amp; Generate API Key</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ MODAL: REVEAL API KEY ══ -->
+  <div class="modal-overlay" id="modal-api-key">
+    <div class="modal" style="max-width:480px">
+      <div class="modal-header">
+        <h3 class="modal-title"><i class="fa-solid fa-key" style="color:#a855f7;margin-right:8px"></i>API Key</h3>
+        <button class="modal-close" onclick="closeModal('modal-api-key')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p style="color:#64748b;font-size:13px;margin-bottom:16px">Share this key with your partner. For security, it cannot be recovered once dismissed — only regenerated.</p>
+        <div style="background:#1e1b4b;color:#a5b4fc;font-family:monospace;font-size:14px;padding:16px;border-radius:10px;word-break:break-all;letter-spacing:.5px" id="modal-api-key-value">—</div>
+        <button onclick="copyApiKey()" style="margin-top:12px;border:1px solid #6366f1;background:transparent;color:#6366f1;padding:8px 18px;border-radius:6px;cursor:pointer;font-weight:600;font-family:inherit"><i class="fa-regular fa-copy" style="margin-right:6px"></i>Copy Key</button>
+      </div>
+      <div class="modal-footer" style="display:flex;justify-content:flex-end;padding:16px 24px;border-top:1px solid #e2e8f0">
+        <button class="btn-primary" onclick="closeModal('modal-api-key')">Done</button>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>

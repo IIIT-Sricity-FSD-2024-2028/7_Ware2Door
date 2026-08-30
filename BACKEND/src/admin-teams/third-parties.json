@@ -1,0 +1,25 @@
+{
+  "partners": [
+    {
+      "id": "tp-001",
+      "name": "Amazon India",
+      "email": "amazon@logix.com",
+      "apiKey": "wh2d_tp_futfen3mjsqieisx9yjkvnerbiov4nta",
+      "tier": "Enterprise",
+      "tierLimits": {
+        "name": "Enterprise",
+        "maxShipmentsPerMonth": 10000,
+        "monthlyFee": 50000
+      },
+      "currentMonthUsage": 1,
+      "usageResetMonth": "2026-08",
+      "isActive": true,
+      "contact": {
+        "name": "Raghuveer",
+        "phone": "+91 8977568680"
+      },
+      "address": "Hyderabad",
+      "createdAt": "2026-08-30T11:55:55.293Z"
+    }
+  ]
+}

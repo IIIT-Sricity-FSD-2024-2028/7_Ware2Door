@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>WARE2DOOR — Forgot Password</title>
+    <link rel="stylesheet" href="forgot.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+  </head>
+
+  <body>
+    <div class="logo-img">
+      <a href="../NEW LANDING/index.html"
+        ><img src="logo.png" alt="Ware2Door Logo"
+      /></a>
+    </div>
+
+    <div class="form-element forgot">
+      <div class="icon-circle">
+        <i class="fa-solid fa-rotate-left"></i>
+      </div>
+
+      <h2>Forgot Password?</h2>
+
+
+      <div id="step-1">
+        <span class="desc-text">
+          No worries! Enter your registered email address to reset your password.
+        </span>
+
+        <div class="input-group">
+          <i class="fa-regular fa-envelope"></i>
+          <input type="email" id="email-inpt" placeholder="name@company.com" class="inpt-hldr" />
+        </div>
+
+        <button id="verify-btn" class="login-btn">Verify Email →</button>
+      </div>
+
+
+      <div id="step-2" style="display: none;">
+        <span class="desc-text">
+          An OTP has been sent to your email. Please enter the OTP and your new password below.
+        </span>
+
+        <div class="input-group">
+          <i class="fa-solid fa-key"></i>
+          <input type="text" id="otp-inpt" placeholder="Enter 6-digit OTP" class="inpt-hldr" maxlength="6" />
+        </div>
+
+        <div class="input-group" style="margin-top: 15px;">
+          <i class="fa-solid fa-lock"></i>
+          <input type="password" id="new-pwd-inpt" placeholder="New Password" class="inpt-hldr" />
+        </div>
+
+        <div class="input-group" style="margin-top: 15px;">
+          <i class="fa-solid fa-lock"></i>
+          <input type="password" id="confirm-pwd-inpt" placeholder="Confirm Password" class="inpt-hldr" />
+        </div>
+
+        <button id="reset-btn" class="login-btn">Reset Password ✓</button>
+      </div>
+
+      <div id="error-msg" style="color: #ff4d4f; font-size: 0.9rem; margin-top: 10px; display: none; text-align: center;"></div>
+      <div id="success-msg" style="color: #52c41a; font-size: 0.9rem; margin-top: 10px; display: none; text-align: center;"></div>
+
+      <a href="home.html"><button class="back-link">← Back to Login</button></a>
+
+      <script src="forgot.js"></script>
+    </div>
+  </body>
+</html>

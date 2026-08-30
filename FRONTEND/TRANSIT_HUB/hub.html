@@ -1,0 +1,949 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ware2Door — Transit Hub</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="hub.css" />
+  </head>
+  <body>
+    
+    <div class="sidebar" id="sidebar">
+      <div class="logo-section">
+        <img src="logo.png" alt="Ware2Door" class="logo-img" />
+      </div>
+      <ul class="menu">
+        <li class="menu-item active" id="nav-dashboard">
+          <div class="icon-box"><i class="fa-solid fa-table-columns"></i></div>
+          <span>Dashboard</span>
+        </li>
+
+        <li class="menu-item has-sub" id="nav-inv-toggle">
+          <div class="icon-box"><i class="fa-solid fa-boxes-stacked"></i></div>
+          <span>Manage Inventory</span>
+          <i class="fa-solid fa-chevron-down nav-chevron" id="inv-chevron"></i>
+        </li>
+        <ul class="nav-submenu" id="inv-submenu">
+          <li class="menu-sub-item" id="nav-hub-inv">
+            <div class="icon-box"><i class="fa-solid fa-list-ul"></i></div>
+            <span>Hub Inventory</span>
+          </li>
+          <li class="menu-sub-item" id="nav-reports">
+            <div class="icon-box"><i class="fa-solid fa-chart-bar"></i></div>
+            <span>Reports</span>
+          </li>
+        </ul>
+
+        <li class="menu-item" id="nav-scan">
+          <div class="icon-box"><i class="fa-solid fa-barcode"></i></div>
+          <span>Scan Operations</span>
+        </li>
+      </ul>
+      <div class="bottom">
+        <li class="menu-item stng-btn" id="nav-settings">
+          <div class="icon-box"><i class="fa-solid fa-gear"></i></div>
+          <span>Settings</span>
+        </li>
+      </div>
+    </div>
+
+    
+    <div class="main">
+      
+      <div class="header">
+        <h2 id="header-title">Dashboard</h2>
+        <div class="header-right">
+          <div class="user">
+            <div>
+              <p class="name" id="top-name"></p>
+              <p class="role" id="top-role"></p>
+            </div>
+            <div class="avatar" id="top-avatar"></div>
+          </div>
+        </div>
+      </div>
+
+      
+      <div class="dashboard-page page-content" id="page-dashboard">
+        <div class="welcome-banner">
+          <div class="welcome-text">
+            <p class="welcome-label">Welcome back,</p>
+            <h2 class="welcome-heading">
+              <span id="dash-greeting">Good Day,</span>
+              <span id="dash-uname"></span><span id="dash-date"></span>
+            </h2>
+            <p class="welcome-sub" id="dash-alert-line">
+              Everything looks steady across all zones today.
+            </p>
+            <div class="welcome-actions">
+              <button class="btn-primary dash-scan-btn" id="dash-scan-btn">
+                <i class="fa-solid fa-barcode"></i> Scan Package
+              </button>
+              <button
+                class="btn-secondary-dark"
+                id="dash-export-btn"
+                style="
+                  padding: 10px 18px;
+                  border-radius: 10px;
+                  font-family: &quot;Poppins&quot;, sans-serif;
+                  font-size: 13px;
+                  font-weight: 500;
+                  cursor: pointer;
+                  display: flex;
+                  align-items: center;
+                  gap: 7px;
+                  border: none;
+                  transition: 0.2s;
+                "
+              >
+                <i class="fa-regular fa-file-lines"></i> Export Reports
+              </button>
+            </div>
+          </div>
+          <div class="welcome-icon-wrap">
+            <i class="fa-solid fa-chart-bar welcome-icon"></i>
+          </div>
+        </div>
+
+        <div class="stat-grid">
+          <div class="stat-card">
+            <div class="stat-top">
+              <div class="stat-icon-box">
+                <i class="fa-solid fa-right-to-bracket"></i>
+              </div>
+              <span class="stat-badge stat-badge--blue" id="dash-inbound-badge"
+                >+Active</span
+              >
+            </div>
+            <p class="stat-label">INBOUND TODAY</p>
+            <p class="stat-value" id="dash-inbound">—</p>
+            <span class="stat-unit">packages</span>
+          </div>
+          <div class="stat-card">
+            <div class="stat-top">
+              <div class="stat-icon-box">
+                <i class="fa-solid fa-clipboard-list"></i>
+              </div>
+              <span class="stat-badge stat-badge--orange">Pending</span>
+            </div>
+            <p class="stat-label">PENDING SCANS</p>
+            <p class="stat-value" id="dash-pending">—</p>
+            <span class="stat-unit">packages</span>
+          </div>
+          <div class="stat-card">
+            <div class="stat-top">
+              <div class="stat-icon-box">
+                <i class="fa-solid fa-right-from-bracket"></i>
+              </div>
+              <span class="stat-badge stat-badge--blue" id="dash-outbound-badge"
+                >Steady</span
+              >
+            </div>
+            <p class="stat-label">OUTBOUND TODAY</p>
+            <p class="stat-value" id="dash-outbound">—</p>
+            <span class="stat-unit">packages</span>
+          </div>
+          <div class="stat-card">
+            <div class="stat-top">
+              <div class="stat-icon-box stat-icon-box--orange">
+                <i class="fa-solid fa-warehouse"></i>
+              </div>
+              <span class="stat-badge stat-badge--orange" id="dash-cap-badge"
+                >Capacity</span
+              >
+            </div>
+            <p class="stat-label">HUB CAPACITY</p>
+            <p class="stat-value" id="dash-capacity">—</p>
+            <div class="cap-bar-dash">
+              <div
+                class="cap-fill-dash"
+                id="dash-cap-fill"
+                style="width: 0%"
+              ></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="dash-bottom-grid">
+          <div class="activity-card" style="flex: 2">
+            <div class="activity-header">
+              <div>
+                <h3 class="activity-title">Quick Operations</h3>
+                <p class="activity-sub">
+                  Jump directly into scanning activities
+                </p>
+              </div>
+            </div>
+            <div class="qa-item" id="qop-inscan">
+              <div class="qa-icon qa-icon--blue">
+                <i class="fa-solid fa-right-to-bracket"></i>
+              </div>
+              <span>Start In-Scan</span>
+              <i class="fa-solid fa-chevron-right qa-arrow"></i>
+            </div>
+            <div class="qa-item" id="qop-outscan">
+              <div class="qa-icon qa-icon--orange">
+                <i class="fa-solid fa-right-from-bracket"></i>
+              </div>
+              <span>Start Out-Scan</span>
+              <i class="fa-solid fa-chevron-right qa-arrow"></i>
+            </div>
+            <div
+              class="qa-item"
+              onclick="document.getElementById('nav-hub-inv').click()"
+            >
+              <div class="qa-icon qa-icon--green">
+                <i class="fa-solid fa-boxes-stacked"></i>
+              </div>
+              <span>View Hub Inventory</span>
+              <i class="fa-solid fa-chevron-right qa-arrow"></i>
+            </div>
+            <div
+              class="qa-item"
+              onclick="document.getElementById('nav-reports').click()"
+            >
+              <div class="qa-icon qa-icon--red">
+                <i class="fa-solid fa-chart-bar"></i>
+              </div>
+              <span>View Reports</span>
+              <i class="fa-solid fa-chevron-right qa-arrow"></i>
+            </div>
+          </div>
+          <div class="quick-actions-card">
+            <h3 class="activity-title" style="margin-bottom: 16px">
+              Hub Overview
+            </h3>
+            <div class="agent-avail-section">
+              <h4 class="agent-avail-title">INVENTORY STATUS</h4>
+              <div class="agent-avail-row">
+                <span class="avail-dot avail-green"></span>
+                <span class="avail-label">In Stock (Scanned In)</span>
+                <span class="avail-count" id="inv-instock">0</span>
+              </div>
+              <div class="agent-avail-row">
+                <span class="avail-dot avail-orange"></span>
+                <span class="avail-label">Pending Scans</span>
+                <span class="avail-count" id="inv-pending-count">0</span>
+              </div>
+              <div class="agent-avail-row">
+                <span class="avail-dot avail-grey"></span>
+                <span class="avail-label">Dispatched</span>
+                <span class="avail-count" id="inv-dispatched">0</span>
+              </div>
+            </div>
+            <div class="agent-avail-section" style="margin-top: 16px">
+              <h4 class="agent-avail-title">SCAN ACTIVITY</h4>
+              <div class="agent-avail-row">
+                <span class="avail-dot avail-green"></span>
+                <span class="avail-label">Successful Scans</span>
+                <span class="avail-count" id="dash-success-scans">0</span>
+              </div>
+              <div class="agent-avail-row">
+                <span class="avail-dot" style="background: #ef4444"></span>
+                <span class="avail-label">Flagged Errors</span>
+                <span class="avail-count" id="dash-error-scans">0</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+
+      
+      <div class="page-content" id="page-hub-inv" style="display: none">
+        <div class="page-title-row">
+          <div>
+            <h2 class="page-title">Hub Inventory</h2>
+            <p class="page-subtitle">
+              Shipments currently in stock (in-scanned, not yet dispatched)
+            </p>
+          </div>
+          <button class="btn-primary" id="inv-export-csv">
+            <i class="fa-solid fa-download"></i> Export CSV
+          </button>
+        </div>
+
+        <div class="table-card">
+          <div
+            class="filter-row"
+            style="
+              padding: 16px 20px;
+              display: flex;
+              gap: 12px;
+              align-items: center;
+            "
+          >
+            <div class="search-box">
+              <i class="fa-solid fa-magnifying-glass"></i>
+              <input
+                type="text"
+                id="inv-search"
+                placeholder="Search tracking ID, origin, or destination..."
+              />
+            </div>
+            <select id="inv-dest-filter" class="filter-select">
+              <option value="">All Destinations</option>
+            </select>
+          </div>
+          <table class="data-table" id="inv-table">
+            <thead>
+              <tr>
+                <th>TRACKING ID</th>
+                <th>ORIGIN WAREHOUSE</th>
+                <th>DELIVERY AGENCY</th>
+                <th>ARRIVAL TIME</th>
+              </tr>
+            </thead>
+            <tbody id="inv-tbody"></tbody>
+          </table>
+          <div class="table-footer-row">
+            <span class="showing-label" id="inv-showing"
+              >Showing 0 of 0 items</span
+            >
+            <div style="display: flex; gap: 8px">
+              <button class="page-btn" id="inv-prev">
+                <i class="fa-solid fa-chevron-left"></i>
+              </button>
+              <button class="page-btn" id="inv-next">
+                <i class="fa-solid fa-chevron-right"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div
+          class="welcome-banner"
+          style="margin-top: 20px; padding: 24px 30px"
+        >
+          <div class="welcome-text">
+            <p class="welcome-label">HUB OVERVIEW</p>
+            <h2 class="welcome-heading" style="font-size: 18px">
+              The transit hub is currently at
+              <span id="hub-ov-pct" style="color: #f4a32a">—</span>
+            </h2>
+            <p class="welcome-sub">
+              All sorting lines operational. Transit flow remains efficient with
+              minimal delays across the network.
+            </p>
+          </div>
+          <div class="welcome-icon-wrap">
+            <i class="fa-solid fa-cube welcome-icon"></i>
+          </div>
+        </div>
+      </div>
+      
+
+      
+      <div class="page-content" id="page-reports" style="display: none">
+        <div class="page-title-row">
+          <div>
+            <h2 class="page-title">Operational Reports</h2>
+            <p class="page-subtitle">
+              Real-time transit hub operational insights and shipment tracking.
+            </p>
+          </div>
+          <div style="display: flex; gap: 10px">
+            <button class="btn-ghost" id="rep-csv-btn">
+              <i class="fa-regular fa-file-lines"></i> CSV
+            </button>
+            <button class="btn-primary" id="rep-pdf-btn">
+              <i class="fa-solid fa-download"></i> PDF Export
+            </button>
+          </div>
+        </div>
+
+        <div class="tab-row" id="rep-tab-row">
+          <button class="tab-btn tab-active" data-rep="inbound">
+            Inbound Report
+          </button>
+          <button class="tab-btn" data-rep="outbound">Outbound Report</button>
+          <button class="tab-btn" data-rep="prealert">Pre-Alert</button>
+        </div>
+
+        
+        <div class="rep-panel" id="rep-inbound" style="display: block">
+          <div class="stat-card" style="margin-bottom: 20px">
+            <div class="stat-top">
+              <div class="stat-icon-box"><i class="fa-solid fa-cube"></i></div>
+              <span class="stat-badge stat-badge--blue">Live</span>
+            </div>
+            <p class="stat-label">TOTAL INBOUND SHIPMENTS</p>
+            <p class="stat-value" id="rep-inbound-count">—</p>
+            <span class="stat-unit" id="rep-inbound-trend"
+              >Derived from live data</span
+            >
+          </div>
+          <div class="table-card">
+            <div class="table-header-row">
+              <h3
+                style="
+                  font-size: 15px;
+                  font-weight: 600;
+                  color: #1e293b;
+                  margin: 0;
+                "
+              >
+                Recent Inbound Shipments
+              </h3>
+              <div class="search-box" style="width: 240px">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input
+                  type="text"
+                  id="rep-in-search"
+                  placeholder="Search ID..."
+                />
+              </div>
+            </div>
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>TRACKING ID</th>
+                  <th>ORIGIN HUB</th>
+                  <th>ASSIGNED HUB</th>
+                  <th>ARRIVAL TIME</th>
+                </tr>
+              </thead>
+              <tbody id="rep-in-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+
+        
+        <div class="rep-panel" id="rep-outbound" style="display: none">
+          <div class="stat-card" style="margin-bottom: 20px">
+            <div class="stat-top">
+              <div class="stat-icon-box"><i class="fa-solid fa-cube"></i></div>
+              <span class="stat-badge stat-badge--blue">Live</span>
+            </div>
+            <p class="stat-label">TOTAL OUTBOUND SHIPMENTS</p>
+            <p class="stat-value" id="rep-outbound-count">—</p>
+            <span class="stat-unit" id="rep-outbound-trend"
+              >Derived from live data</span
+            >
+          </div>
+          <div class="table-card">
+            <div class="table-header-row">
+              <h3
+                style="
+                  font-size: 15px;
+                  font-weight: 600;
+                  color: #1e293b;
+                  margin: 0;
+                "
+              >
+                Recent Outbound Shipments
+              </h3>
+              <div class="search-box" style="width: 240px">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input
+                  type="text"
+                  id="rep-out-search"
+                  placeholder="Search ID..."
+                />
+              </div>
+            </div>
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>TRACKING ID</th>
+                  <th>DESTINATION</th>
+                  <th>DELIVERY AGENCY</th>
+                  <th>DEPARTURE TIME</th>
+                </tr>
+              </thead>
+              <tbody id="rep-out-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+
+        
+        <div class="rep-panel" id="rep-prealert" style="display: none">
+          <div
+            class="table-header-row"
+            style="
+              background: white;
+              border-radius: 14px 14px 0 0;
+              border-bottom: 1px solid #f1f5f9;
+              margin-bottom: 0;
+            "
+          >
+            <h3
+              style="
+                font-size: 15px;
+                font-weight: 600;
+                color: #1e293b;
+                margin: 0;
+              "
+            >
+              Active Local Agencies — Pre-Alert
+            </h3>
+            <div class="search-box" style="width: 240px">
+              <i class="fa-solid fa-magnifying-glass"></i>
+              <input
+                type="text"
+                id="rep-pa-search"
+                placeholder="Search agency..."
+              />
+            </div>
+          </div>
+          <div id="agency-cards-grid" class="agency-grid"></div>
+        </div>
+      </div>
+      
+
+      
+      <div class="page-content" id="page-scan" style="display: none">
+        <div class="page-title-row">
+          <div>
+            <h2 class="page-title" id="scan-page-title">In-Scan Operation</h2>
+            <p class="page-subtitle">
+              Register incoming packages and update real-time inventory.
+            </p>
+          </div>
+        </div>
+
+        <div
+          class="card-white"
+          style="
+            margin-bottom: 24px;
+            background: white;
+            border-radius: 14px;
+            padding: 20px 24px;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+          "
+        >
+          <p
+            style="
+              margin: 0 0 8px;
+              font-size: 11px;
+              font-weight: 600;
+              color: #94a3b8;
+              letter-spacing: 0.06em;
+            "
+          >
+            TRACKING ID
+          </p>
+          <div style="display: flex; gap: 12px; align-items: center">
+            <div
+              style="
+                flex: 1;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                border: 2px solid #f4a32a;
+                border-radius: 10px;
+                padding: 12px 16px;
+                background: white;
+              "
+            >
+              <i
+                class="fa-solid fa-barcode"
+                style="color: #94a3b8; font-size: 16px; flex-shrink: 0"
+              ></i>
+              <input
+                type="text"
+                id="scan-input"
+                placeholder="Enter or scan tracking number (e.g. WD-88412)"
+                style="
+                  border: none;
+                  outline: none;
+                  flex: 1;
+                  font-family: &quot;Poppins&quot;, sans-serif;
+                  font-size: 14px;
+                  color: #334155;
+                  background: transparent;
+                "
+              />
+            </div>
+            <button
+              class="btn-primary"
+              id="btn-scan-action"
+              style="padding: 13px 22px; font-size: 14px; white-space: nowrap"
+            >
+              <i class="fa-solid fa-barcode"></i>
+              <span id="btn-scan-label">In-Scan Package</span>
+            </button>
+          </div>
+          <p
+            style="
+              margin: 8px 0 0;
+              font-size: 12px;
+              color: #94a3b8;
+              display: flex;
+              align-items: center;
+              gap: 6px;
+            "
+          >
+            <i class="fa-solid fa-circle-info"></i>
+            Supports 1D and 2D barcodes. Scanned items appear in the table below
+            immediately.
+          </p>
+        </div>
+
+        
+        <div
+          class="stat-grid"
+          style="grid-template-columns: repeat(3, 1fr); margin-bottom: 24px"
+        >
+          <div class="stat-card">
+            <div class="stat-top">
+              <div class="stat-icon-box">
+                <i class="fa-solid fa-chart-bar"></i>
+              </div>
+              <span class="stat-badge stat-badge--blue">Total</span>
+            </div>
+            <p class="stat-label">TOTAL SCANNED</p>
+            <p class="stat-value" id="stat-total">—</p>
+            <span class="stat-unit">scans</span>
+          </div>
+          <div class="stat-card">
+            <div class="stat-top">
+              <div class="stat-icon-box" style="background: #dcfce7">
+                <i class="fa-solid fa-circle-check" style="color: #16a34a"></i>
+              </div>
+              <span
+                class="stat-badge"
+                style="background: #dcfce7; color: #16a34a"
+                >Success</span
+              >
+            </div>
+            <p class="stat-label">SUCCESSFUL SCANS</p>
+            <p class="stat-value" id="stat-success">—</p>
+            <span class="stat-unit">scans</span>
+          </div>
+          <div class="stat-card">
+            <div class="stat-top">
+              <div class="stat-icon-box stat-icon-box--red">
+                <i class="fa-solid fa-circle-exclamation"></i>
+              </div>
+              <span
+                class="stat-badge"
+                style="background: #fff1f0; color: #ef4444"
+                >Errors</span
+              >
+            </div>
+            <p class="stat-label">FLAGGED ERRORS</p>
+            <p class="stat-value" id="stat-errors">—</p>
+            <span class="stat-unit">scans</span>
+          </div>
+        </div>
+
+        
+        <div class="table-card">
+          <div class="table-header-row">
+            <div
+              class="tab-row"
+              style="margin: 0; background: #f1f5f9; padding: 4px"
+            >
+              <button class="tab-btn tab-active" id="tab-inscan">
+                In-Scan
+              </button>
+              <button class="tab-btn" id="tab-outscan-btn">Out-Scan</button>
+            </div>
+            <div style="display: flex; gap: 10px; align-items: center">
+              <div class="search-box" style="width: 220px">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input
+                  type="text"
+                  id="scan-search"
+                  placeholder="Search Package ID..."
+                />
+              </div>
+              <button
+                class="btn-ghost"
+                id="btn-filter-scan"
+                style="padding: 8px 12px"
+              >
+                <i class="fa-solid fa-filter"></i>
+              </button>
+            </div>
+          </div>
+
+          <div
+            id="scan-filter-row"
+            style="
+              display: none;
+              padding: 10px 20px;
+              border-bottom: 1px solid #f1f5f9;
+              background: #f8fafc;
+              display: none;
+              gap: 10px;
+              flex-wrap: wrap;
+            "
+          >
+            <select id="filter-scan-status" class="filter-select">
+              <option value="">All Status</option>
+              <option value="Scanned In">Scanned In</option>
+              <option value="Outscan">Outscan</option>
+              <option value="FLAGGED">Flagged</option>
+            </select>
+            <select id="filter-scan-agency" class="filter-select">
+              <option value="">All Agencies</option>
+              <option value="Not assigned">Not Assigned</option>
+              <option value="FastTrack Logistics">FastTrack Logistics</option>
+              <option value="QuickMove Couriers">QuickMove Couriers</option>
+              <option value="SpeedX Deliveries">SpeedX Deliveries</option>
+              <option value="MetroShip Express">MetroShip Express</option>
+              <option value="PrimeRoute Logistics">PrimeRoute Logistics</option>
+            </select>
+          </div>
+
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>TRACKING ID</th>
+                <th>STATUS</th>
+                <th>ASSIGNED AGENCY</th>
+                <th>TIMESTAMP</th>
+              </tr>
+            </thead>
+            <tbody id="scan-tbody"></tbody>
+          </table>
+
+          <div class="table-footer-row">
+            <span class="showing-label" id="scan-showing">Showing 0 scans</span>
+            <div style="display: flex; gap: 8px">
+              <button class="page-btn" id="scan-prev">
+                <i class="fa-solid fa-chevron-left"></i>
+              </button>
+              <button class="page-btn" id="scan-next">
+                <i class="fa-solid fa-chevron-right"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+
+      
+      <div
+        class="page-content settings-container"
+        id="page-settings"
+        style="display: none"
+      >
+        <h1 class="settings-title">Account Settings</h1>
+        <p class="settings-subtitle">
+          Manage your profile and security preferences.
+        </p>
+
+        
+        <div class="profile-card">
+          <div class="profile-left">
+            <div class="profile-avatar-wrap">
+              <div class="profile-avatar" id="settings-avatar"></div>
+              <div class="avatar-badge"></div>
+            </div>
+            <div>
+              <h2 class="user-name" id="settings-name"></h2>
+              <p class="user-meta">
+                <span
+                  ><i class="fa-solid fa-warehouse"></i
+                  ><span id="settings-role"></span
+                ></span>
+                <span style="color: #94a3b8">·</span>
+                <span style="font-size: 12px; color: #94a3b8"
+                  ><i class="fa-solid fa-barcode" style="margin-right: 4px"></i
+                  >Hub ID: <span id="settings-hub-id"></span
+                ></span>
+              </p>
+            </div>
+          </div>
+          <button class="edit-btn" id="open-edit-modal">
+            <i
+              class="fa-solid fa-pen"
+              style="margin-right: 6px; font-size: 12px"
+            ></i
+            >Edit Profile
+          </button>
+        </div>
+
+        
+        <div class="info-row">
+          <div class="card">
+            <h3><i class="fa-solid fa-user"></i> Personal Information</h3>
+            <p class="field-label">Email Address</p>
+            <p class="field-value" id="s-email"></p>
+            <p class="field-label">Phone Number</p>
+            <p class="field-value" id="s-phone"></p>
+            <p class="field-label">Address</p>
+            <p class="field-value" id="s-address"></p>
+            <p class="field-label">Password</p>
+            <p class="field-value" id="s-pwd-changed">Last changed: Never</p>
+            <button
+              class="btn-ghost"
+              id="change-pwd-btn"
+              style="margin-top: 10px; padding: 8px 16px; font-size: 13px"
+            >
+              <i class="fa-solid fa-lock" style="margin-right: 6px"></i>Change
+              Password
+            </button>
+          </div>
+
+          
+          <div class="card">
+            <h3><i class="fa-solid fa-shield-halved"></i> Security</h3>
+            <div
+              style="
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                margin-top: 8px;
+              "
+            >
+              <div>
+                <p class="field-label" style="margin-bottom: 2px">
+                  Two-Factor Authentication
+                </p>
+                <p style="font-size: 12px; color: #94a3b8">
+                  Add an extra layer of security to your account
+                </p>
+              </div>
+              <div
+                id="tfa-toggle"
+                style="
+                  cursor: pointer;
+                  width: 44px;
+                  height: 24px;
+                  border-radius: 12px;
+                  background: #e2e8f0;
+                  position: relative;
+                  transition: background 0.2s;
+                  flex-shrink: 0;
+                "
+              >
+                <div
+                  id="tfa-knob"
+                  style="
+                    position: absolute;
+                    top: 2px;
+                    left: 2px;
+                    width: 20px;
+                    height: 20px;
+                    border-radius: 50%;
+                    background: white;
+                    transition: left 0.2s;
+                    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+                  "
+                ></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        
+        <div class="session-card">
+          <div class="session-info">
+            <div class="session-icon">
+              <i
+                class="fa-solid fa-right-from-bracket"
+                style="color: #ef4444"
+              ></i>
+            </div>
+            <div>
+              <p class="session-title">Sign Out</p>
+              <p class="session-subtitle">End your current session securely</p>
+            </div>
+          </div>
+          <a href="../AUTH/home.html"
+            ><button class="logout-btn" id="logout-btn">
+              <i
+                class="fa-solid fa-right-from-bracket"
+                style="margin-right: 6px"
+              ></i
+              >Logout
+            </button></a
+          >
+        </div>
+
+        <div class="footer-links">
+          <a href="#">Privacy Policy</a>
+          <a href="#">Terms of Service</a>
+        </div>
+      </div>
+      
+    </div>
+    
+
+    
+    <div class="modal-overlay" id="edit-modal">
+      <div class="modal">
+        <div class="modal-header">
+          <h3>Edit Profile</h3>
+          <button class="modal-close" id="close-edit-modal">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+        <div class="modal-avatar-row" style="padding: 16px 20px 0">
+          <div class="modal-avatar" id="modal-edit-avatar"></div>
+          <div>
+            <p class="modal-avatar-name" id="modal-display-name"></p>
+            <p class="modal-avatar-role" id="modal-display-role"></p>
+          </div>
+        </div>
+        <div class="modal-body">
+          <div class="modal-field">
+            <label>Full Name</label
+            ><input type="text" id="edit-name" placeholder="Your full name" />
+          </div>
+          <div class="modal-field">
+            <label>Email Address</label
+            ><input type="email" id="edit-email" placeholder="your@email.com" />
+          </div>
+          <div class="modal-field">
+            <label>Phone Number</label
+            ><input type="tel" id="edit-phone" placeholder="+91 XXXXXXXXXX" />
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="modal-cancel" id="cancel-edit-modal">Cancel</button>
+          <button class="modal-save" id="save-edit-modal">Save Changes</button>
+        </div>
+      </div>
+    </div>
+
+    
+    <div class="modal-overlay" id="pwd-modal">
+      <div class="modal">
+        <div class="modal-header">
+          <h3>Change Password</h3>
+          <button class="modal-close" id="close-pwd-modal">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="modal-field">
+            <label>Current Password</label
+            ><input type="password" id="pwd-current" placeholder="••••••••" />
+          </div>
+          <div class="modal-field">
+            <label>New Password</label
+            ><input type="password" id="pwd-new" placeholder="••••••••" />
+          </div>
+          <div class="modal-field">
+            <label>Confirm New Password</label
+            ><input type="password" id="pwd-confirm" placeholder="••••••••" />
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="modal-cancel" id="cancel-pwd-modal">Cancel</button>
+          <button class="modal-save" id="save-pwd-modal">
+            <i class="fa-solid fa-lock"></i> Update Password
+          </button>
+        </div>
+      </div>
+    </div>
+
+    
+    <div id="toast" class="toast" style="display: none"></div>
+
+    <script src="hub.js"></script>
+  </body>
+</html>

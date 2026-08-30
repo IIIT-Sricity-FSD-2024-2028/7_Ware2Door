@@ -1,0 +1,106 @@
+{
+  "WAREHOUSE": [
+    {
+      "id": "wh-001",
+      "name": "Delhi Warehouse ",
+      "email": "waredelhi@logix.com",
+      "password": "Raghuveer2007",
+      "phone": "8977568680",
+      "address": "Delhi , India ",
+      "city": "Delhi",
+      "type": "WAREHOUSE",
+      "isActive": true,
+      "createdAt": "2026-08-28T14:06:05.109Z",
+      "lat": "28.6139",
+      "lng": "77.2090",
+      "subscription": {
+        "tier": "Starter",
+        "startDate": "2026-08-28",
+        "endDate": "2026-09-27",
+        "monthlyRate": 100000,
+        "isActive": true
+      },
+      "legalDocs": [
+        {
+          "name": "FDFED Lab-1_Team07.pdf",
+          "path": "uploads/legal-docs/wh-001/1787925965124-907053361.pdf",
+          "uploadedAt": "2026-08-28T14:06:05.135Z"
+        }
+      ]
+    }
+  ],
+  "TRANSIT_HUB": [
+    {
+      "id": "hub-001",
+      "name": "Telangana Hub ",
+      "email": "telanganahub@logix.com",
+      "password": "Raghuveer2007",
+      "phone": "8977568680",
+      "address": "Telangana ",
+      "city": "Adilabad ",
+      "type": "TRANSIT_HUB",
+      "isActive": true,
+      "createdAt": "2026-08-28T14:09:23.913Z",
+      "lat": "78.53",
+      "lng": "19.67",
+      "subscription": {
+        "tier": "Starter",
+        "startDate": "2026-08-28",
+        "endDate": "2026-09-27",
+        "monthlyRate": 100000,
+        "isActive": true
+      },
+      "legalDocs": [
+        {
+          "name": "1-B.tech-CSE Curriculum from July 2025 Onwards.pdf",
+          "path": "uploads/legal-docs/hub-001/1787926163920-755968315.pdf",
+          "uploadedAt": "2026-08-28T14:09:23.929Z"
+        }
+      ],
+      "capacity": 200
+    }
+  ],
+  "LOCAL_AGENCY": [
+    {
+      "id": "agency-001",
+      "name": "LB Nagar Agency ",
+      "email": "lbagency@logix.com",
+      "password": "Raghuveer2007",
+      "phone": "8977568680",
+      "address": "LB NAGAR",
+      "city": "Hyderabad",
+      "type": "LOCAL_AGENCY",
+      "isActive": true,
+      "createdAt": "2026-08-28T14:11:56.788Z",
+      "lat": "17.3527",
+      "lng": "78.5510",
+      "subscription": {
+        "tier": "Starter",
+        "startDate": "2026-08-28",
+        "endDate": "2026-09-29",
+        "monthlyRate": 10000,
+        "isActive": true
+      },
+      "legalDocs": [
+        {
+          "name": "S20240010107 _Sem4.pdf",
+          "path": "uploads/legal-docs/agency-001/1787926316798-576545206.pdf",
+          "uploadedAt": "2026-08-28T14:11:56.801Z"
+        }
+      ]
+    }
+  ],
+  "ADMIN_TEAMS": [
+    {
+      "id": "AT-0001",
+      "name": "Operations Admin",
+      "email": "admin@ware2door.com",
+      "password": "AdminTeams@2026",
+      "phone": "+91 9000000001",
+      "address": "Ware2Door HQ, Chennai",
+      "type": "ADMIN_TEAMS",
+      "isActive": true,
+      "createdAt": "2026-01-01T00:00:00Z"
+    }
+  ]
+}

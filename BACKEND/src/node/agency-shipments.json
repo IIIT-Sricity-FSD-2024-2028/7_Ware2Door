@@ -1,0 +1,37 @@
+{
+  "agency-001": {
+    "agentAssignments": {
+      "TRK6806": {
+        "agentId": "AGT-AGENCY-001-1787926809602",
+        "agentName": "Raghuveer"
+      },
+      "TRK7245": {
+        "agentId": "AGT-AGENCY-001-1787926809602",
+        "agentName": "Raghuveer"
+      }
+    },
+    "deliveries": [
+      {
+        "trackingId": "TRK6806",
+        "agentId": "AGT-AGENCY-001-1787926809602",
+        "customerName": "Raghuveer Karanam",
+        "customerAddress": "Plot 42, Green Valley, Kharmanghat, Hyderabad - 500079",
+        "status": "Delivered",
+        "attemptCount": 0,
+        "notes": "",
+        "createdAt": "2026-08-28T14:46:09.784Z"
+      },
+      {
+        "trackingId": "TRK7245",
+        "agentId": "AGT-AGENCY-001-1787926809602",
+        "customerName": "Raghuveer Karanam",
+        "customerAddress": "Plot 42, Green Valley, Kharmanghat, Hyderabad - 500079",
+        "status": "Delivered",
+        "attemptCount": 0,
+        "notes": "",
+        "createdAt": "2026-08-30T06:00:57.069Z"
+      }
+    ],
+    "rto": []
+  }
+}

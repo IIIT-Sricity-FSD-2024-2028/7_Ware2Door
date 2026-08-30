@@ -1,0 +1,76 @@
+"use strict";
+
+const API_BASE = "http://localhost:8000";
+
+const existing = JSON.parse(localStorage.getItem("at_session") || "null");
+if (existing?.token) window.location.href = "admin_teams.html";
+
+const emailInput = document.getElementById("at-email");
+const passwordInput = document.getElementById("at-password");
+const loginBtn = document.getElementById("login-btn");
+const togglePwd = document.getElementById("toggle-pwd");
+const errorMsg = document.getElementById("error-msg");
+const errorText = document.getElementById("error-text");
+
+togglePwd.addEventListener("click", () => {
+    const isText = passwordInput.type === "text";
+    passwordInput.type = isText ? "password" : "text";
+    togglePwd.classList.toggle("fa-eye-slash", !isText);
+    togglePwd.classList.toggle("fa-eye", isText);
+});
+
+emailInput.addEventListener("keydown", (e) => { if (e.key === "Enter") attemptLogin(); });
+passwordInput.addEventListener("keydown", (e) => { if (e.key === "Enter") attemptLogin(); });
+loginBtn.addEventListener("click", attemptLogin);
+
+function showError(msg) {
+    errorText.textContent = msg;
+    errorMsg.style.display = "flex";
+}
+function clearError() { errorMsg.style.display = "none"; }
+
+async function attemptLogin() {
+    clearError();
+    const email = emailInput.value.trim().toLowerCase();
+    const pwd   = passwordInput.value.trim();
+
+    if (!email) { showError("Please enter your email address."); return; }
+    if (!pwd)   { showError("Please enter your password."); return; }
+
+    loginBtn.classList.add("loading");
+    loginBtn.textContent = "Authenticating…";
+
+    try {
+        const res = await fetch(`${API_BASE}/auth/admin-teams`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            credentials: "include",
+            body: JSON.stringify({ email, password: pwd }),
+        });
+        const data = await res.json();
+
+        if (data.status === "success" && data.token) {
+            const user = data.user;
+            localStorage.setItem("at_session", JSON.stringify({
+                role: "ADMIN_TEAMS",
+                token: data.token,
+                loginAt: new Date().toISOString(),
+                user: {
+                    id:      user.id,
+                    name:    user.name,
+                    email:   user.email,
+                    phone:   user.phone  || "+91 9000000001",
+                    address: user.address || "Ware2Door HQ, Chennai",
+                },
+            }));
+            window.location.href = "admin_teams.html";
+        } else {
+            showError(data.message || "Invalid credentials. Access denied.");
+        }
+    } catch (err) {
+        showError("Cannot connect to server. Make sure backend is running on port 8000.");
+    } finally {
+        loginBtn.classList.remove("loading");
+        loginBtn.textContent = "Login to Portal";
+    }
+}

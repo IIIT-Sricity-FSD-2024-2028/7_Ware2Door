@@ -1,0 +1,34 @@
+{
+  "hub-001": [
+    {
+      "trackingId": "TRK5229",
+      "status": "Scanned In",
+      "agencyName": "LB Nagar Agency ",
+      "hubName": "Telangana Hub ",
+      "warehouseId": "wh-001",
+      "timestamp": "2026-08-30T10:22:28.835Z",
+      "flagged": false,
+      "flagMsg": ""
+    },
+    {
+      "trackingId": "TRK7245",
+      "status": "Outscan",
+      "agencyName": "LB Nagar Agency ",
+      "hubName": "Telangana Hub ",
+      "warehouseId": "wh-001",
+      "timestamp": "2026-08-30T05:58:01.237Z",
+      "flagged": false,
+      "flagMsg": ""
+    },
+    {
+      "trackingId": "TRK6806",
+      "status": "Outscan",
+      "agencyName": "LB Nagar Agency ",
+      "hubName": "Telangana Hub ",
+      "warehouseId": "wh-001",
+      "timestamp": "2026-08-28T14:42:46.624Z",
+      "flagged": false,
+      "flagMsg": ""
+    }
+  ]
+}

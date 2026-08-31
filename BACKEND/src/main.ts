@@ -4,6 +4,7 @@ import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import * as fs from 'fs';
 import * as path from 'path';
 import cookieParser = require('cookie-parser');
+import helmet from 'helmet';
 import { AppModule } from './app.module';
 import { HttpExceptionFilter } from './common/http-exception.filter';
 import { AllExceptionsFilter } from './common/all-exceptions.filter';
@@ -12,6 +13,7 @@ async function bootstrap() {
     const app = await NestFactory.create(AppModule);
     app.useGlobalFilters(new AllExceptionsFilter(), new HttpExceptionFilter());
     app.use(cookieParser());
+    app.use(helmet({ contentSecurityPolicy: false }));
     app.enableCors({
         origin: true,
         credentials: true,

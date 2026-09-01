@@ -9,7 +9,6 @@ import { Role } from '../auth/roles.enum';
 import { HttpExceptionFilter } from '../common/http-exception.filter';
 import { AllExceptionsFilter } from '../common/all-exceptions.filter';
 import { ModuleLogger } from '../common/module-logger';
-import { Throttle } from '@nestjs/throttler';
 
 @ApiTags('Tickets')
 @UseFilters(AllExceptionsFilter, HttpExceptionFilter)
@@ -20,7 +19,6 @@ export class TicketController {
     constructor(private readonly ticketService: TicketService) {}
 
     @Public()
-    @Throttle({ auth: { limit: 5, ttl: 60000 } })
     @ApiOperation({ summary: 'Raise a new support ticket (public)' })
     @Post('raise')
     raiseTicket(@Body() body: CreateTicketDto) {

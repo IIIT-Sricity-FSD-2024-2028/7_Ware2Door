@@ -18,7 +18,7 @@ import { StockAdditionDto } from './dto/stock-addition.dto';
 import { CreatePendingShipmentDto } from './dto/create-pending-shipment.dto';
 import { RecordAttemptDto } from './dto/record-attempt.dto';
 import { ThirdPartyGuard } from '../admin-teams/third-party.guard';
-import { Throttle } from '@nestjs/throttler';
+import { Throttle, ThrottlerGuard } from '@nestjs/throttler';
 
 @ApiTags('Auth & Node')
 @UseFilters(AllExceptionsFilter, HttpExceptionFilter)
@@ -43,6 +43,7 @@ export class NodeController {
     }
 
     @Public()
+    @UseGuards(ThrottlerGuard)
     @Throttle({ auth: { limit: 5, ttl: 60000 } })
     @ApiOperation({ summary: 'Verify email — trigger OTP (public)' })
     @Post('/auth/verify-email')
@@ -52,6 +53,7 @@ export class NodeController {
     }
 
     @Public()
+    @UseGuards(ThrottlerGuard)
     @Throttle({ auth: { limit: 5, ttl: 60000 } })
     @ApiOperation({ summary: 'Reset password using OTP (public)' })
     @Post('/auth/reset-password')
@@ -65,6 +67,7 @@ export class NodeController {
     }
 
     @Public()
+    @UseGuards(ThrottlerGuard)
     @Throttle({ auth: { limit: 5, ttl: 60000 } })
     @ApiOperation({ summary: 'Warehouse login (public)' })
     @Post('/auth/warehouse')
@@ -80,6 +83,7 @@ export class NodeController {
     }
 
     @Public()
+    @UseGuards(ThrottlerGuard)
     @Throttle({ auth: { limit: 5, ttl: 60000 } })
     @ApiOperation({ summary: 'Super User login (public)' })
     @Post('/auth/superuser')
@@ -95,6 +99,7 @@ export class NodeController {
     }
 
     @Public()
+    @UseGuards(ThrottlerGuard)
     @Throttle({ auth: { limit: 5, ttl: 60000 } })
     @ApiOperation({ summary: 'Admin Teams login (public)' })
     @Post('/auth/admin-teams')
@@ -110,6 +115,7 @@ export class NodeController {
     }
 
     @Public()
+    @UseGuards(ThrottlerGuard)
     @Throttle({ auth: { limit: 5, ttl: 60000 } })
     @ApiOperation({ summary: 'Transit Hub login (public)' })
     @Post('/auth/transit')
@@ -125,6 +131,7 @@ export class NodeController {
     }
 
     @Public()
+    @UseGuards(ThrottlerGuard)
     @Throttle({ auth: { limit: 5, ttl: 60000 } })
     @ApiOperation({ summary: 'Local Agency login (public)' })
     @Post('/auth/agency')

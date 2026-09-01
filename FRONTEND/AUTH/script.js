@@ -46,9 +46,9 @@ function LocalDeliveryAgency() {
 }
 
 const endpointMap = {
-    WareHouse: "http://localhost:8000/auth/warehouse",
-    TransitHub: "http://localhost:8000/auth/transit",
-    LocalAgency: "http://localhost:8000/auth/agency",
+    WareHouse: "http://127.0.0.1:8000/auth/warehouse",
+    TransitHub: "http://127.0.0.1:8000/auth/transit",
+    LocalAgency: "http://127.0.0.1:8000/auth/agency",
 };
 
 const redirectMap = {

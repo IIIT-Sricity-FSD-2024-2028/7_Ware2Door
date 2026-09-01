@@ -1,6 +1,6 @@
 "use strict";
 
-const API_BASE = "http://localhost:8000";
+const API_BASE = "http://127.0.0.1:8000";
 let _hubId = null;
 let _hubName = "";
 let _sessionRaw = null;

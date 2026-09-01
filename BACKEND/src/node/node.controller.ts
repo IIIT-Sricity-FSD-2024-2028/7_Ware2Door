@@ -18,6 +18,7 @@ import { StockAdditionDto } from './dto/stock-addition.dto';
 import { CreatePendingShipmentDto } from './dto/create-pending-shipment.dto';
 import { RecordAttemptDto } from './dto/record-attempt.dto';
 import { ThirdPartyGuard } from '../admin-teams/third-party.guard';
+import { Throttle } from '@nestjs/throttler';
 
 @ApiTags('Auth & Node')
 @UseFilters(AllExceptionsFilter, HttpExceptionFilter)
@@ -42,6 +43,7 @@ export class NodeController {
     }
 
     @Public()
+    @Throttle({ auth: { limit: 5, ttl: 60000 } })
     @ApiOperation({ summary: 'Verify email — trigger OTP (public)' })
     @Post('/auth/verify-email')
     verifyEmail(@Body() body: VerifyEmailDto) {
@@ -50,6 +52,7 @@ export class NodeController {
     }
 
     @Public()
+    @Throttle({ auth: { limit: 5, ttl: 60000 } })
     @ApiOperation({ summary: 'Reset password using OTP (public)' })
     @Post('/auth/reset-password')
     resetPassword(@Body() body: ResetPasswordDto) {
@@ -62,6 +65,7 @@ export class NodeController {
     }
 
     @Public()
+    @Throttle({ auth: { limit: 5, ttl: 60000 } })
     @ApiOperation({ summary: 'Warehouse login (public)' })
     @Post('/auth/warehouse')
     async loginWarehouse(@Body() body: LoginDto, @Res({ passthrough: true }) res: Response) {
@@ -76,6 +80,7 @@ export class NodeController {
     }
 
     @Public()
+    @Throttle({ auth: { limit: 5, ttl: 60000 } })
     @ApiOperation({ summary: 'Super User login (public)' })
     @Post('/auth/superuser')
     async loginSuperuser(@Body() body: LoginDto, @Res({ passthrough: true }) res: Response) {
@@ -90,6 +95,7 @@ export class NodeController {
     }
 
     @Public()
+    @Throttle({ auth: { limit: 5, ttl: 60000 } })
     @ApiOperation({ summary: 'Admin Teams login (public)' })
     @Post('/auth/admin-teams')
     async loginAdminTeams(@Body() body: LoginDto, @Res({ passthrough: true }) res: Response) {
@@ -104,6 +110,7 @@ export class NodeController {
     }
 
     @Public()
+    @Throttle({ auth: { limit: 5, ttl: 60000 } })
     @ApiOperation({ summary: 'Transit Hub login (public)' })
     @Post('/auth/transit')
     async loginTransit(@Body() body: LoginDto, @Res({ passthrough: true }) res: Response) {
@@ -118,6 +125,7 @@ export class NodeController {
     }
 
     @Public()
+    @Throttle({ auth: { limit: 5, ttl: 60000 } })
     @ApiOperation({ summary: 'Local Agency login (public)' })
     @Post('/auth/agency')
     async loginAgency(@Body() body: LoginDto, @Res({ passthrough: true }) res: Response) {

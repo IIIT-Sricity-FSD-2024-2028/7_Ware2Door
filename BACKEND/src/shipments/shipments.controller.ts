@@ -1,4 +1,4 @@
-import { Controller, Get, Param, Post, Body, UseFilters } from '@nestjs/common';
+import { Controller, Get, Param, Post, Body, UseFilters, UseGuards } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiSecurity, ApiParam } from '@nestjs/swagger';
 import { ShipmentsService } from './shipments.service';
 import { DispatchShipmentDto } from './dto/dispatch-shipment.dto';
@@ -7,14 +7,15 @@ import { Role } from '../auth/roles.enum';
 import { HttpExceptionFilter } from '../common/http-exception.filter';
 import { AllExceptionsFilter } from '../common/all-exceptions.filter';
 import { ModuleLogger } from '../common/module-logger';
+import { AccountThrottlerGuard } from '../auth/account-throttler.guard';
 
 @ApiTags('Shipments')
 @ApiSecurity('x-role')
 @UseFilters(AllExceptionsFilter, HttpExceptionFilter)
+@UseGuards(AccountThrottlerGuard)
 @Controller()
 export class ShipmentsController {
     private readonly logger = new ModuleLogger('shipments');
-
     constructor(private readonly shipmentsService: ShipmentsService) {}
 
     @ApiOperation({ summary: 'Get manifest/pending shipments for a warehouse' })
@@ -54,4 +55,3 @@ export class ShipmentsController {
         return this.shipmentsService.getSummary(id);
     }
 }
-

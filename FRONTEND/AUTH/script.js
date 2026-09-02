@@ -3,6 +3,7 @@ const toggle = document.querySelector(".fa-eye");
 const login_btn = document.querySelector(".login-btn");
 const email = document.querySelector(".email-input");
 const password = document.querySelector(".password-input");
+let loginInProgress = false;
 
 let state = "WareHouse";
 toggle.addEventListener("click", () => {
@@ -58,6 +59,8 @@ const redirectMap = {
 };
 
 async function CredentialVerification() {
+    if (loginInProgress) return;
+
     let email_val = email.value.trim();
     let password_val = password.value.trim();
     if (!email_val && !password_val) { alert("Email and Password are required"); return; }
@@ -65,6 +68,8 @@ async function CredentialVerification() {
     if (!password_val) { alert("Please enter Password"); return; }
     if (!email_val.includes("@") || !email_val.includes(".")) { alert("Invalid Email format"); return; }
 
+    loginInProgress = true;
+    login_btn.disabled = true;
     try {
         const res = await fetch(endpointMap[state], {
             method: "POST",
@@ -82,5 +87,8 @@ async function CredentialVerification() {
     } catch (e) {
         console.error("Backend login error:", e);
         alert("Backend connection failed.");
+    } finally {
+        loginInProgress = false;
+        login_btn.disabled = false;
     }
 }

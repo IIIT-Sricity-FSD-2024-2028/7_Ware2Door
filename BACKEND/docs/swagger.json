@@ -683,7 +683,7 @@
             "name": "orderId",
             "required": true,
             "in": "path",
-            "description": "Order ID to delete",
+            "description": "  Order ID to delete",
             "schema": {
               "type": "string"
             }

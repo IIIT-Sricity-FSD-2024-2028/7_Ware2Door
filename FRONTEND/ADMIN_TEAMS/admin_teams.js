@@ -61,7 +61,6 @@ function showSection(name) {
     if (name === 'partners') loadPartners();
 }
 
-/* ─── NODE ANALYTICS ─── */
 let perfData = { warehouses: [], hubs: [], agencies: [] };
 let perfChartObj = null;
 

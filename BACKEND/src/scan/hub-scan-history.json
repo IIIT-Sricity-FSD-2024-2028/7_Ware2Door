@@ -1,6 +1,14 @@
 {
   "hub-001": [
     {
+      "trackingId": "BJN",
+      "status": "Error",
+      "agencyName": null,
+      "timestamp": "2026-09-02T06:34:33.340Z",
+      "flagged": true,
+      "flagMsg": "Unknown tracking ID — not found in manifest"
+    },
+    {
       "trackingId": "TRK5229",
       "status": "Scanned In",
       "agencyName": "LB Nagar Agency ",

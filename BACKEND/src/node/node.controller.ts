@@ -236,7 +236,7 @@ export class NodeController {
     @ApiSecurity('x-role')
     @ApiOperation({ summary: 'Delete a pending shipment from a warehouse' })
     @ApiParam({ name: 'warehouseId', description: 'Warehouse ID' })
-    @ApiParam({ name: 'orderId', description: 'Order ID to delete' })
+    @ApiParam({ name: 'orderId', description: '  Order ID to delete' })
     @Roles(Role.WAREHOUSE)
     @Delete('/:warehouseId/pendingShipments/:orderId')
     deletePendingShipment(@Param('warehouseId') id: string, @Param('orderId') orderId: string) {

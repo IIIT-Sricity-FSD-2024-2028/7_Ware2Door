@@ -1,6 +1,14 @@
 {
   "agency-001": [
     {
+      "trackingId": "TRK5355",
+      "scannedAt": "2026-09-02T16:01:40.480Z",
+      "status": "Scanned In",
+      "flagged": false,
+      "flagMsg": "",
+      "productName": "Sony WH-1000XM5 Wireless Headphones"
+    },
+    {
       "trackingId": "TRK7245",
       "scannedAt": "2026-08-30T06:00:52.236Z",
       "status": "Scanned In",

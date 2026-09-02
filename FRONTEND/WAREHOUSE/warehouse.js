@@ -79,7 +79,7 @@ if (changePwdBtn) {
             const f = document.getElementById(id);
             if (f) f.value = "";
         });
-        document.getElementById("pwd-modal").classList.add("active");  
+        document.getElementById("pwd-modal").classList.add("active");
     });
 }
 if (closePwdBtn) closePwdBtn.addEventListener("click", closePwdModal);
@@ -121,7 +121,7 @@ if (savePwdBtn) {
             } else {
                 showToast(data.error || "Failed to update password.", true);
             }
-        } catch(e) {
+        } catch (e) {
             console.error("Password update err", e);
             showToast(e.message || "Backend connection failed.", true);
         }
@@ -254,7 +254,7 @@ document.getElementById("confirm-dispatch-btn").addEventListener("click", async 
     const hubId = document.getElementById("hub-select").value;
     const agencyId = document.getElementById("agency-select").value;
     const shipment = pendingShipments.find((s) => s.orderId === orderId);
-    
+
 
     const hubSel = document.getElementById("hub-select");
     const agencySel = document.getElementById("agency-select");
@@ -267,7 +267,7 @@ document.getElementById("confirm-dispatch-btn").addEventListener("click", async 
             body: JSON.stringify({ orderId, hubId, agencyId })
         });
         const data = await res.json();
-        if(data.error) throw new Error(data.error);
+        if (data.error) throw new Error(data.error);
 
 
         await fetchPendingShipments();
@@ -279,7 +279,7 @@ document.getElementById("confirm-dispatch-btn").addEventListener("click", async 
         closeHubModal();
         renderShipments(getShipmentFilters());
         showToast(`✓ #${orderId} dispatched as ${data.trackingId} to ${hubName}`);
-    } catch(e) {
+    } catch (e) {
         console.error("Dispatch err", e);
         showToast(e.message || "Backend connection failed.", true);
     }
@@ -376,7 +376,7 @@ document.getElementById("save-edit-modal").addEventListener("click", async () =>
         } else {
             showToast(data.error || "Failed to update profile.", true);
         }
-    } catch(e) {
+    } catch (e) {
         console.error("Profile update err", e);
         showToast(e.message || "Backend connection failed.", true);
     }
@@ -393,7 +393,7 @@ async function fetchInventory() {
                 updatedAt: item.lastUpdated ? new Date(item.lastUpdated).toLocaleString("en-IN") : ""
             }));
         }
-    } catch(e) {
+    } catch (e) {
         console.error("fetchInventory err", e);
     }
 }
@@ -418,7 +418,7 @@ async function fetchOutbound() {
                 vehicleNo: s.vehicleNo || 'N/A'
             }));
         }
-    } catch(e) {
+    } catch (e) {
         console.error('fetchOutbound err', e);
     }
 }
@@ -427,7 +427,7 @@ async function fetchPreAlert() {
     try {
         const res = await w2dFetch(`http://127.0.0.1:8000/${warehouseId}/preAlert`);
         const data = await res.json();
-        return data; 
+        return data;
     } catch (e) {
         console.error("fetchPreAlert err", e);
         return null;
@@ -452,7 +452,7 @@ async function fetchPendingShipments() {
                 time: s.receivedAt ? new Date(s.receivedAt).toLocaleString('en-IN') : ''
             }));
         }
-    } catch(e) {
+    } catch (e) {
         console.error('fetchPendingShipments err', e);
     }
 }
@@ -474,7 +474,7 @@ async function fetchRTO() {
                 date: r.createdAt ? new Date(r.createdAt).toLocaleDateString('en-IN') : '—',
             }));
         }
-    } catch(e) {
+    } catch (e) {
         console.error('fetchRTO err', e);
     }
 }
@@ -498,7 +498,7 @@ async function doRtoInscan() {
         } else {
             showToast(`⚠ ${data.flagMsg || data.message || 'Failed to process RTO inscan.'}`, true);
         }
-    } catch(e) {
+    } catch (e) {
         console.error('RTO inscan err', e);
         showToast('Backend connection failed.', true);
     }
@@ -512,7 +512,7 @@ async function fetchSystemData() {
         ]);
         allHubs = await hubsRes.json();
         allAgencies = await agenciesRes.json();
-    } catch(e) {
+    } catch (e) {
         console.error('fetchSystemData err', e);
     }
 }
@@ -534,7 +534,7 @@ function refreshSettingsUI() {
         role + " &nbsp;|&nbsp; ID: " + warehouseId;
     document.querySelector(".settings-email").innerHTML = email;
     document.querySelector(".settings-phone").innerHTML = phone;
-    
+
     const pwdEl = document.getElementById("s-pwd-changed");
     if (pwdEl) {
         let displayDate = new Date();
@@ -543,7 +543,7 @@ function refreshSettingsUI() {
         } else if (user.createdAt) {
             displayDate = new Date(user.createdAt);
         }
-        
+
         const formatted = displayDate.toLocaleDateString("en-IN", {
             day: "numeric", month: "short", year: "numeric",
             hour: "numeric", minute: "numeric"
@@ -687,8 +687,8 @@ function renderHubShipmentRows(ships) {
             <thead><tr><th>TRACKING ID</th><th>ORDER ID</th><th>SOURCE</th><th>AGENCY</th><th>STATUS</th></tr></thead>
             <tbody>
                 ${ships
-                    .map(
-                        (s) => `
+            .map(
+                (s) => `
                 <tr>
                     <td style="font-weight:600;color:#1e293b;">${s.trackingId}</td>
                     <td style="color:#64748b;font-size:12px;">${s.orderId}</td>
@@ -696,8 +696,8 @@ function renderHubShipmentRows(ships) {
                     <td style="font-size:12px;">${s.agency}</td>
                     <td><span class="pa-status-badge"><i class="fa-solid fa-circle-check" style="color:#16a34a;font-size:10px;"></i> Out-Scanned</span></td>
                 </tr>`,
-                    )
-                    .join("")}
+            )
+            .join("")}
             </tbody>
         </table>
     </div>`;
@@ -746,10 +746,10 @@ function renderRTO(filter = {}, page = rtoPage) {
     tbody.innerHTML = paged
         .map((r) => {
             const statusMap = {
-                'RTO Initiated':               { cls: 'rto-status-transit', icon: 'fa-ban' },
-                'RTO At Hub':                  { cls: 'rto-status-transit', icon: 'fa-location-dot' },
+                'RTO Initiated': { cls: 'rto-status-transit', icon: 'fa-ban' },
+                'RTO At Hub': { cls: 'rto-status-transit', icon: 'fa-location-dot' },
                 'RTO In Transit to Warehouse': { cls: 'rto-status-transit', icon: 'fa-truck' },
-                'Returned to Warehouse':       { cls: 'rto-status-received', icon: 'fa-box-archive' },
+                'Returned to Warehouse': { cls: 'rto-status-received', icon: 'fa-box-archive' },
             };
             const sm = statusMap[r.status] || { cls: 'rto-status-transit', icon: 'fa-truck' };
             return `
@@ -876,7 +876,7 @@ function renderShipments(filter = {}) {
             const avail = getAvailability(s.productName);
             const canAccept = avail.label !== "Out of Stock";
             return `
-        <tr>
+        <tr> 
             <td><input type="checkbox" class="ship-checkbox" data-id="${s.orderId}" ${selectedShipmentIds.has(s.orderId) ? "checked" : ""}></td>
             <td><strong style="color:#1e293b;">#${s.orderId}</strong></td>
             <td>${srcBadge(s.source)}</td>
@@ -942,7 +942,7 @@ async function rejectShipment(orderId) {
         } else {
             showToast("Failed to reject shipment on backend.", true);
         }
-    } catch(e) {
+    } catch (e) {
         console.error("Reject shipment err", e);
         showToast(e.message || "Backend connection failed.", true);
     }
@@ -950,14 +950,14 @@ async function rejectShipment(orderId) {
 function openHubModal(orderId) {
     currentAcceptingOrderId = orderId;
     document.getElementById("hub-modal-order-id").innerHTML = orderId;
-    document.getElementById("hub-select").innerHTML = allHubs.length 
+    document.getElementById("hub-select").innerHTML = allHubs.length
         ? allHubs.map(h => `<option value="${h.id}">${h.name}</option>`).join('')
         : `<option value="">No hubs available</option>`;
-        
+
     document.getElementById("agency-select").innerHTML = allAgencies.length
         ? allAgencies.map(a => `<option value="${a.id}">${a.name}</option>`).join('')
         : `<option value="">No agencies available</option>`;
-        
+
     document.getElementById("hub-modal").classList.add("active");
 }
 function closeHubModal() {
@@ -1051,8 +1051,8 @@ function renderInventoryOverview(filter = {}, page = invPage) {
                 st.label === "In Stock"
                     ? "fill-green"
                     : st.label === "Low Stock"
-                      ? "fill-orange"
-                      : "fill-red";
+                        ? "fill-orange"
+                        : "fill-red";
             return `
         <tr>
             <td style="font-weight:500;color:#0b3c44;">${item.labelId}</td>

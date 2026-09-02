@@ -11,8 +11,8 @@
         "maxShipmentsPerMonth": 10000,
         "monthlyFee": 50000
       },
-      "currentMonthUsage": 1,
-      "usageResetMonth": "2026-08",
+      "currentMonthUsage": 4,
+      "usageResetMonth": "2026-09",
       "isActive": true,
       "contact": {
         "name": "Raghuveer",

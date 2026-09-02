@@ -14,7 +14,11 @@ import { AdminTeamsModule } from './admin-teams/admin-teams.module';
 @Module({
     imports: [
         ThrottlerModule.forRoot([
-            { name: 'auth', ttl: 60000, limit: 3 },
+            { name: 'default', ttl: 60000, limit: 120 },
+            { name: 'auth', ttl: 300000, limit: 10 },
+            { name: 'authIp', ttl: 300000, limit: 500 },
+            { name: 'account', ttl: 300000, limit: 500 },
+            { name: 'public', ttl: 300000, limit: 500 },
         ]),
         AuthModule,
         ShipmentsModule,

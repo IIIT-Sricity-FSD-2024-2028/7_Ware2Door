@@ -18,7 +18,11 @@ import { StockAdditionDto } from './dto/stock-addition.dto';
 import { CreatePendingShipmentDto } from './dto/create-pending-shipment.dto';
 import { RecordAttemptDto } from './dto/record-attempt.dto';
 import { ThirdPartyGuard } from '../admin-teams/third-party.guard';
-import { Throttle, ThrottlerGuard } from '@nestjs/throttler';
+import { SkipThrottle, Throttle } from '@nestjs/throttler';
+import { IdentityThrottlerGuard } from '../auth/identity-throttler.guard';
+import { IpThrottlerGuard } from '../auth/ip-throttler.guard';
+import { AccountThrottlerGuard } from '../auth/account-throttler.guard';
+import { ThrottlerGuard } from '@nestjs/throttler';
 
 @ApiTags('Auth & Node')
 @UseFilters(AllExceptionsFilter, HttpExceptionFilter)
@@ -43,8 +47,9 @@ export class NodeController {
     }
 
     @Public()
-    @UseGuards(ThrottlerGuard)
-    @Throttle({ auth: { limit: 5, ttl: 60000 } })
+    @UseGuards(IdentityThrottlerGuard, IpThrottlerGuard)
+    @SkipThrottle({ default: true })
+    @Throttle({ auth: { limit: 10, ttl: 300000 }, authIp: { limit: 500, ttl: 300000 } })
     @ApiOperation({ summary: 'Verify email — trigger OTP (public)' })
     @Post('/auth/verify-email')
     verifyEmail(@Body() body: VerifyEmailDto) {
@@ -53,8 +58,9 @@ export class NodeController {
     }
 
     @Public()
-    @UseGuards(ThrottlerGuard)
-    @Throttle({ auth: { limit: 5, ttl: 60000 } })
+    @UseGuards(IdentityThrottlerGuard, IpThrottlerGuard)
+    @SkipThrottle({ default: true })
+    @Throttle({ auth: { limit: 10, ttl: 300000 }, authIp: { limit: 500, ttl: 300000 } })
     @ApiOperation({ summary: 'Reset password using OTP (public)' })
     @Post('/auth/reset-password')
     resetPassword(@Body() body: ResetPasswordDto) {
@@ -67,8 +73,9 @@ export class NodeController {
     }
 
     @Public()
-    @UseGuards(ThrottlerGuard)
-    @Throttle({ auth: { limit: 5, ttl: 60000 } })
+    @UseGuards(IdentityThrottlerGuard, IpThrottlerGuard)
+    @SkipThrottle({ default: true })
+    @Throttle({ auth: { limit: 10, ttl: 300000 }, authIp: { limit: 500, ttl: 300000 } })
     @ApiOperation({ summary: 'Warehouse login (public)' })
     @Post('/auth/warehouse')
     async loginWarehouse(@Body() body: LoginDto, @Res({ passthrough: true }) res: Response) {
@@ -83,8 +90,9 @@ export class NodeController {
     }
 
     @Public()
-    @UseGuards(ThrottlerGuard)
-    @Throttle({ auth: { limit: 5, ttl: 60000 } })
+    @UseGuards(IdentityThrottlerGuard, IpThrottlerGuard)
+    @SkipThrottle({ default: true })
+    @Throttle({ auth: { limit: 10, ttl: 300000 }, authIp: { limit: 500, ttl: 300000 } })
     @ApiOperation({ summary: 'Super User login (public)' })
     @Post('/auth/superuser')
     async loginSuperuser(@Body() body: LoginDto, @Res({ passthrough: true }) res: Response) {
@@ -99,8 +107,9 @@ export class NodeController {
     }
 
     @Public()
-    @UseGuards(ThrottlerGuard)
-    @Throttle({ auth: { limit: 5, ttl: 60000 } })
+    @UseGuards(IdentityThrottlerGuard, IpThrottlerGuard)
+    @SkipThrottle({ default: true })
+    @Throttle({ auth: { limit: 10, ttl: 300000 }, authIp: { limit: 500, ttl: 300000 } })
     @ApiOperation({ summary: 'Admin Teams login (public)' })
     @Post('/auth/admin-teams')
     async loginAdminTeams(@Body() body: LoginDto, @Res({ passthrough: true }) res: Response) {
@@ -115,8 +124,9 @@ export class NodeController {
     }
 
     @Public()
-    @UseGuards(ThrottlerGuard)
-    @Throttle({ auth: { limit: 5, ttl: 60000 } })
+    @UseGuards(IdentityThrottlerGuard, IpThrottlerGuard)
+    @SkipThrottle({ default: true })
+    @Throttle({ auth: { limit: 10, ttl: 300000 }, authIp: { limit: 500, ttl: 300000 } })
     @ApiOperation({ summary: 'Transit Hub login (public)' })
     @Post('/auth/transit')
     async loginTransit(@Body() body: LoginDto, @Res({ passthrough: true }) res: Response) {
@@ -131,8 +141,9 @@ export class NodeController {
     }
 
     @Public()
-    @UseGuards(ThrottlerGuard)
-    @Throttle({ auth: { limit: 5, ttl: 60000 } })
+    @UseGuards(IdentityThrottlerGuard, IpThrottlerGuard)
+    @SkipThrottle({ default: true })
+    @Throttle({ auth: { limit: 10, ttl: 300000 }, authIp: { limit: 500, ttl: 300000 } })
     @ApiOperation({ summary: 'Local Agency login (public)' })
     @Post('/auth/agency')
     async loginAgency(@Body() body: LoginDto, @Res({ passthrough: true }) res: Response) {
@@ -147,6 +158,9 @@ export class NodeController {
     }
 
     @Public()
+    @UseGuards(ThrottlerGuard)
+    @SkipThrottle({ default: true })
+    @Throttle({ public: { limit: 500, ttl: 300000 } })
     @ApiOperation({ summary: 'Logout — clears session cookie (public)' })
     @Post('/auth/logout')
     logout(@Res({ passthrough: true }) res: Response) {
@@ -156,6 +170,9 @@ export class NodeController {
     }
 
     @Public()
+    @UseGuards(ThrottlerGuard)
+    @SkipThrottle({ default: true })
+    @Throttle({ public: { limit: 500, ttl: 300000 } })
     @ApiOperation({ summary: 'Get all transit hubs (public)' })
     @Get('/system/hubs')
     getHubs() {
@@ -164,6 +181,9 @@ export class NodeController {
     }
 
     @Public()
+    @UseGuards(ThrottlerGuard)
+    @SkipThrottle({ default: true })
+    @Throttle({ public: { limit: 500, ttl: 300000 } })
     @ApiOperation({ summary: 'Get all local agencies (public)' })
     @Get('/system/agencies')
     getAgencies() {
@@ -172,6 +192,7 @@ export class NodeController {
     }
 
     @ApiSecurity('x-role')
+    @UseGuards(AccountThrottlerGuard)
     @ApiOperation({ summary: 'Update node profile' })
     @ApiParam({ name: 'id', description: 'Node ID' })
     @Post('/auth/profile/:id')
@@ -181,6 +202,7 @@ export class NodeController {
     }
 
     @ApiSecurity('x-role')
+    @UseGuards(AccountThrottlerGuard)
     @ApiOperation({ summary: 'Update node password' })
     @ApiParam({ name: 'id', description: 'Node ID' })
     @Post('/auth/password/:id')
@@ -190,6 +212,7 @@ export class NodeController {
     }
 
     @ApiSecurity('x-role')
+    @UseGuards(AccountThrottlerGuard)
     @ApiOperation({ summary: 'Get current stock inventory for a warehouse' })
     @ApiParam({ name: 'warehouseId', description: 'Warehouse ID' })
     @Roles(Role.WAREHOUSE)
@@ -200,6 +223,7 @@ export class NodeController {
     }
 
     @ApiSecurity('x-role')
+    @UseGuards(AccountThrottlerGuard)
     @ApiOperation({ summary: 'Add a stock item to warehouse inventory' })
     @ApiParam({ name: 'warehouseId', description: 'Warehouse ID' })
     @Roles(Role.WAREHOUSE)
@@ -210,6 +234,7 @@ export class NodeController {
     }
 
     @ApiSecurity('x-role')
+    @UseGuards(AccountThrottlerGuard)
     @ApiOperation({ summary: 'Get pending shipments for a warehouse' })
     @ApiParam({ name: 'warehouseId', description: 'Warehouse ID' })
     @Roles(Role.WAREHOUSE)
@@ -220,7 +245,9 @@ export class NodeController {
     }
 
     @Public()
-    @UseGuards(ThirdPartyGuard)
+    @UseGuards(ThirdPartyGuard, ThrottlerGuard)
+    @SkipThrottle({ default: true })
+    @Throttle({ public: { limit: 500, ttl: 300000 } })
     @ApiOperation({ summary: 'Add a pending shipment to a warehouse (requires x-api-key from a subscribed third party)' })
     @ApiParam({ name: 'warehouseId', description: 'Warehouse ID' })
     @Post('/:warehouseId/pendingShipments')
@@ -234,6 +261,7 @@ export class NodeController {
     }
 
     @ApiSecurity('x-role')
+    @UseGuards(AccountThrottlerGuard)
     @ApiOperation({ summary: 'Delete a pending shipment from a warehouse' })
     @ApiParam({ name: 'warehouseId', description: 'Warehouse ID' })
     @ApiParam({ name: 'orderId', description: '  Order ID to delete' })
@@ -245,6 +273,7 @@ export class NodeController {
     }
 
     @ApiSecurity('x-role')
+    @UseGuards(AccountThrottlerGuard)
     @ApiOperation({ summary: 'Get inventory at a transit hub' })
     @ApiParam({ name: 'hubId', description: 'Transit Hub ID' })
     @Roles(Role.TRANSIT_HUB)
@@ -255,6 +284,7 @@ export class NodeController {
     }
 
     @ApiSecurity('x-role')
+    @UseGuards(AccountThrottlerGuard)
     @ApiOperation({ summary: 'Get capacity information for a transit hub' })
     @ApiParam({ name: 'hubId', description: 'Transit Hub ID' })
     @Roles(Role.TRANSIT_HUB)
@@ -265,6 +295,7 @@ export class NodeController {
     }
 
     @ApiSecurity('x-role')
+    @UseGuards(AccountThrottlerGuard)
     @ApiOperation({ summary: 'Get shipments assigned to an agency' })
     @ApiParam({ name: 'agencyId', description: 'Agency ID' })
     @Roles(Role.LOCAL_AGENCY)
@@ -275,6 +306,7 @@ export class NodeController {
     }
 
     @ApiSecurity('x-role')
+    @UseGuards(AccountThrottlerGuard)
     @ApiOperation({ summary: 'Get deliveries for an agency' })
     @ApiParam({ name: 'agencyId', description: 'Agency ID' })
     @Roles(Role.LOCAL_AGENCY)
@@ -285,6 +317,7 @@ export class NodeController {
     }
 
     @ApiSecurity('x-role')
+    @UseGuards(AccountThrottlerGuard)
     @ApiOperation({ summary: 'Record a failed delivery attempt' })
     @ApiParam({ name: 'agencyId', description: 'Agency ID' })
     @ApiParam({ name: 'trackingId', description: 'Shipment tracking ID' })
@@ -296,6 +329,7 @@ export class NodeController {
     }
 
     @ApiSecurity('x-role')
+    @UseGuards(AccountThrottlerGuard)
     @ApiOperation({ summary: 'Mark a shipment as delivered' })
     @ApiParam({ name: 'agencyId', description: 'Agency ID' })
     @ApiParam({ name: 'trackingId', description: 'Shipment tracking ID' })

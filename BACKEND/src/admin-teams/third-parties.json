@@ -20,6 +20,27 @@
       },
       "address": "Hyderabad",
       "createdAt": "2026-08-30T11:55:55.293Z"
+    },
+    {
+      "id": "tp-002",
+      "name": "amazon",
+      "email": "amazon@company.com",
+      "apiKey": "wh2d_tp_sp9uopm02fm1r33kysxfxngnbuvvf793",
+      "tier": "Starter",
+      "tierLimits": {
+        "name": "Starter",
+        "maxShipmentsPerMonth": 100,
+        "monthlyFee": 2000
+      },
+      "currentMonthUsage": 0,
+      "usageResetMonth": "2026-09",
+      "isActive": true,
+      "contact": {
+        "name": "raghuveer",
+        "phone": "1234567890"
+      },
+      "address": "sricity",
+      "createdAt": "2026-09-01T14:07:00.981Z"
     }
   ]
 }

@@ -1,7 +1,7 @@
 import {
     Controller, Get, Post, Put, Delete,
     Param, Body, UseFilters, UsePipes, ValidationPipe,
-    UseInterceptors, UploadedFiles, Req,
+    UseInterceptors, UploadedFiles, Req, UseGuards,
 } from '@nestjs/common';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
@@ -20,11 +20,13 @@ import {
     UpdateDriverDto,
     EscalateTicketDto,
 } from './dto';
+import { AccountThrottlerGuard } from '../auth/account-throttler.guard';
 
 @ApiTags('Admin Teams')
 @ApiSecurity('x-role')
 @Controller('admin-teams')
 @Roles(Role.ADMIN_TEAMS)
+@UseGuards(AccountThrottlerGuard)
 @UseFilters(AllExceptionsFilter, HttpExceptionFilter)
 @UsePipes(new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true, transform: true }))
 export class AdminTeamsController {

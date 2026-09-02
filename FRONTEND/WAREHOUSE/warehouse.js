@@ -24,6 +24,7 @@ async function w2dFetch(url, opts = {}) {
     if (res.status === 401) { localStorage.removeItem('session'); window.location.href = '../AUTH/home.html'; }
     return res;
 }
+
 let role_name = user.name;
 let email = user.email;
 let phone = user.phone;

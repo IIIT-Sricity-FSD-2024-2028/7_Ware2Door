@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Param, Body, Query, UseFilters } from '@nestjs/common';
+import { Controller, Get, Post, Param, Body, Query, UseFilters, UseGuards } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiSecurity, ApiParam, ApiQuery, ApiBody } from '@nestjs/swagger';
 import { RtoService } from './rto.service';
 import { Roles } from '../auth/roles.decorator';
@@ -6,10 +6,12 @@ import { Role } from '../auth/roles.enum';
 import { HttpExceptionFilter } from '../common/http-exception.filter';
 import { AllExceptionsFilter } from '../common/all-exceptions.filter';
 import { ModuleLogger } from '../common/module-logger';
+import { AccountThrottlerGuard } from '../auth/account-throttler.guard';
 
 @ApiTags('RTO')
 @ApiSecurity('x-role')
 @UseFilters(AllExceptionsFilter, HttpExceptionFilter)
+@UseGuards(AccountThrottlerGuard)
 @Controller()
 export class RtoController {
     private readonly logger = new ModuleLogger('rto');

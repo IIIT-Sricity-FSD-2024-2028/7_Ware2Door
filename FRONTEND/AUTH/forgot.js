@@ -37,6 +37,10 @@ verifyBtn.addEventListener("click", async () => {
         showError("Please enter your email address.");
         return;
     }
+    if (!email.includes("@") || !email.includes(".")) {
+        showError("Please enter a valid email address.");
+        return;
+    }
 
     verifyBtn.textContent = "Verifying...";
     verifyBtn.disabled = true;
@@ -72,6 +76,10 @@ resetBtn.addEventListener("click", async () => {
     const newPwd = newPwdInpt.value.trim();
     const confirmPwd = confirmPwdInpt.value.trim();
 
+    if (!verifiedEmail) {
+        showError("Please verify your email address first.");
+        return;
+    }
     if (!otp || !newPwd || !confirmPwd) {
         showError("Please fill out all fields.");
         return;

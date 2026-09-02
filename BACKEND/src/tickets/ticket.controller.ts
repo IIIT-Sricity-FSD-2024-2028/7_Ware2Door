@@ -10,6 +10,7 @@ import { HttpExceptionFilter } from '../common/http-exception.filter';
 import { AllExceptionsFilter } from '../common/all-exceptions.filter';
 import { ModuleLogger } from '../common/module-logger';
 import { SkipThrottle, Throttle, ThrottlerGuard } from '@nestjs/throttler';
+import { AccountThrottlerGuard } from '../auth/account-throttler.guard';
 
 @ApiTags('Tickets')
 @UseFilters(AllExceptionsFilter, HttpExceptionFilter)
@@ -22,7 +23,7 @@ export class TicketController {
     @Public()
     @UseGuards(ThrottlerGuard)
     @SkipThrottle({ default: true })
-    @Throttle({ public: { limit: 10, ttl: 60000 } })
+    @Throttle({ public: { limit: 30, ttl: 300000 } })
     @ApiOperation({ summary: 'Raise a new support ticket (public)' })
     @Post('raise')
     raiseTicket(@Body() body: CreateTicketDto) {
@@ -33,7 +34,7 @@ export class TicketController {
     @Public()
     @UseGuards(ThrottlerGuard)
     @SkipThrottle({ default: true })
-    @Throttle({ public: { limit: 30, ttl: 60000 } })
+    @Throttle({ public: { limit: 300, ttl: 300000 } })
     @ApiOperation({ summary: 'Validate a tracking ID before raising a ticket (public)' })
     @ApiParam({ name: 'trackingId', description: 'Shipment tracking ID' })
     @Get('validate/:trackingId')
@@ -45,7 +46,7 @@ export class TicketController {
     @Public()
     @UseGuards(ThrottlerGuard)
     @SkipThrottle({ default: true })
-    @Throttle({ public: { limit: 30, ttl: 60000 } })
+    @Throttle({ public: { limit: 300, ttl: 300000 } })
     @ApiOperation({ summary: 'Get all tickets (public)' })
     @Get('all')
     getAllTickets() {
@@ -54,6 +55,7 @@ export class TicketController {
     }
 
     @ApiSecurity('x-role')
+    @UseGuards(AccountThrottlerGuard)
     @ApiOperation({ summary: 'Get tickets by agency' })
     @ApiParam({ name: 'agencyId', description: 'Agency ID' })
     @Roles(Role.LOCAL_AGENCY)
@@ -64,6 +66,7 @@ export class TicketController {
     }
 
     @ApiSecurity('x-role')
+    @UseGuards(AccountThrottlerGuard)
     @ApiOperation({ summary: 'Resolve a ticket' })
     @ApiParam({ name: 'ticketId', description: 'Ticket ID' })
     @Roles(Role.LOCAL_AGENCY)
@@ -74,6 +77,7 @@ export class TicketController {
     }
 
     @ApiSecurity('x-role')
+    @UseGuards(AccountThrottlerGuard)
     @ApiOperation({ summary: 'Update ticket status' })
     @ApiParam({ name: 'ticketId', description: 'Ticket ID' })
     @Roles(Role.LOCAL_AGENCY)
@@ -83,6 +87,7 @@ export class TicketController {
         return this.ticketService.updateStatus(ticketId, body.status);
     }
     @ApiSecurity('x-role')
+    @UseGuards(AccountThrottlerGuard)
     @ApiOperation({ summary: 'Escalate a ticket to Central Escalation Desk' })
     @ApiParam({ name: 'ticketId', description: 'Ticket ID' })
     @ApiBody({ schema: { type: 'object', properties: { escalationNote: { type: 'string', example: 'Customer unreachable after 3 attempts' } } } })

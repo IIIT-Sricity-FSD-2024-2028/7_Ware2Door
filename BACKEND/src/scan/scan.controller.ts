@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Get, Param, UseFilters } from '@nestjs/common';
+import { Controller, Post, Body, Get, Param, UseFilters, UseGuards } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiSecurity, ApiParam } from '@nestjs/swagger';
 import { ScanService } from './scan.service';
 import { ScanDto } from './dto/scan.dto';
@@ -7,10 +7,12 @@ import { Role } from '../auth/roles.enum';
 import { HttpExceptionFilter } from '../common/http-exception.filter';
 import { AllExceptionsFilter } from '../common/all-exceptions.filter';
 import { ModuleLogger } from '../common/module-logger';
+import { AccountThrottlerGuard } from '../auth/account-throttler.guard';
 
 @ApiTags('Scan')
 @ApiSecurity('x-role')
 @UseFilters(AllExceptionsFilter, HttpExceptionFilter)
+@UseGuards(AccountThrottlerGuard)
 @Controller()
 export class ScanController {
     private readonly logger = new ModuleLogger('scan');

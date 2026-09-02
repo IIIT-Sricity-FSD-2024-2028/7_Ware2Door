@@ -1,6 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { ValidationPipe, BadRequestException, Logger } from '@nestjs/common';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+
 import * as fs from 'fs';
 import * as path from 'path';
 import cookieParser = require('cookie-parser');
@@ -44,7 +45,6 @@ Protected endpoints require a valid JWT session cookie (\`w2d_token\`), set auto
         .build();
 
     const document = SwaggerModule.createDocument(app, config);
-
     SwaggerModule.setup('api/docs', app, document, {
         swaggerOptions: {
             persistAuthorization: true,
@@ -54,7 +54,7 @@ Protected endpoints require a valid JWT session cookie (\`w2d_token\`), set auto
         customSiteTitle: 'WARE2DOOR API Docs',
         customCss: `
             .swagger-ui .topbar { background: linear-gradient(135deg, #1e3a5f 0%, #0f2340 100%); }
-            .swagger-ui .topbar .topbar-wrapper .link::before { content: '🚚 WARE2DOOR API'; color: white; font-size: 18px; font-weight: bold; }
+            .swagger-ui .topbar .topbar-wrapper .link::before { content: '🚚 WARE2DOOR API'; color:  white; font-size: 18px; font-weight: bold; }
             .swagger-ui .topbar img { display: none; }
             .swagger-ui .info .title { color: #1e3a5f; }
         `,
@@ -65,7 +65,6 @@ Protected endpoints require a valid JWT session cookie (\`w2d_token\`), set auto
         fs.mkdirSync(docsPath, { recursive: true });
     }
     fs.writeFileSync(path.join(docsPath, 'swagger.json'), JSON.stringify(document, null, 2));
-
     await app.listen(8000);
     const log = new Logger('Bootstrap');
     log.log('Server running on http://localhost:8000');

@@ -35,10 +35,11 @@ export class ScanController {
     async outscanFromHub(@Body() body: ScanDto, @Param('hubId') hubId: string) {
         this.logger.log(`outscan → hub=${hubId} tracking=${body.trackingId}`);
         const result = await this.scanService.outscanFromHub(hubId, body.trackingId);
-        if (result.status === 'error') this.logger.warn(`outscan flagged → hub=${hubId} tracking=${body.trackingId} | ${'flagMsg' in result ? result.flagMsg : ''}`);
+        if (result.status === 'error')
+        this.logger.warn(`outscan flagged → hub=${hubId} tracking=${body.trackingId} | ${'flagMsg' in result ? result.flagMsg : ''}`);
         return result;
     }
-
+    
     @ApiOperation({ summary: 'Get scan history for a transit hub' })
     @ApiParam({ name: 'hubId', description: 'Transit Hub ID' })
     @Roles(Role.TRANSIT_HUB)

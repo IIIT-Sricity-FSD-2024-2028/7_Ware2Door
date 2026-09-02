@@ -1,6 +1,7 @@
 {
   "openapi": "3.0.0",
   "paths": {
+    
     "/{warehouseId}/manifest": {
       "get": {
         "operationId": "ShipmentsController_getManifest",
@@ -38,6 +39,7 @@
         ]
       }
     },
+
     "/all": {
       "get": {
         "operationId": "ShipmentsController_getAllShipments",
@@ -288,6 +290,7 @@
         ]
       }
     },
+
     "/auth/transit": {
       "post": {
         "operationId": "NodeController_loginTransit",

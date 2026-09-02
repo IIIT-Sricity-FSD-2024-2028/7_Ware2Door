@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Put, Body, Param, UseFilters } from '@nestjs/common';
+import { Controller, Get, Post, Put, Body, Param, UseFilters, UseGuards } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiSecurity, ApiParam, ApiBody } from '@nestjs/swagger';
 import { TicketService } from './ticket.service';
 import { CreateTicketDto } from './dto/create-ticket.dto';
@@ -9,6 +9,7 @@ import { Role } from '../auth/roles.enum';
 import { HttpExceptionFilter } from '../common/http-exception.filter';
 import { AllExceptionsFilter } from '../common/all-exceptions.filter';
 import { ModuleLogger } from '../common/module-logger';
+import { SkipThrottle, Throttle, ThrottlerGuard } from '@nestjs/throttler';
 
 @ApiTags('Tickets')
 @UseFilters(AllExceptionsFilter, HttpExceptionFilter)
@@ -19,6 +20,9 @@ export class TicketController {
     constructor(private readonly ticketService: TicketService) {}
 
     @Public()
+    @UseGuards(ThrottlerGuard)
+    @SkipThrottle({ default: true })
+    @Throttle({ public: { limit: 10, ttl: 60000 } })
     @ApiOperation({ summary: 'Raise a new support ticket (public)' })
     @Post('raise')
     raiseTicket(@Body() body: CreateTicketDto) {
@@ -27,6 +31,9 @@ export class TicketController {
     }
 
     @Public()
+    @UseGuards(ThrottlerGuard)
+    @SkipThrottle({ default: true })
+    @Throttle({ public: { limit: 30, ttl: 60000 } })
     @ApiOperation({ summary: 'Validate a tracking ID before raising a ticket (public)' })
     @ApiParam({ name: 'trackingId', description: 'Shipment tracking ID' })
     @Get('validate/:trackingId')
@@ -36,6 +43,9 @@ export class TicketController {
     }
 
     @Public()
+    @UseGuards(ThrottlerGuard)
+    @SkipThrottle({ default: true })
+    @Throttle({ public: { limit: 30, ttl: 60000 } })
     @ApiOperation({ summary: 'Get all tickets (public)' })
     @Get('all')
     getAllTickets() {

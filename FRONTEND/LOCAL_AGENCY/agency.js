@@ -1,4 +1,4 @@
-const API = 'http://localhost:8000';
+const API = 'http://127.0.0.1:8000';
 const session = JSON.parse(localStorage.getItem('session') || 'null');
 if (!session || !session.user) { window.location.href = '../AUTH/auth.html'; }
 const user = session.user;
@@ -1726,5 +1726,4 @@ function showToast(msg, isError = false) {
     t.style.opacity = "0";
   }, 3000);
 }
-
 

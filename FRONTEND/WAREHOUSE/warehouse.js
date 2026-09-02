@@ -107,7 +107,7 @@ if (savePwdBtn) {
             return;
         }
         try {
-            const res = await w2dFetch(`http://localhost:8000/auth/password/${warehouseId}`, {
+            const res = await w2dFetch(`http://127.0.0.1:8000/auth/password/${warehouseId}`, {
                 method: "POST",
                 body: JSON.stringify({ currentPassword: cur, newPassword: nw })
             });
@@ -210,7 +210,7 @@ stock_btn.addEventListener("click", () => {
     renderStockTable();
 });
 document.querySelector(".logout-btn").addEventListener("click", async () => {
-    await w2dFetch('http://localhost:8000/auth/logout', { method: 'POST' });
+    await w2dFetch('http://127.0.0.1:8000/auth/logout', { method: 'POST' });
     localStorage.removeItem("session");
     window.location.href = "../AUTH/home.html";
 });
@@ -262,7 +262,7 @@ document.getElementById("confirm-dispatch-btn").addEventListener("click", async 
     const agencyName = agencySel.options[agencySel.selectedIndex]?.text || agencyId;
 
     try {
-        const res = await w2dFetch(`http://localhost:8000/${warehouseId}/dispatch`, {
+        const res = await w2dFetch(`http://127.0.0.1:8000/${warehouseId}/dispatch`, {
             method: "POST",
             body: JSON.stringify({ orderId, hubId, agencyId })
         });
@@ -304,7 +304,7 @@ document.getElementById("stock-submit-btn").addEventListener("click", async () =
         return;
     }
     try {
-        const res = await w2dFetch(`http://localhost:8000/${warehouseId}/stockAddition`, {
+        const res = await w2dFetch(`http://127.0.0.1:8000/${warehouseId}/stockAddition`, {
             method: "POST",
             body: JSON.stringify({ labelID: labelId, itemName: itemName, quantity: qty })
         });
@@ -359,7 +359,7 @@ document.getElementById("save-edit-modal").addEventListener("click", async () =>
         return;
     }
     try {
-        const res = await w2dFetch(`http://localhost:8000/auth/profile/${warehouseId}`, {
+        const res = await w2dFetch(`http://127.0.0.1:8000/auth/profile/${warehouseId}`, {
             method: "POST",
             body: JSON.stringify({ name: n, email: em, phone: ph })
         });
@@ -383,7 +383,7 @@ document.getElementById("save-edit-modal").addEventListener("click", async () =>
 });
 async function fetchInventory() {
     try {
-        const res = await w2dFetch(`http://localhost:8000/${warehouseId}/stockInventory`);
+        const res = await w2dFetch(`http://127.0.0.1:8000/${warehouseId}/stockInventory`);
         const data = await res.json();
         if (Array.isArray(data)) {
             inventoryData = data.map(item => ({
@@ -400,7 +400,7 @@ async function fetchInventory() {
 
 async function fetchOutbound() {
     try {
-        const res = await w2dFetch(`http://localhost:8000/${warehouseId}/outbound`);
+        const res = await w2dFetch(`http://127.0.0.1:8000/${warehouseId}/outbound`);
         const data = await res.json();
         if (Array.isArray(data)) {
             outboundShipments = data.map(s => ({
@@ -425,7 +425,7 @@ async function fetchOutbound() {
 
 async function fetchPreAlert() {
     try {
-        const res = await w2dFetch(`http://localhost:8000/${warehouseId}/preAlert`);
+        const res = await w2dFetch(`http://127.0.0.1:8000/${warehouseId}/preAlert`);
         const data = await res.json();
         return data; 
     } catch (e) {
@@ -436,7 +436,7 @@ async function fetchPreAlert() {
 
 async function fetchPendingShipments() {
     try {
-        const res = await w2dFetch(`http://localhost:8000/${warehouseId}/pendingShipments`);
+        const res = await w2dFetch(`http://127.0.0.1:8000/${warehouseId}/pendingShipments`);
         const data = await res.json();
         if (Array.isArray(data)) {
             pendingShipments = data.map(s => ({
@@ -459,7 +459,7 @@ async function fetchPendingShipments() {
 
 async function fetchRTO() {
     try {
-        const res = await w2dFetch(`http://localhost:8000/rto?warehouseId=${warehouseId}`);
+        const res = await w2dFetch(`http://127.0.0.1:8000/rto?warehouseId=${warehouseId}`);
         const data = await res.json();
         if (Array.isArray(data)) {
             rtoData = data.map(r => ({
@@ -485,7 +485,7 @@ async function doRtoInscan() {
     if (!rtoId) { showToast('⚠ Please enter an RTO ID.', true); return; }
     if (!rtoId.startsWith('RTOID-')) { showToast('⚠ Invalid RTO ID format. Must start with RTOID-', true); return; }
     try {
-        const res = await w2dFetch(`http://localhost:8000/rto/${rtoId}/warehouse-inscan`, { method: 'POST' });
+        const res = await w2dFetch(`http://127.0.0.1:8000/rto/${rtoId}/warehouse-inscan`, { method: 'POST' });
         const data = await res.json();
         if (data.status === 'success') {
             input.value = '';
@@ -507,8 +507,8 @@ async function doRtoInscan() {
 async function fetchSystemData() {
     try {
         const [hubsRes, agenciesRes] = await Promise.all([
-            fetch('http://localhost:8000/system/hubs'),
-            fetch('http://localhost:8000/system/agencies')
+            fetch('http://127.0.0.1:8000/system/hubs'),
+            fetch('http://127.0.0.1:8000/system/agencies')
         ]);
         allHubs = await hubsRes.json();
         allAgencies = await agenciesRes.json();
@@ -930,7 +930,7 @@ function getShipmentFilters() {
 }
 async function rejectShipment(orderId) {
     try {
-        const res = await w2dFetch(`http://localhost:8000/${warehouseId}/pendingShipments/${orderId}`, {
+        const res = await w2dFetch(`http://127.0.0.1:8000/${warehouseId}/pendingShipments/${orderId}`, {
             method: 'DELETE'
         });
         if (res.ok) {

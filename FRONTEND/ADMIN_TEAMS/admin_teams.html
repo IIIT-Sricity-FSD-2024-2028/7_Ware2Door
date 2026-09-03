@@ -756,6 +756,33 @@
     </div>
   </div>
 
+  <!-- ══ MODAL: CHANGE PARTNER TIER ══ -->
+  <div class="modal-overlay" id="modal-change-tier">
+    <div class="modal" style="max-width:400px">
+      <div class="modal-header">
+        <h3 class="modal-title"><i class="fa-solid fa-arrow-up-right-dots" style="color:#6366f1;margin-right:8px"></i>Upgrade/Change Tier</h3>
+        <button class="modal-close" onclick="closeModal('modal-change-tier')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div id="ct-error" style="color:#ef4444;font-size:13px;margin-bottom:10px;display:none"></div>
+        <input type="hidden" id="ct-partner-id" />
+        <div style="margin-bottom:12px">
+          <label style="display:block;font-size:12px;font-weight:600;color:var(--text-light);margin-bottom:6px">Select New Tier</label>
+          <select id="ct-tier" style="width:100%;padding:10px 14px;border:1px solid #e2e8f0;border-radius:8px;font-family:inherit;font-size:14px">
+            <option value="Starter">Starter — 100 shipments/month</option>
+            <option value="Growth">Growth — 500 shipments/month</option>
+            <option value="Business">Business — 2,000 shipments/month</option>
+            <option value="Enterprise">Enterprise — 10,000 shipments/month</option>
+          </select>
+        </div>
+      </div>
+      <div class="modal-footer" style="display:flex;gap:10px;justify-content:flex-end;padding:16px 24px;border-top:1px solid #e2e8f0">
+        <button type="button" class="btn-ghost" onclick="closeModal('modal-change-tier')">Cancel</button>
+        <button type="button" class="btn-primary" onclick="submitChangeTier()">Update Tier</button>
+      </div>
+    </div>
+  </div>
+
   <!-- ══ MODAL: REVEAL API KEY ══ -->
   <div class="modal-overlay" id="modal-api-key">
     <div class="modal" style="max-width:480px">

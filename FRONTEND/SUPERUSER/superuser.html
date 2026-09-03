@@ -1,0 +1,330 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Super User — Ware2Door</title>
+  <meta name="description" content="Super User Portal — Read-only system overview." />
+  <link rel="stylesheet" href="../ADMIN_TEAMS/admin_teams.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body>
+
+  <div class="sidebar">
+    <div class="logo-section">
+      <img src="../ADMIN_TEAMS/logo.png" alt="Ware2Door" />
+      <div class="at-role-chip"><i class="fa-solid fa-shield-halved"></i> SUPER USER</div>
+    </div>
+    <ul class="menu">
+      <li class="menu-item active" id="nav-nodes" onclick="showSection('nodes')">
+        <div class="icon-box"><i class="fa-solid fa-building-circle-check"></i></div>
+        <span>Nodes</span>
+      </li>
+      <li class="menu-item" id="nav-analytics" onclick="showSection('analytics')">
+        <div class="icon-box"><i class="fa-solid fa-chart-bar"></i></div>
+        <span>Node Analytics</span>
+      </li>
+      <li class="menu-item" id="nav-escalations" onclick="showSection('escalations')">
+        <div class="icon-box"><i class="fa-solid fa-triangle-exclamation"></i></div>
+        <span>Escalations</span>
+      </li>
+      <li class="menu-item" id="nav-partners" onclick="showSection('partners')">
+        <div class="icon-box"><i class="fa-solid fa-handshake"></i></div>
+        <span>Third Party</span>
+      </li>
+    </ul>
+    <div class="sidebar-footer">
+      <button class="logout-btn" onclick="doLogout()">
+        <i class="fa-solid fa-right-from-bracket"></i> Logout
+      </button>
+    </div>
+  </div>
+
+  <div class="main">
+    <div class="header">
+      <div class="header-left">
+        <h2 id="header-title">Nodes</h2>
+        <span class="at-authority-chip"><i class="fa-solid fa-shield-halved"></i> Super User</span>
+      </div>
+      <div class="user">
+        <div class="user-info">
+          <p class="name" id="su-user-name">Super User</p>
+          <p class="role-label"><span class="online-dot"></span>&nbsp; Online</p>
+        </div>
+        <div class="avatar">SU</div>
+      </div>
+    </div>
+
+    <div class="page-content">
+
+      <!-- SECTION: NODES -->
+      <div class="section active" id="section-nodes">
+        <div class="welcome-banner">
+          <div>
+            <p class="welcome-label">Super User Portal</p>
+            <h2 class="welcome-heading"><i class="fa-solid fa-building-circle-check" style="color:var(--gold)"></i> Node Overview</h2>
+            <p class="welcome-sub">View all registered nodes — warehouses, transit hubs, local agencies — and their subscription validity.</p>
+            <div class="welcome-actions">
+              <button class="btn-ghost" onclick="loadNodes()"><i class="fa-solid fa-rotate"></i> Refresh</button>
+            </div>
+          </div>
+          <div class="welcome-icon-wrap"><i class="fa-solid fa-building-circle-check"></i></div>
+        </div>
+
+        <div class="stat-row">
+          <div class="quick-stat">
+            <i class="fa-solid fa-warehouse" style="color:var(--gold)"></i>
+            <div><p class="qs-label">Warehouses</p><p class="qs-val" id="su-stat-wh">—</p></div>
+          </div>
+          <div class="quick-stat">
+            <i class="fa-solid fa-building" style="color:var(--blue)"></i>
+            <div><p class="qs-label">Transit Hubs</p><p class="qs-val" id="su-stat-hub">—</p></div>
+          </div>
+          <div class="quick-stat">
+            <i class="fa-solid fa-truck-fast" style="color:var(--green)"></i>
+            <div><p class="qs-label">Local Agencies</p><p class="qs-val" id="su-stat-ag">—</p></div>
+          </div>
+          <div class="quick-stat">
+            <i class="fa-solid fa-circle-check" style="color:var(--green)"></i>
+            <div><p class="qs-label">Valid Subscriptions</p><p class="qs-val" id="su-stat-valid">—</p></div>
+          </div>
+          <div class="quick-stat">
+            <i class="fa-solid fa-clock" style="color:var(--orange)"></i>
+            <div><p class="qs-label">Expired Subscriptions</p><p class="qs-val" id="su-stat-expired">—</p></div>
+          </div>
+        </div>
+
+        <div class="filter-row">
+          <div class="search-box">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" id="su-node-search" placeholder="Search by name or city…" oninput="filterNodes()" />
+          </div>
+          <select class="filter-select" id="su-node-type" onchange="filterNodes()">
+            <option value="">All Types</option>
+            <option value="WAREHOUSE">Warehouse</option>
+            <option value="TRANSIT_HUB">Transit Hub</option>
+            <option value="LOCAL_AGENCY">Local Agency</option>
+          </select>
+          <select class="filter-select" id="su-node-status" onchange="filterNodes()">
+            <option value="">All Status</option>
+            <option value="valid">Subscription Valid</option>
+            <option value="expired">Subscription Expired</option>
+          </select>
+        </div>
+
+        <div class="table-card">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Node</th>
+                <th>Type</th>
+                <th>City</th>
+                <th>Active</th>
+                <th>Subscription</th>
+                <th>Expires</th>
+              </tr>
+            </thead>
+            <tbody id="su-nodes-body">
+              <tr><td colspan="6" class="empty-msg"><i class="fa-solid fa-spinner fa-spin"></i> Loading…</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- SECTION: NODE ANALYTICS -->
+      <div class="section" id="section-analytics">
+        <div class="welcome-banner" style="background:linear-gradient(135deg,#0c2340 0%,#1e3a5f 55%,#2563eb 100%)">
+          <div>
+            <p class="welcome-label">Super User Portal</p>
+            <h2 class="welcome-heading"><i class="fa-solid fa-chart-bar" style="color:#93c5fd"></i> Node Performance Analytics</h2>
+            <p class="welcome-sub">Monitor live key metrics for Warehouses, Transit Hubs, and Local Agencies — inventory, scan counts, delivery rates, and capacity usage.</p>
+            <div class="welcome-actions">
+              <button class="btn-primary" onclick="loadNodePerformance()"><i class="fa-solid fa-rotate"></i> Refresh Data</button>
+            </div>
+          </div>
+          <div class="welcome-icon-wrap" style="color:#2563eb"><i class="fa-solid fa-chart-bar"></i></div>
+        </div>
+
+        <div style="display:flex;background:#e2e8f0;padding:4px;border-radius:8px;gap:4px;margin-bottom:20px;width:fit-content" id="su-perf-tab-group">
+          <button class="perf-tab active-tab" data-target="WH" onclick="switchPerfTab('WH')" style="border:none;padding:9px 20px;border-radius:6px;font-size:13px;font-weight:600;cursor:pointer;background:white;color:#0f172a;box-shadow:0 1px 3px rgba(0,0,0,.1);font-family:inherit">
+            <i class="fa-solid fa-warehouse" style="margin-right:5px;color:#14b8a6"></i>Warehouses
+          </button>
+          <button class="perf-tab" data-target="HUB" onclick="switchPerfTab('HUB')" style="border:none;padding:9px 20px;border-radius:6px;font-size:13px;font-weight:600;cursor:pointer;background:transparent;color:#64748b;font-family:inherit">
+            <i class="fa-solid fa-building" style="margin-right:5px"></i>Transit Hubs
+          </button>
+          <button class="perf-tab" data-target="AG" onclick="switchPerfTab('AG')" style="border:none;padding:9px 20px;border-radius:6px;font-size:13px;font-weight:600;cursor:pointer;background:transparent;color:#64748b;font-family:inherit">
+            <i class="fa-solid fa-truck-fast" style="margin-right:5px"></i>Local Agencies
+          </button>
+        </div>
+
+        <div id="su-perf-panel-WH" style="display:block">
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px">
+            <label style="font-size:13px;font-weight:600;color:#334155;white-space:nowrap"><i class="fa-solid fa-warehouse" style="color:#14b8a6;margin-right:5px"></i>Select Warehouse:</label>
+            <select id="su-perf-select-wh" onchange="renderPerfChart('WH', this.value)" style="flex:1;max-width:340px;padding:9px 14px;border:1px solid #e2e8f0;border-radius:8px;font-size:13px;font-family:inherit;cursor:pointer"></select>
+          </div>
+          <div id="su-perf-cards-WH" style="margin-bottom:20px"></div>
+          <div style="background:white;border:1px solid #e2e8f0;border-radius:12px;padding:20px;box-shadow:0 1px 3px rgba(0,0,0,.05)">
+            <canvas id="su-perfChart-WH" style="height:320px;width:100%;display:block"></canvas>
+          </div>
+        </div>
+
+        <div id="su-perf-panel-HUB" style="display:none">
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px">
+            <label style="font-size:13px;font-weight:600;color:#334155;white-space:nowrap"><i class="fa-solid fa-building" style="color:#3b82f6;margin-right:5px"></i>Select Transit Hub:</label>
+            <select id="su-perf-select-hub" onchange="renderPerfChart('HUB', this.value)" style="flex:1;max-width:340px;padding:9px 14px;border:1px solid #e2e8f0;border-radius:8px;font-size:13px;font-family:inherit;cursor:pointer"></select>
+          </div>
+          <div id="su-perf-cards-HUB" style="margin-bottom:20px"></div>
+          <div style="background:white;border:1px solid #e2e8f0;border-radius:12px;padding:20px;box-shadow:0 1px 3px rgba(0,0,0,.05)">
+            <canvas id="su-perfChart-HUB" style="height:320px;width:100%;display:block"></canvas>
+          </div>
+        </div>
+
+        <div id="su-perf-panel-AG" style="display:none">
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px">
+            <label style="font-size:13px;font-weight:600;color:#334155;white-space:nowrap"><i class="fa-solid fa-truck-fast" style="color:#f59e0b;margin-right:5px"></i>Select Local Agency:</label>
+            <select id="su-perf-select-ag" onchange="renderPerfChart('AG', this.value)" style="flex:1;max-width:340px;padding:9px 14px;border:1px solid #e2e8f0;border-radius:8px;font-size:13px;font-family:inherit;cursor:pointer"></select>
+          </div>
+          <div id="su-perf-cards-AG" style="margin-bottom:20px"></div>
+          <div style="background:white;border:1px solid #e2e8f0;border-radius:12px;padding:20px;box-shadow:0 1px 3px rgba(0,0,0,.05)">
+            <canvas id="su-perfChart-AG" style="height:320px;width:100%;display:block"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- SECTION: ESCALATIONS -->
+      <div class="section" id="section-escalations">
+        <div class="welcome-banner">
+          <div>
+            <p class="welcome-label">Super User Portal</p>
+            <h2 class="welcome-heading"><i class="fa-solid fa-triangle-exclamation" style="color:#fbbf24"></i> Escalations</h2>
+            <p class="welcome-sub">Monitor all escalated tickets and their resolution status.</p>
+            <div class="welcome-actions">
+              <button class="btn-ghost" onclick="loadEscalations()"><i class="fa-solid fa-rotate"></i> Refresh</button>
+            </div>
+          </div>
+          <div class="welcome-icon-wrap"><i class="fa-solid fa-triangle-exclamation"></i></div>
+        </div>
+
+        <div class="stat-row">
+          <div class="quick-stat">
+            <i class="fa-solid fa-ticket" style="color:var(--purple)"></i>
+            <div><p class="qs-label">Total Escalations</p><p class="qs-val" id="su-stat-esc-total">—</p></div>
+          </div>
+          <div class="quick-stat">
+            <i class="fa-solid fa-clock" style="color:var(--orange)"></i>
+            <div><p class="qs-label">Pending</p><p class="qs-val" id="su-stat-esc-pending">—</p></div>
+          </div>
+          <div class="quick-stat">
+            <i class="fa-solid fa-magnifying-glass" style="color:var(--blue)"></i>
+            <div><p class="qs-label">Reviewing</p><p class="qs-val" id="su-stat-esc-reviewing">—</p></div>
+          </div>
+          <div class="quick-stat">
+            <i class="fa-solid fa-circle-check" style="color:var(--green)"></i>
+            <div><p class="qs-label">Resolved</p><p class="qs-val" id="su-stat-esc-resolved">—</p></div>
+          </div>
+        </div>
+
+        <div class="filter-row">
+          <div class="search-box">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" id="su-esc-search" placeholder="Search ticket or tracking ID…" oninput="filterEscalations()" />
+          </div>
+          <select class="filter-select" id="su-esc-status" onchange="filterEscalations()">
+            <option value="">All Status</option>
+            <option value="Pending">Pending</option>
+            <option value="Reviewing">Reviewing</option>
+            <option value="Resolved">Resolved</option>
+          </select>
+          <select class="filter-select" id="su-esc-priority" onchange="filterEscalations()">
+            <option value="">All Priority</option>
+            <option value="High">High</option>
+            <option value="Medium">Medium</option>
+            <option value="Low">Low</option>
+          </select>
+        </div>
+
+        <div class="table-card">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Ticket ID</th>
+                <th>Tracking ID</th>
+                <th>Priority</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="su-esc-body">
+              <tr><td colspan="4" class="empty-msg"><i class="fa-solid fa-spinner fa-spin"></i> Loading…</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- SECTION: THIRD PARTY -->
+      <div class="section" id="section-partners">
+        <div class="welcome-banner">
+          <div>
+            <p class="welcome-label">Super User Portal</p>
+            <h2 class="welcome-heading"><i class="fa-solid fa-handshake" style="color:#a5b4fc"></i> Third Party API Usage</h2>
+            <p class="welcome-sub">Monitor external partners and their monthly API call usage against their tier limits.</p>
+            <div class="welcome-actions">
+              <button class="btn-ghost" onclick="loadPartners()"><i class="fa-solid fa-rotate"></i> Refresh</button>
+            </div>
+          </div>
+          <div class="welcome-icon-wrap" style="color:#6366f1"><i class="fa-solid fa-handshake"></i></div>
+        </div>
+
+        <div class="stat-row">
+          <div class="quick-stat">
+            <i class="fa-solid fa-users" style="color:var(--purple)"></i>
+            <div><p class="qs-label">Total Partners</p><p class="qs-val" id="su-stat-tp-total">—</p></div>
+          </div>
+          <div class="quick-stat">
+            <i class="fa-solid fa-circle-check" style="color:var(--green)"></i>
+            <div><p class="qs-label">Active</p><p class="qs-val" id="su-stat-tp-active">—</p></div>
+          </div>
+          <div class="quick-stat">
+            <i class="fa-solid fa-triangle-exclamation" style="color:var(--red)"></i>
+            <div><p class="qs-label">Near/Over Limit</p><p class="qs-val" id="su-stat-tp-overlimit">—</p></div>
+          </div>
+        </div>
+
+        <div class="filter-row">
+          <div class="search-box">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" id="su-tp-search" placeholder="Search partner name…" oninput="filterPartners()" />
+          </div>
+          <select class="filter-select" id="su-tp-status" onchange="filterPartners()">
+            <option value="">All Status</option>
+            <option value="active">Active</option>
+            <option value="inactive">Inactive</option>
+          </select>
+        </div>
+
+        <div class="table-card">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Partner</th>
+                <th>Tier</th>
+                <th>Status</th>
+                <th>Usage This Month</th>
+                <th>Within Limit</th>
+              </tr>
+            </thead>
+            <tbody id="su-tp-body">
+              <tr><td colspan="5" class="empty-msg"><i class="fa-solid fa-spinner fa-spin"></i> Loading…</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div id="toast-container" class="toast-container"></div>
+  <script src="superuser.js"></script>
+</body>
+</html>

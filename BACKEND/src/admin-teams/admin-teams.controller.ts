@@ -205,6 +205,10 @@ export class AdminTeamsController {
     @ApiParam({ name: 'id', description: 'Partner ID' })
     @Put('partners/:id/tier')
     changePartnerTier(@Param('id') id: string, @Body('tier') tier: string) {
+        const validTiers = ['Starter', 'Growth', 'Business', 'Enterprise'];
+        if (!tier || !validTiers.includes(tier)) {
+            return { success: false, error: `Invalid tier. Must be one of: ${validTiers.join(', ')}` };
+        }
         this.logger.log(`changePartnerTier → ${id} tier=${tier}`);
         return this.svc.changePartnerTier(id, tier);
     }

@@ -881,6 +881,7 @@ function filterPartners() {
             <td>${activeBadge}</td>
             <td>
                 <div class="action-btn-group">
+                    <button class="btn-ghost" onclick="openChangeTier('${p.id}', '${p.tier}')" title="Change Tier"><i class="fa-solid fa-arrow-up-right-dots"></i></button>
                     <button class="btn-ghost" onclick="togglePartnerStatus('${p.id}', ${!p.isActive})" title="${p.isActive ? 'Deactivate' : 'Activate'}"><i class="fa-solid ${p.isActive ? 'fa-ban' : 'fa-check'}"></i></button>
                     <button class="btn-ghost" onclick="deletePartner('${p.id}')" style="color:#ef4444" title="Delete"><i class="fa-solid fa-trash"></i></button>
                 </div>
@@ -922,8 +923,8 @@ async function submitAddPartner() {
         document.getElementById('tp-contact-phone').value = '';
         document.getElementById('tp-tier').value = 'Starter';
 
-        showToast('success', 'Partner added successfully.');
-        loadPartners();
+        toast('Partner added successfully.', 'success');
+        await loadPartners();
 
         if (res.partner && res.partner.apiKey) {
             showApiKey(res.partner.apiKey);
@@ -939,10 +940,10 @@ async function togglePartnerStatus(id, isActive) {
     try {
         const res = await api('PUT', `/admin-teams/partners/${id}/status`, { isActive });
         if (res.error) throw new Error(res.error);
-        showToast('success', `Partner ${isActive ? 'activated' : 'deactivated'} successfully.`);
-        loadPartners();
+        toast(`Partner ${isActive ? 'activated' : 'deactivated'} successfully.`, 'success');
+        await loadPartners();
     } catch (e) {
-        showToast('error', e.message);
+        toast(e.message, 'error');
     }
 }
 
@@ -951,10 +952,10 @@ async function deletePartner(id) {
     try {
         const res = await api('DELETE', `/admin-teams/partners/${id}`);
         if (res.error) throw new Error(res.error);
-        showToast('success', 'Partner deleted successfully.');
-        loadPartners();
+        toast('Partner deleted successfully.', 'success');
+        await loadPartners();
     } catch (e) {
-        showToast('error', e.message);
+        toast(e.message, 'error');
     }
 }
 
@@ -963,11 +964,11 @@ async function regenerateApiKey(id) {
     try {
         const res = await api('PUT', `/admin-teams/partners/${id}/regenerate-key`);
         if (res.error) throw new Error(res.error);
-        showToast('success', 'API key regenerated successfully.');
-        loadPartners();
+        toast('API key regenerated successfully.', 'success');
+        await loadPartners();
         showApiKey(res.apiKey);
     } catch (e) {
-        showToast('error', e.message);
+        toast(e.message, 'error');
     }
 }
 
@@ -979,8 +980,34 @@ function showApiKey(key) {
 function copyApiKey() {
     const key = document.getElementById('modal-api-key-value').textContent;
     navigator.clipboard.writeText(key).then(() => {
-        showToast('success', 'API Key copied to clipboard');
+        toast('API Key copied to clipboard', 'success');
     }).catch(() => {
-        showToast('error', 'Failed to copy API key');
+        toast('Failed to copy API key', 'error');
     });
+}
+
+function openChangeTier(id, currentTier) {
+    document.getElementById('ct-partner-id').value = id;
+    document.getElementById('ct-tier').value = currentTier || 'Starter';
+    document.getElementById('ct-error').style.display = 'none';
+    openModal('modal-change-tier');
+}
+
+async function submitChangeTier() {
+    const err = document.getElementById('ct-error');
+    err.style.display = 'none';
+    const id = document.getElementById('ct-partner-id').value;
+    const tier = document.getElementById('ct-tier').value;
+    
+    try {
+        const res = await api('PUT', `/admin-teams/partners/${id}/tier`, { tier });
+        if (res.error) throw new Error(res.error);
+        
+        toast('Tier updated successfully.', 'success');
+        closeModal('modal-change-tier');
+        await loadPartners();
+    } catch (e) {
+        err.textContent = e.message;
+        err.style.display = 'block';
+    }
 }

@@ -1568,14 +1568,7 @@
         ],
         "responses": {
           "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object"
-                }
-              }
-            }
+            "description": ""
           }
         },
         "security": [
@@ -3051,6 +3044,110 @@
         "summary": "Delete a driver from a route",
         "tags": [
           "Workers & Agents"
+        ]
+      }
+    },
+    "/superuser/nodes": {
+      "get": {
+        "operationId": "SuperuserController_getNodes",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "x-role": []
+          }
+        ],
+        "summary": "Get all nodes with minimal info (Super User only)",
+        "tags": [
+          "Super User"
+        ]
+      }
+    },
+    "/superuser/escalations": {
+      "get": {
+        "operationId": "SuperuserController_getEscalations",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "x-role": []
+          }
+        ],
+        "summary": "Get all escalations with status (Super User only)",
+        "tags": [
+          "Super User"
+        ]
+      }
+    },
+    "/superuser/third-parties": {
+      "get": {
+        "operationId": "SuperuserController_getThirdParties",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "x-role": []
+          }
+        ],
+        "summary": "Get third party API usage info (Super User only)",
+        "tags": [
+          "Super User"
+        ]
+      }
+    },
+    "/superuser/node-performance": {
+      "get": {
+        "operationId": "SuperuserController_getNodePerformance",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "x-role": []
+          }
+        ],
+        "summary": "Get live node performance analytics (Super User only)",
+        "tags": [
+          "Super User"
         ]
       }
     }

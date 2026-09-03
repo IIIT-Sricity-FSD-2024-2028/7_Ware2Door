@@ -10,6 +10,7 @@ import { ReportsModule } from './reports/reports.module';
 import { WorkersModule } from './workers/workers.module';
 import { RtoModule } from './rto/rto.module';
 import { AdminTeamsModule } from './admin-teams/admin-teams.module';
+import { SuperuserModule } from './superuser/superuser.module';
 
 @Module({
     imports: [
@@ -30,6 +31,7 @@ import { AdminTeamsModule } from './admin-teams/admin-teams.module';
         WorkersModule,
         RtoModule,
         AdminTeamsModule,
+        SuperuserModule,
     ],
 })
 export class AppModule { }

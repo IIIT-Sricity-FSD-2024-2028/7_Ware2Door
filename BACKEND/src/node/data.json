@@ -102,5 +102,18 @@
       "isActive": true,
       "createdAt": "2026-01-01T00:00:00Z"
     }
+  ],
+  "SUPERUSER": [
+    {
+      "id": "SU-0001",
+      "name": "Global Super User",
+      "email": "superuser@ware2door.com",
+      "password": "SuperUser@2026",
+      "phone": "+91 9000000000",
+      "address": "Ware2Door HQ, Chennai",
+      "type": "SUPERUSER",
+      "isActive": true,
+      "createdAt": "2026-01-01T00:00:00Z"
+    }
   ]
 }

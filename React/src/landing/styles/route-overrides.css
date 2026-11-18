@@ -1,0 +1,336 @@
+.portal-body {
+  display: block;
+}
+
+.portal-body:not(.auth-route)::before,
+.portal-body:not(.auth-route)::after {
+  content: none;
+}
+
+.portal-body.warehouse-route::before,
+.portal-body.warehouse-route::after {
+  content: none !important;
+  display: none !important;
+  background: none !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+.portal-body.warehouse-route #root {
+  width: 100%;
+  min-height: 100vh;
+}
+
+.portal-body.customer-route {
+  background: #ffffff;
+}
+
+.portal-body.faq-route,
+.faq-page {
+  font-family: "Inter", "Segoe UI", sans-serif;
+}
+
+.portal-body.login-route,
+.portal-body.forgot-route,
+.login-page,
+.forgot-page {
+  font-family: "Poppins", sans-serif;
+}
+
+.login-page,
+.forgot-page {
+  min-height: 100vh;
+  position: relative;
+  z-index: 1;
+  background: transparent !important;
+  display: block;
+}
+
+.portal-body.login-route,
+.portal-body.forgot-route {
+  position: relative;
+  min-height: 100vh;
+  height: auto !important;
+  background: #031a21;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+}
+
+.portal-document.login-route,
+.portal-document.forgot-route {
+  height: auto !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+}
+
+.portal-body.login-route::before,
+.portal-body.forgot-route::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  background: url("../assets/back.png") center / cover no-repeat;
+}
+
+.portal-body.login-route::after,
+.portal-body.forgot-route::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(4, 22, 28, 0.88) 0%,
+    rgba(4, 45, 58, 0.82) 40%,
+    rgba(3, 26, 33, 0.9) 100%
+  );
+}
+
+.login-page *,
+.forgot-page * {
+  box-sizing: content-box;
+}
+
+.login-page .logo-img,
+.forgot-page .logo-img {
+  width: 100%;
+  margin-top: 50px;
+  margin-bottom: 20px;
+}
+
+.login-page .logo-img img,
+.forgot-page .logo-img img {
+  height: 180px;
+  width: auto;
+}
+
+.login-page .form-element,
+.forgot-page .form-element {
+  margin-left: auto;
+  margin-right: auto;
+  width: 500px;
+  padding: 30px;
+}
+
+.login-page .form-element {
+  align-items: flex-start;
+}
+
+.login-page .form-element h2,
+.login-page .form-element .sub-title {
+  align-self: stretch;
+  text-align: center;
+}
+
+.login-page .form-element .sp-txt,
+.login-page .form-element .input-group {
+  align-self: flex-start;
+}
+
+.login-page .footer-note,
+.forgot-page .footer-note {
+  width: auto;
+}
+
+.track-page {
+  font-family: "Poppins", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+.track-page .main-header,
+.customer-page .main-header {
+  padding: 15px 0;
+  background: rgba(4, 45, 58, 0.97);
+}
+
+.track-page .main-header.scrolled,
+.customer-page .main-header.scrolled {
+  padding: 10px 0;
+  background: rgba(4, 45, 58, 0.97);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.track-page .body-1 {
+  font-size: 44px;
+  font-weight: 800;
+  color: #ffffff;
+  margin: 0 0 14px;
+  line-height: 1.15;
+  background: none;
+  text-align: center;
+  padding: 0;
+}
+
+.track-page .body-1::before,
+.track-page .body-1::after {
+  content: none;
+}
+
+.track-page .body-2 {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  background: rgba(255, 255, 255, 0.07);
+  padding: 7px 7px 7px 22px;
+  max-width: 580px;
+  margin: 0 auto;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 14px;
+}
+
+.track-page .body-2 h2,
+.track-page .body-2::before,
+.track-page .body-2::after {
+  content: none;
+}
+
+.track-page .body-3 {
+  display: block;
+  width: 100%;
+  max-width: 960px;
+  margin: 0 auto;
+  background: none;
+  padding: 0;
+}
+
+.track-page .body-3::before {
+  content: none;
+}
+
+.track-page .empty-state img {
+  display: inline;
+}
+
+.track-page .empty-msg {
+  margin: 18px 0 15px;
+  padding: 0 !important;
+}
+
+.track-page .footer {
+  display: none;
+}
+
+.track-page.has-result .footer {
+  display: block;
+}
+
+.track-page .timeline-icon img {
+  display: inline;
+  width: 18px;
+  height: 18px;
+  object-fit: contain;
+}
+
+.track-page .timeline-item {
+  width: max-content;
+  min-width: 100%;
+}
+
+.track-page .timeline-content {
+  flex: 0 0 auto;
+  width: max-content;
+  max-width: none;
+}
+
+.track-page .timeline-content h3,
+.track-page .timeline-content p,
+.track-page .timeline-content span {
+  white-space: nowrap;
+}
+
+.track-page .shipment-journey {
+  overflow-x: auto;
+}
+
+.customer-page .footer {
+  display: block;
+}
+
+.customer-page .body-1 {
+  background: linear-gradient(160deg, #042d3a 0%, #07485e 55%, #042d3a 100%);
+  color: white;
+  text-align: center;
+  padding: 120px 20px 160px;
+  position: relative;
+  margin: 0;
+  font-size: initial;
+  font-weight: initial;
+  line-height: initial;
+}
+
+.customer-page .body-1::before,
+.customer-page .body-1::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.customer-page .body-1::before {
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+
+.customer-page .body-1::after {
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(
+    circle,
+    rgba(244, 163, 42, 0.1) 0%,
+    transparent 70%
+  );
+  bottom: -60px;
+  left: 50%;
+  top: auto;
+  transform: translateX(-50%);
+}
+
+.customer-page .body-1 h1,
+.customer-page .body-1 p {
+  position: relative;
+  z-index: 1;
+}
+
+.customer-page .body-2 {
+  display: block;
+  margin-top: 170px;
+  text-align: center;
+  margin-bottom: 90px;
+  padding: 0 20px;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  max-width: none;
+}
+
+.customer-page .body-3 {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 40px;
+  position: relative;
+  z-index: 10;
+  max-width: none;
+  margin: 0;
+  background: linear-gradient(135deg, var(--teal-deep) 0%, #07485e 100%);
+  padding: 70px 60px;
+}
+
+.customer-page .body-3::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
+  background-size: 50px 50px;
+  pointer-events: none;
+}

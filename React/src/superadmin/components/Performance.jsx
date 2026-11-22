@@ -1,7 +1,9 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Chart } from "chart.js/auto";
+import { useDispatch, useSelector } from "react-redux";
 import { Icon } from "./Icon.jsx";
 import { Welcome } from "./Welcome.jsx";
+import { fetchSuperAdminSectionData } from "../store/actions/superAdminActions.js";
 
 const tabs = [
   ["WH", "warehouses", "fa-warehouse", "Warehouses", "Warehouse"],
@@ -47,7 +49,14 @@ const cards = {
 
 const number = (value) => Number(value || 0).toLocaleString();
 
-export function Performance({ data, loading, error, onRetry }) {
+export function Performance() {
+  const dispatch = useDispatch();
+  const { performance: data, loadingBySection, errorsBySection } = useSelector(
+    (state) => state.superAdmin,
+  );
+  const loading = loadingBySection.analytics;
+  const error = errorsBySection.analytics;
+  const onRetry = () => dispatch(fetchSuperAdminSectionData("analytics"));
   const [tab, setTab] = useState("WH");
   const [index, setIndex] = useState(0);
   const canvasRef = useRef(null);
@@ -61,6 +70,10 @@ export function Performance({ data, loading, error, onRetry }) {
     [definitions, entity],
   );
 
+  useEffect(() => {
+    const request = dispatch(fetchSuperAdminSectionData("analytics"));
+    return () => request.abort();
+  }, [dispatch]);
   useEffect(() => setIndex(0), [tab, data]);
 
   useEffect(() => {

@@ -1,5 +1,8 @@
 import logo from "../assets/logo.png";
+import { useDispatch, useSelector } from "react-redux";
+import { logout } from "../../auth/store/actions/authActions.js";
 import { Icon } from "./Icon.jsx";
+import { setSuperAdminSection } from "../store/slices/superAdminUiSlice.js";
 
 const sections = [
   ["nodes", "fa-building-circle-check", "Nodes"],
@@ -8,7 +11,10 @@ const sections = [
   ["partners", "fa-handshake", "Third Party"],
 ];
 
-export function Layout({ section, setSection, children, onLogout, session }) {
+export function Layout({ children }) {
+  const dispatch = useDispatch();
+  const section = useSelector((state) => state.superAdminUi.section);
+  const session = useSelector((state) => state.auth.session);
   const title = sections.find((item) => item[0] === section)?.[2] || "";
   return (
     <div className="portal">
@@ -24,7 +30,7 @@ export function Layout({ section, setSection, children, onLogout, session }) {
             <li
               key={id}
               className={`menu-item${section === id ? " active" : ""}`}
-              onClick={() => setSection(id)}
+              onClick={() => dispatch(setSuperAdminSection(id))}
             >
               <div className="icon-box">
                 <Icon name={icon} />
@@ -34,7 +40,7 @@ export function Layout({ section, setSection, children, onLogout, session }) {
           ))}
         </ul>
         <div className="sidebar-footer">
-          <button className="logout-btn" onClick={onLogout}>
+          <button className="logout-btn" onClick={() => dispatch(logout())}>
             <Icon name="fa-right-from-bracket" /> Logout
           </button>
         </div>

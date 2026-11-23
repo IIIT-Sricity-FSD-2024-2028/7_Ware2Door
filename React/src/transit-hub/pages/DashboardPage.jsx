@@ -1,16 +1,38 @@
 import React from "react";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  setTransitHubPage,
+  setTransitHubScanMode,
+} from "../store/slices/transitHubUiSlice.js";
 
-export default function DashboardPage({
-  user,
-  stats,
-  greeting,
-  today,
-  onScan,
-  onInventory,
-  onReports,
-  onInscan,
-  onOutscan,
-}) {
+export default function DashboardPage() {
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.auth.session?.user || {});
+  const stats = useSelector((state) => state.transitHub.data.stats);
+  const greetingHour = new Date().getHours();
+  const greeting =
+    greetingHour < 12
+      ? "Good Morning"
+      : greetingHour < 17
+        ? "Good Afternoon"
+        : "Good Evening";
+  const today = new Date().toLocaleDateString("en-IN", {
+    weekday: "long",
+    day: "numeric",
+    month: "long",
+  });
+  const navigate = (page) => dispatch(setTransitHubPage(page));
+  const onScan = () => navigate("scan");
+  const onInventory = () => navigate("hub-inv");
+  const onReports = () => navigate("reports");
+  const onInscan = () => {
+    dispatch(setTransitHubScanMode("inscan"));
+    onScan();
+  };
+  const onOutscan = () => {
+    dispatch(setTransitHubScanMode("outscan"));
+    onScan();
+  };
   const capacity = Math.min(
     100,
     Math.round((stats.capacity / Math.max(stats.maxCapacity, 1)) * 100),

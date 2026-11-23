@@ -1,15 +1,25 @@
 import React, { useMemo, useState } from "react";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { fmtDate } from "../utils/transitHubUtils.js";
 import { downloadCsv, printReport } from "../../utils/dataExport.js";
+import { fetchTransitHubReports } from "../store/actions/transitHubActions.js";
+import { setTransitHubToast } from "../store/slices/transitHubUiSlice.js";
 
-export default function ReportsPage({
-  reports,
-  hubName,
-  agencies,
-  onExportError,
-}) {
+export default function ReportsPage() {
+  const dispatch = useDispatch();
+  const hubId = useSelector((state) => state.auth.session?.user?.id);
+  const hubName = useSelector((state) => state.auth.session?.user?.name);
+  const { reports, agencies } = useSelector((state) => state.transitHub.data);
   const [tab, setTab] = useState("inbound");
   const [search, setSearch] = useState("");
+  const onExportError = (message) =>
+    dispatch(setTransitHubToast({ msg: message, isError: true }));
+  useEffect(() => {
+    if (!hubId) return undefined;
+    const request = dispatch(fetchTransitHubReports(hubId));
+    return () => request.abort();
+  }, [dispatch, hubId]);
   const rows = reports[tab] || [];
   const filtered = useMemo(
     () =>

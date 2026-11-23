@@ -1,17 +1,18 @@
 import React from "react";
+import { useDispatch } from "react-redux";
 import logoImg from "../assets/logo.png";
+import {
+  setTransitHubPage,
+  toggleTransitHubInventory,
+} from "../store/slices/transitHubUiSlice.js";
 
 const items = [
   ["dashboard", "Dashboard", "fa-table-columns"],
   ["scan", "Scan Operations", "fa-barcode"],
 ];
 
-export default function TransitHubSidebar({
-  activePage,
-  inventoryOpen,
-  onNavigate,
-  onToggleInventory,
-}) {
+export default function TransitHubSidebar({ activePage, inventoryOpen }) {
+  const dispatch = useDispatch();
   return (
     <div className="sidebar" id="sidebar">
       <div className="logo-section">
@@ -21,7 +22,7 @@ export default function TransitHubSidebar({
         <li
           className={`menu-item${activePage === "dashboard" ? " active" : ""}`}
           id="nav-dashboard"
-          onClick={() => onNavigate("dashboard", "Dashboard")}
+          onClick={() => dispatch(setTransitHubPage("dashboard"))}
         >
           <div className="icon-box">
             <i className="fa-solid fa-table-columns"></i>
@@ -31,7 +32,7 @@ export default function TransitHubSidebar({
         <li
           className={`menu-item has-sub${inventoryOpen ? " active" : ""}`}
           id="nav-inv-toggle"
-          onClick={onToggleInventory}
+          onClick={() => dispatch(toggleTransitHubInventory())}
         >
           <div className="icon-box">
             <i className="fa-solid fa-boxes-stacked"></i>
@@ -47,7 +48,7 @@ export default function TransitHubSidebar({
             <li
               className={`menu-sub-item${activePage === "hub-inv" ? " active" : ""}`}
               id="nav-hub-inv"
-              onClick={() => onNavigate("hub-inv", "Hub Inventory")}
+              onClick={() => dispatch(setTransitHubPage("hub-inv"))}
             >
               <div className="icon-box">
                 <i className="fa-solid fa-list-ul"></i>
@@ -57,7 +58,7 @@ export default function TransitHubSidebar({
             <li
               className={`menu-sub-item${activePage === "reports" ? " active" : ""}`}
               id="nav-reports"
-              onClick={() => onNavigate("reports", "Reports")}
+              onClick={() => dispatch(setTransitHubPage("reports"))}
             >
               <div className="icon-box">
                 <i className="fa-solid fa-chart-bar"></i>
@@ -69,7 +70,7 @@ export default function TransitHubSidebar({
         <li
           className={`menu-item${activePage === "scan" ? " active" : ""}`}
           id="nav-scan"
-          onClick={() => onNavigate("scan", "Scan Operations")}
+          onClick={() => dispatch(setTransitHubPage("scan"))}
         >
           <div className="icon-box">
             <i className="fa-solid fa-barcode"></i>
@@ -81,7 +82,7 @@ export default function TransitHubSidebar({
         <li
           className={`menu-item stng-btn${activePage === "settings" ? " active" : ""}`}
           id="nav-settings"
-          onClick={() => onNavigate("settings", "Settings")}
+          onClick={() => dispatch(setTransitHubPage("settings"))}
         >
           <div className="icon-box">
             <i className="fa-solid fa-gear"></i>

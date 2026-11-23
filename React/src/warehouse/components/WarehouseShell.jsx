@@ -1,57 +1,39 @@
 import React from "react";
+import { useDispatch, useSelector } from "react-redux";
 import WarehouseHeader from "./WarehouseHeader.jsx";
 import WarehouseSidebar from "./WarehouseSidebar.jsx";
+import WarehouseToast from "./WarehouseToast.jsx";
+import { setWarehousePage } from "../store/slices/warehouseUiSlice.js";
 
-export default function WarehouseShell({
-  children,
-  activePage,
-  headerTitle,
-  inventoryOpen,
-  onNavigate,
-  onToggleInventory,
-  user,
-  initials,
-  onSettings,
-  toast,
-}) {
+const titles = {
+  dashboard: "Dashboard",
+  shipments: "Shipment Requests",
+  rto: "Manage RTO",
+  prealert: "Pre-Alert",
+  outbound: "Outbound",
+  "inventory-overview": "Inventory Overview",
+  "stock-addition": "Stock Addition",
+  settings: "Settings",
+};
+
+export default function WarehouseShell({ children, initials }) {
+  const dispatch = useDispatch();
+  const activePage = useSelector((state) => state.warehouse.ui.page);
+  const inventoryOpen = useSelector(
+    (state) => state.warehouse.ui.inventoryOpen,
+  );
   return (
-    <div
-      className="warehouse-app"
-      style={{ display: "flex", minHeight: "100vh" }}
-    >
-      {toast && (
-        <div
-          className={`toast${toast.isError ? " toast-error" : ""}`}
-          role={toast.isError ? "alert" : "status"}
-          style={{
-            position: "fixed",
-            bottom: 24,
-            right: 24,
-            zIndex: 9999,
-            background: toast.isError ? "#ef4444" : "#f4a32a",
-            color: "#fff",
-            padding: "12px 20px",
-            borderRadius: 12,
-            fontSize: 14,
-            fontWeight: 500,
-            boxShadow: "0 4px 20px rgba(0,0,0,0.3)",
-          }}
-        >
-          {toast.msg}
-        </div>
-      )}
+    <div style={{ display: "flex", minHeight: "100vh" }}>
+      <WarehouseToast />
       <WarehouseSidebar
         activePage={activePage}
         inventoryOpen={inventoryOpen}
-        onNavigate={onNavigate}
-        onToggleInventory={onToggleInventory}
       />
       <div className="main">
         <WarehouseHeader
-          title={headerTitle}
-          user={user}
+          title={titles[activePage]}
           initials={initials}
-          onSettings={onSettings}
+          onSettings={() => dispatch(setWarehousePage("settings"))}
         />
         {children}
       </div>

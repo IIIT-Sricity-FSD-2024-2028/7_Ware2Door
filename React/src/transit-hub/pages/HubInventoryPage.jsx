@@ -1,13 +1,16 @@
 import React from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { fmtDate } from "../utils/transitHubUtils.js";
 import { downloadCsv } from "../../utils/dataExport.js";
+import { setTransitHubToast } from "../store/slices/transitHubUiSlice.js";
 
-export default function HubInventoryPage({
-  inventory,
-  search,
-  onSearch,
-  onExportError,
-}) {
+export default function HubInventoryPage() {
+  const dispatch = useDispatch();
+  const inventory = useSelector((state) => state.transitHub.data.inventory);
+  const [search, setSearch] = React.useState("");
+  const onSearch = setSearch;
+  const onExportError = (message) =>
+    dispatch(setTransitHubToast({ msg: message, isError: true }));
   const filtered = inventory.filter((item) => {
     const query = search.toLowerCase();
     return (
@@ -57,9 +60,6 @@ export default function HubInventoryPage({
             onChange={(event) => onSearch(event.target.value)}
           />
         </div>
-        <select className="filter-select">
-          <option>All Destinations</option>
-        </select>
       </div>
       <div className="table-card">
         <table className="data-table">

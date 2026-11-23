@@ -1,7 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 import { Chart } from "chart.js/auto";
+import { useDispatch, useSelector } from "react-redux";
 import { Icon } from "../components/Icon.jsx";
 import { Welcome } from "../components/Welcome.jsx";
+import { fetchAdminTeamsSection } from "../store/actions/adminTeamsActions.js";
 
 const tabs = [
   ["WH", "warehouses", "fa-warehouse", "Warehouses", "Warehouse"],
@@ -47,7 +49,14 @@ const backgrounds = {
 
 const format = (value) => Number(value || 0).toLocaleString();
 
-export function AnalyticsPage({ data, loading, error, onRetry }) {
+export function AnalyticsPage() {
+  const dispatch = useDispatch();
+  const { performance: data, loadingBySection, errorsBySection } = useSelector(
+    (state) => state.adminTeams,
+  );
+  const loading = loadingBySection.analytics;
+  const error = errorsBySection.analytics;
+  const request = () => dispatch(fetchAdminTeamsSection("analytics"));
   const [tab, setTab] = useState("WH");
   const [index, setIndex] = useState(0);
   const canvasRef = useRef(null);
@@ -57,6 +66,9 @@ export function AnalyticsPage({ data, loading, error, onRetry }) {
   const entity = entities[index];
   const metrics = metricSets[tab];
 
+  useEffect(() => {
+    dispatch(fetchAdminTeamsSection("analytics"));
+  }, [dispatch]);
   useEffect(() => setIndex(0), [tab, data]);
 
   useEffect(() => {
@@ -106,7 +118,7 @@ export function AnalyticsPage({ data, loading, error, onRetry }) {
         description="Monitor live key metrics for every node."
         color="linear-gradient(135deg,#0c2340 0%,#1e3a5f 55%,#2563eb 100%)"
       >
-        <button className="btn-primary" onClick={onRetry}>
+        <button className="btn-primary" onClick={request}>
           <Icon name="fa-rotate" /> Refresh Data
         </button>
       </Welcome>

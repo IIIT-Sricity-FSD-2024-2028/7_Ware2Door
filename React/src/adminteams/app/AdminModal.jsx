@@ -1,6 +1,29 @@
 import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Icon } from "../components/Icon.jsx";
 import { formatDate, isExpired } from "../utils.js";
+import {
+  createDriver,
+  createNode,
+  createPartner,
+  updateDriver,
+  updateEscalation,
+  updateNodeSubscription,
+  updateNodeStatus,
+  updatePartnerTier,
+  uploadNodeDocuments,
+} from "../store/actions/adminTeamsActions.js";
+import {
+  closeAdminModal,
+  openAdminModal,
+  showAdminToast,
+} from "../store/slices/adminTeamsUiSlice.js";
+import {
+  validateEmail,
+  validatePhone,
+  validatePositiveNumber,
+  validateRequiredText,
+} from "../../utils/inputValidation.js";
 
 const TIER_OPTIONS = [
   ["Starter", "Starter — 100 shipments/month — ₹2,000/mo"],
@@ -49,7 +72,7 @@ function VehicleSelect({ value, change }) {
   );
 }
 
-function NodeSelect({ label, value, nodes, groups, change, disabled }) {
+function NodeSelect({ label, value, nodes, groups, change }) {
   const availableNodes = nodes.filter((node) =>
     groups.includes(node.type || node._type),
   );
@@ -59,7 +82,6 @@ function NodeSelect({ label, value, nodes, groups, change, disabled }) {
       <span>{label}</span>
       <select
         required
-        disabled={disabled}
         value={value || ""}
         onChange={(e) => {
           const node = availableNodes.find((item) => item.id === e.target.value);
@@ -67,7 +89,9 @@ function NodeSelect({ label, value, nodes, groups, change, disabled }) {
         }}
       >
         <option value="">
-          {label.startsWith("From") ? "Select origin node…" : "Select destination node…"}
+          {label.startsWith("From")
+            ? "Select origin node…"
+            : "Select destination node…"}
         </option>
         {availableNodes.map((node) => (
           <option key={node.id} value={node.id}>
@@ -103,8 +127,253 @@ function Field({
   );
 }
 
-function Form({ kind, value, nodes, change, submit, close }) {
+const blankForm = () => ({
+  name: "",
+  email: "",
+  password: "",
+  phone: "",
+  type: "",
+  city: "",
+  address: "",
+  lat: "",
+  lng: "",
+  startDate: new Date().toISOString().slice(0, 10),
+  monthlyRate: "",
+  monthlyFee: "",
+  endDate: "",
+  licenseNo: "",
+  vehicleType: "",
+  tier: "Starter",
+  contactName: "",
+  contactPhone: "",
+  fromNodeId: "",
+  fromNodeType: "",
+  toNodeId: "",
+  toNodeType: "",
+  escalationStatus: "Pending",
+  escalationAssignedTo: "",
+  resolutionNote: "",
+});
+
+function initialForm(record) {
+  const blank = blankForm();
+  if (record) return { ...blank, ...record, ...(record.subscription || {}) };
+  return {
+    ...blank,
+    endDate: new Date(Date.now() + 30 * 86400000).toISOString().slice(0, 10),
+  };
+}
+
+function Form({ kind, record, close }) {
+  const dispatch = useDispatch();
+  const nodes = useSelector((state) => state.adminTeams.nodes);
+  const [value, setValue] = useState(() => initialForm(record));
   const [addFiles, setAddFiles] = useState([]);
+  const change = (key, nextValue) =>
+    setValue((current) => ({ ...current, [key]: nextValue }));
+  const rejectInvalid = (message) => {
+    if (!message) return false;
+    dispatch(showAdminToast({ message, kind: "error" }));
+    return true;
+  };
+  const submit = (event) => {
+    event?.preventDefault();
+    const validDateRange = (startDate, endDate) =>
+      Boolean(startDate && endDate && new Date(startDate) <= new Date(endDate));
+    if (kind === "add-node") {
+      const error =
+        (!["WareHouse", "TransitHub", "LocalAgency"].includes(value.type)
+          ? "Select a valid node type."
+          : "") ||
+        validateRequiredText(value.name, "Node name", { max: 100 }) ||
+        validateEmail(value.email) ||
+        validateRequiredText(value.password, "Password", { min: 1, max: 128 }) ||
+        validatePhone(value.phone) ||
+        validateRequiredText(value.city, "City", { max: 100 }) ||
+        validateRequiredText(value.address, "Address", { max: 300 }) ||
+        (!String(value.monthlyRate || "").trim()
+          ? "Monthly rate is required."
+          : "") ||
+        validatePositiveNumber(value.monthlyRate, "Monthly rate", {
+          min: 0,
+          max: 100000000,
+        }) ||
+        (value.lat &&
+        (!Number.isFinite(Number(value.lat)) ||
+          Number(value.lat) < -90 ||
+          Number(value.lat) > 90)
+          ? "Latitude must be between -90 and 90."
+          : "") ||
+        (value.lng &&
+        (!Number.isFinite(Number(value.lng)) ||
+          Number(value.lng) < -180 ||
+          Number(value.lng) > 180)
+          ? "Longitude must be between -180 and 180."
+          : "") ||
+        (!validDateRange(value.startDate, value.endDate)
+          ? "Subscription end date must be on or after the start date."
+          : "");
+      if (rejectInvalid(error)) return;
+      dispatch(
+        createNode({
+          node: {
+            role: value.type,
+            name: value.name,
+            email: value.email,
+            password: value.password,
+            phone: value.phone,
+            city: value.city,
+            address: value.address,
+            lat: value.lat || null,
+            lng: value.lng || null,
+            subscription: {
+              tier: "Starter",
+              monthlyRate: Number(value.monthlyRate || 0),
+              startDate: value.startDate,
+              endDate: value.endDate,
+            },
+          },
+          files: addFiles,
+        }),
+      );
+      return;
+    }
+    if (kind === "extend") {
+      const currentEndDate = record?.endDate || record?.subscription?.endDate;
+      const error =
+        !value.endDate ||
+        (currentEndDate && new Date(value.endDate) <= new Date(currentEndDate))
+          ? "Choose an end date later than the current subscription end date."
+          : validatePositiveNumber(value.monthlyRate, "Monthly rate", {
+              min: 0,
+              max: 100000000,
+            });
+      if (rejectInvalid(error)) return;
+      dispatch(
+        updateNodeSubscription({
+          id: record.id,
+          endDate: value.endDate,
+          monthlyRate: Number(value.monthlyRate || 0),
+        }),
+      );
+      return;
+    }
+    if (kind === "add-driver" || kind === "edit-driver") {
+      let error =
+        validateRequiredText(value.name, "Driver name", { max: 100 }) ||
+        validatePhone(value.phone) ||
+        validateRequiredText(value.licenseNo, "License number", {
+          min: 4,
+          max: 30,
+        }) ||
+        (kind === "add-driver" && !String(value.monthlyFee || "").trim()
+          ? "Monthly fee is required."
+          : "") ||
+        validatePositiveNumber(value.monthlyFee || 0, "Monthly fee", {
+          min: 0,
+          max: 100000000,
+        });
+      if (!error && !/^[A-Z0-9][A-Z0-9 -]*$/i.test(value.licenseNo.trim())) {
+        error =
+          "License number may contain only letters, numbers, spaces, and hyphens.";
+      }
+      if (!error && !VEHICLE_TYPES.includes(value.vehicleType)) {
+        error = "Select a valid vehicle type.";
+      }
+      if (
+        !error &&
+        !validDateRange(value.startDate || record?.startDate, value.endDate)
+      ) {
+        error = "Enter a valid subscription date range.";
+      }
+      if (
+        !error &&
+        kind === "add-driver" &&
+        (!nodes.some((node) => node.id === value.fromNodeId) ||
+          !nodes.some((node) => node.id === value.toNodeId))
+      ) {
+        error = "Select valid origin and destination nodes.";
+      }
+      if (rejectInvalid(error)) return;
+      const driver = {
+        name: value.name,
+        phone: value.phone,
+        licenseNo: value.licenseNo,
+        vehicleType: value.vehicleType,
+        monthlyFee: Number(value.monthlyFee || 0),
+      };
+      if (kind === "add-driver") {
+        dispatch(
+          createDriver({
+            ...driver,
+            fromNodeId: value.fromNodeId,
+            fromNodeType: value.fromNodeType,
+            toNodeId: value.toNodeId,
+            toNodeType: value.toNodeType,
+            startDate: value.startDate,
+            endDate: value.endDate,
+          }),
+        );
+      } else {
+        dispatch(
+          updateDriver({
+            id: record.id,
+            driver: { ...driver, endDate: value.endDate },
+          }),
+        );
+      }
+      return;
+    }
+    if (kind === "escalation") {
+      dispatch(
+        updateEscalation({
+          id: record.ticketId || record.id,
+          escalation: {
+            escalationStatus: value.escalationStatus,
+            escalationAssignedTo: value.escalationAssignedTo,
+            resolutionNote: value.resolutionNote,
+          },
+        }),
+      );
+      return;
+    }
+    if (kind === "partner") {
+      const error =
+        validateRequiredText(value.name, "Partner name", { max: 100 }) ||
+        validateEmail(value.email) ||
+        (value.contactPhone ? validatePhone(value.contactPhone) : "") ||
+        (value.contactName
+          ? validateRequiredText(value.contactName, "Contact name", {
+              max: 100,
+            })
+          : "") ||
+        (value.address
+          ? validateRequiredText(value.address, "Address", { max: 300 })
+          : "") ||
+        (!TIER_OPTIONS.some(([tier]) => tier === value.tier)
+          ? "Select a valid subscription tier."
+          : "");
+      if (rejectInvalid(error)) return;
+      dispatch(
+        createPartner({
+          name: value.name,
+          email: value.email,
+          address: value.address,
+          contactName: value.contactName,
+          contactPhone: value.contactPhone,
+          tier: value.tier,
+        }),
+      );
+      return;
+    }
+    if (kind === "tier") {
+      if (!TIER_OPTIONS.some(([tier]) => tier === value.tier)) {
+        rejectInvalid("Select a valid subscription tier.");
+        return;
+      }
+      dispatch(updatePartnerTier({ id: record.id, tier: value.tier }));
+    }
+  };
   if (kind === "extend")
     return (
       <>
@@ -344,7 +613,6 @@ function Form({ kind, value, nodes, change, submit, close }) {
                 change("toNodeId", "");
                 change("toNodeType", "");
               }}
-              origin
             />
             <NodeSelect
               label="To Node *"
@@ -533,7 +801,8 @@ function Form({ kind, value, nodes, change, submit, close }) {
   );
 }
 
-function NodeDetail({ node, open, mutate }) {
+function NodeDetail({ node }) {
+  const dispatch = useDispatch();
   const sub = node.subscription || {};
   const docs = node.legalDocs || node.legalDocuments || node.documents || [];
   const type = node.type || node._type;
@@ -617,21 +886,30 @@ function NodeDetail({ node, open, mutate }) {
         )}
       </div>
       <div className="action-strip">
-        <button className="btn-primary" onClick={() => open("extend", node)}>
+        <button
+          className="btn-primary"
+          onClick={() =>
+            dispatch(openAdminModal({ kind: "extend", record: node }))
+          }
+        >
           <Icon name="fa-calendar-plus" /> Extend Subscription
         </button>
-        <button className="btn-ghost" onClick={() => open("upload-docs", node)}>
+        <button
+          className="btn-ghost"
+          onClick={() =>
+            dispatch(openAdminModal({ kind: "upload-docs", record: node }))
+          }
+        >
           <Icon name="fa-file-arrow-up" /> Upload Legal Docs
         </button>
         <button
           className={`btn-toggle ${node.isActive === false ? "activate" : "deactivate"}`}
           onClick={() =>
-            mutate(
-              `/admin-teams/nodes/${node.id}/status`,
-              "PUT",
-              { isActive: node.isActive === false },
-              "Node status updated",
-              "subscriptions",
+            dispatch(
+              updateNodeStatus({
+                id: node.id,
+                isActive: node.isActive === false,
+              }),
             )
           }
         >
@@ -643,7 +921,8 @@ function NodeDetail({ node, open, mutate }) {
   );
 }
 
-function TicketDetail({ ticket, open, close }) {
+function TicketDetail({ ticket }) {
+  const dispatch = useDispatch();
   const info = (label, value, full = false) => (
     <div className={`info-item${full ? " full" : ""}`}>
       <span className="info-label">{label}</span>
@@ -690,12 +969,17 @@ function TicketDetail({ ticket, open, close }) {
         </div>
       </div>
       <div className="modal-footer">
-        <button className="btn-ghost" onClick={close}>
+        <button
+          className="btn-ghost"
+          onClick={() => dispatch(closeAdminModal())}
+        >
           Close
         </button>
         <button
           className="btn-primary"
-          onClick={() => open("escalation", ticket)}
+          onClick={() =>
+            dispatch(openAdminModal({ kind: "escalation", record: ticket }))
+          }
         >
           <Icon name="fa-pen" /> Update Escalation
         </button>
@@ -704,8 +988,10 @@ function TicketDetail({ ticket, open, close }) {
   );
 }
 
-function UploadDocs({ node, uploadDocs, close }) {
+function UploadDocs({ node }) {
+  const dispatch = useDispatch();
   const [files, setFiles] = useState([]);
+  const close = () => dispatch(closeAdminModal());
   return (
     <>
       <div className="modal-body">
@@ -739,7 +1025,11 @@ function UploadDocs({ node, uploadDocs, close }) {
         </button>
         <button
           className="btn-primary"
-          onClick={() => uploadDocs(node.id, files)}
+          onClick={() => {
+            if (files.length) {
+              dispatch(uploadNodeDocuments({ nodeId: node.id, files }));
+            }
+          }}
         >
           <Icon name="fa-upload" /> Upload Files
         </button>
@@ -779,18 +1069,12 @@ function ApiKey({ value, close }) {
   );
 }
 
-export default function AdminModal({
-  kind,
-  selected,
-  close,
-  value,
-  nodes,
-  change,
-  submit,
-  open,
-  mutate,
-  uploadDocs,
-}) {
+export default function AdminModal() {
+  const dispatch = useDispatch();
+  const { modal: kind, selectedRecord: selected } = useSelector(
+    (state) => state.adminTeamsUi,
+  );
+  const close = () => dispatch(closeAdminModal());
   if (!kind) return null;
 
   const titles = {
@@ -840,20 +1124,18 @@ export default function AdminModal({
           </button>
         </div>
         {kind === "node-detail" ? (
-          <NodeDetail node={selected} open={open} mutate={mutate} />
+          <NodeDetail node={selected} />
         ) : kind === "ticket-detail" ? (
-          <TicketDetail ticket={selected} open={open} close={close} />
+          <TicketDetail ticket={selected} />
         ) : kind === "upload-docs" ? (
-          <UploadDocs node={selected} uploadDocs={uploadDocs} close={close} />
+          <UploadDocs node={selected} />
         ) : kind === "api-key" ? (
           <ApiKey value={selected?.apiKey || "—"} close={close} />
         ) : (
           <Form
+            key={`${kind}-${selected?.id || selected?.ticketId || ""}`}
             kind={kind}
-            value={value}
-            nodes={nodes}
-            change={change}
-            submit={submit}
+            record={selected}
             close={close}
           />
         )}

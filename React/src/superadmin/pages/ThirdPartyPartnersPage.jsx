@@ -1,20 +1,37 @@
+import { useEffect, useMemo, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { DataTable } from "../components/DataTable.jsx";
 import { FilterBar } from "../components/FilterBar.jsx";
 import { Icon } from "../components/Icon.jsx";
 import { Stats } from "../components/Stats.jsx";
 import { Welcome } from "../components/Welcome.jsx";
+import { fetchSuperAdminSectionData } from "../store/actions/superAdminActions.js";
 
-export function ThirdPartyPartnersPage({
-  data,
-  filteredData,
-  error,
-  loading,
-  query,
-  onQueryChange,
-  status,
-  onStatusChange,
-  onRefresh,
-}) {
+export function ThirdPartyPartnersPage() {
+  const dispatch = useDispatch();
+  const data = useSelector((state) => state.superAdmin.partners);
+  const loading = useSelector(
+    (state) => state.superAdmin.loadingBySection.partners,
+  );
+  const error = useSelector((state) => state.superAdmin.errorsBySection.partners);
+  const [query, setQuery] = useState("");
+  const [status, setStatus] = useState("");
+  const onRefresh = () => dispatch(fetchSuperAdminSectionData("partners"));
+  useEffect(() => {
+    const request = dispatch(fetchSuperAdminSectionData("partners"));
+    return () => request.abort();
+  }, [dispatch]);
+  const filteredData = useMemo(
+    () =>
+      data.filter(
+        (partner) =>
+          (!query ||
+            (partner.name || "").toLowerCase().includes(query.toLowerCase())) &&
+          (!status ||
+            (status === "active" ? partner.isActive : !partner.isActive)),
+      ),
+    [data, query, status],
+  );
   return (
     <>
       <Welcome
@@ -49,13 +66,13 @@ export function ThirdPartyPartnersPage({
       />
       <FilterBar
         query={query}
-        onQueryChange={onQueryChange}
+        onQueryChange={setQuery}
         placeholder="Search partner name…"
       >
         <select
           className="filter-select"
           value={status}
-          onChange={(event) => onStatusChange(event.target.value)}
+          onChange={(event) => setStatus(event.target.value)}
         >
           <option value="">All Status</option>
           <option value="active">Active</option>

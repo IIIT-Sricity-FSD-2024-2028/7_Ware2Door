@@ -1,23 +1,44 @@
+import { useEffect, useMemo, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { DataTable } from "../components/DataTable.jsx";
 import { FilterBar } from "../components/FilterBar.jsx";
 import { Icon } from "../components/Icon.jsx";
 import { NodeRows } from "../components/NodeRows.jsx";
 import { Stats } from "../components/Stats.jsx";
 import { Welcome } from "../components/Welcome.jsx";
+import { fetchSuperAdminSectionData } from "../store/actions/superAdminActions.js";
 
-export function NodesPage({
-  data,
-  filteredData,
-  error,
-  loading,
-  query,
-  onQueryChange,
-  type,
-  onTypeChange,
-  status,
-  onStatusChange,
-  onRefresh,
-}) {
+export function NodesPage() {
+  const dispatch = useDispatch();
+  const data = useSelector((state) => state.superAdmin.nodes);
+  const loading = useSelector(
+    (state) => state.superAdmin.loadingBySection.nodes,
+  );
+  const error = useSelector((state) => state.superAdmin.errorsBySection.nodes);
+  const [query, setQuery] = useState("");
+  const [type, setType] = useState("");
+  const [status, setStatus] = useState("");
+  const onRefresh = () => dispatch(fetchSuperAdminSectionData("nodes"));
+  useEffect(() => {
+    const request = dispatch(fetchSuperAdminSectionData("nodes"));
+    return () => request.abort();
+  }, [dispatch]);
+  const filteredData = useMemo(
+    () =>
+      data.filter(
+        (node) =>
+          (!query ||
+            `${node.name || ""} ${node.city || ""}`
+              .toLowerCase()
+              .includes(query.toLowerCase())) &&
+          (!type || node.type === type) &&
+          (!status ||
+            (status === "valid"
+              ? node.isSubscriptionValid
+              : !node.isSubscriptionValid)),
+      ),
+    [data, query, status, type],
+  );
   return (
     <>
       <Welcome
@@ -65,13 +86,13 @@ export function NodesPage({
       />
       <FilterBar
         query={query}
-        onQueryChange={onQueryChange}
+        onQueryChange={setQuery}
         placeholder="Search by name or city…"
       >
         <select
           className="filter-select"
           value={type}
-          onChange={(event) => onTypeChange(event.target.value)}
+          onChange={(event) => setType(event.target.value)}
         >
           <option value="">All Types</option>
           <option value="WAREHOUSE">Warehouse</option>
@@ -81,7 +102,7 @@ export function NodesPage({
         <select
           className="filter-select"
           value={status}
-          onChange={(event) => onStatusChange(event.target.value)}
+          onChange={(event) => setStatus(event.target.value)}
         >
           <option value="">All Status</option>
           <option value="valid">Subscription Valid</option>

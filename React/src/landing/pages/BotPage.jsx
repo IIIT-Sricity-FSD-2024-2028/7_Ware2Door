@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useRef } from "react";
+import { useDispatch } from "react-redux";
 import logoImg from "../assets/logo.png";
 import {
   normalizeIdentifier,
   validateTrackingId,
 } from "../../utils/inputValidation.js";
-
-const API = "http://127.0.0.1:8000";
+import { validatePublicTracking } from "../store/actions/publicActions.js";
 
 const STANDARD_REPLY = `Thanks for reaching out! 🙏<br>Our AI assistant is currently being set up — a <strong>live support agent</strong> will get back to you shortly.<br>For urgent help, call us at <strong>8977568680</strong> or submit a support ticket.`;
 
@@ -76,6 +76,7 @@ function getTimelineSteps(status) {
 }
 
 export default function BotPage({ navigate }) {
+  const dispatch = useDispatch();
   const [step, setStep] = useState("modal");
   const [modalInput, setModalInput] = useState("");
   const [modalError, setModalError] = useState("");
@@ -87,10 +88,10 @@ export default function BotPage({ navigate }) {
   const [isTyping, setIsTyping] = useState(false);
   const messagesRef = useRef(null);
 
-  useEffect(() => {
-    if (messagesRef.current)
-      messagesRef.current.scrollTop = messagesRef.current.scrollHeight;
-  }, [messages, isTyping]);
+
+  if (messagesRef.current)
+    messagesRef.current.scrollTop = messagesRef.current.scrollHeight;
+
 
   function setModalErrorWithShake(msg) {
     setModalError(msg);
@@ -109,10 +110,7 @@ export default function BotPage({ navigate }) {
     }
     setModalError("Validating...");
     try {
-      const res = await fetch(
-        `${API}/tickets/validate/${encodeURIComponent(val)}?t=${Date.now()}`,
-      );
-      const result = await res.json();
+      const result = await dispatch(validatePublicTracking(val)).unwrap();
       if (!result.valid) {
         setModalErrorWithShake(
           "Tracking ID not found. Please check and try again.",
@@ -131,8 +129,10 @@ export default function BotPage({ navigate }) {
           `Hello! 👋 I'm your <strong>LogisticsAI Assistant</strong>.<br>I can see you're tracking shipment <strong>#${val}</strong>.<br>Product: <strong>${result.productName}</strong> — Status: <strong>${result.status}</strong><br>How can I help you today?`,
         );
       }, 300);
-    } catch (_) {
-      setModalErrorWithShake("Could not connect to server. Please try again.");
+    } catch (error) {
+      setModalErrorWithShake(
+        error?.message || "Could not connect to server. Please try again.",
+      );
     }
   }
 

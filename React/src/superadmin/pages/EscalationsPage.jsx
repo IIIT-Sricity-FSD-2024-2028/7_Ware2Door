@@ -1,22 +1,42 @@
+import { useEffect, useMemo, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { DataTable } from "../components/DataTable.jsx";
 import { FilterBar } from "../components/FilterBar.jsx";
 import { Icon } from "../components/Icon.jsx";
 import { Stats } from "../components/Stats.jsx";
 import { Welcome } from "../components/Welcome.jsx";
+import { fetchSuperAdminSectionData } from "../store/actions/superAdminActions.js";
 
-export function EscalationsPage({
-  data,
-  filteredData,
-  error,
-  loading,
-  query,
-  onQueryChange,
-  status,
-  onStatusChange,
-  priority,
-  onPriorityChange,
-  onRefresh,
-}) {
+export function EscalationsPage() {
+  const dispatch = useDispatch();
+  const data = useSelector((state) => state.superAdmin.escalations);
+  const loading = useSelector(
+    (state) => state.superAdmin.loadingBySection.escalations,
+  );
+  const error = useSelector(
+    (state) => state.superAdmin.errorsBySection.escalations,
+  );
+  const [query, setQuery] = useState("");
+  const [status, setStatus] = useState("");
+  const [priority, setPriority] = useState("");
+  const onRefresh = () => dispatch(fetchSuperAdminSectionData("escalations"));
+  useEffect(() => {
+    const request = dispatch(fetchSuperAdminSectionData("escalations"));
+    return () => request.abort();
+  }, [dispatch]);
+  const filteredData = useMemo(
+    () =>
+      data.filter(
+        (ticket) =>
+          (!query ||
+            `${ticket.ticketId || ""} ${ticket.trackingId || ""}`
+              .toLowerCase()
+              .includes(query.toLowerCase())) &&
+          (!status || ticket.escalationStatus === status) &&
+          (!priority || ticket.priority === priority),
+      ),
+    [data, priority, query, status],
+  );
   return (
     <>
       <Welcome
@@ -55,13 +75,13 @@ export function EscalationsPage({
       />
       <FilterBar
         query={query}
-        onQueryChange={onQueryChange}
+        onQueryChange={setQuery}
         placeholder="Search ticket or tracking ID…"
       >
         <select
           className="filter-select"
           value={status}
-          onChange={(event) => onStatusChange(event.target.value)}
+          onChange={(event) => setStatus(event.target.value)}
         >
           <option value="">All Status</option>
           <option>Pending</option>
@@ -71,7 +91,7 @@ export function EscalationsPage({
         <select
           className="filter-select"
           value={priority}
-          onChange={(event) => onPriorityChange(event.target.value)}
+          onChange={(event) => setPriority(event.target.value)}
         >
           <option value="">All Priority</option>
           <option>High</option>

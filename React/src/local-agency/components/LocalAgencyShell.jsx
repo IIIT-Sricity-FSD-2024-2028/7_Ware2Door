@@ -1,28 +1,33 @@
 import React from "react";
+import { useDispatch, useSelector } from "react-redux";
 import LocalAgencyHeader from "./LocalAgencyHeader.jsx";
 import LocalAgencySidebar from "./LocalAgencySidebar.jsx";
 import LocalAgencyToast from "./LocalAgencyToast.jsx";
+import { setLocalAgencyPage } from "../store/slices/localAgencyUiSlice.js";
 
-export default function LocalAgencyShell({
-  children,
-  activePage,
-  headerTitle,
-  onNavigate,
-  user,
-  initials,
-  onSettings,
-  toast,
-}) {
+const titles = {
+  dashboard: "Dashboard",
+  shipments: "Shipments",
+  scan: "Scan Operations",
+  agents: "Delivery Agents",
+  rto: "RTO Management",
+  delivery: "Shipment Delivery",
+  support: "Support Tickets",
+  settings: "Settings",
+};
+
+export default function LocalAgencyShell({ children, initials }) {
+  const dispatch = useDispatch();
+  const activePage = useSelector((state) => state.localAgency.ui.page);
   return (
     <div className="agency-layout">
-      <LocalAgencyToast toast={toast} />
-      <LocalAgencySidebar activePage={activePage} onNavigate={onNavigate} />
+      <LocalAgencyToast />
+      <LocalAgencySidebar activePage={activePage} />
       <div className="main">
         <LocalAgencyHeader
-          title={headerTitle}
-          user={user}
+          title={titles[activePage]}
           initials={initials}
-          onSettings={onSettings}
+          onSettings={() => dispatch(setLocalAgencyPage("settings"))}
         />
         {children}
       </div>

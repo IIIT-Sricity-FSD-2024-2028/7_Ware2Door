@@ -1,11 +1,8 @@
 import React from "react";
+import { useSelector } from "react-redux";
 
-export default function LocalAgencyHeader({
-  title,
-  user,
-  initials,
-  onSettings,
-}) {
+export default function LocalAgencyHeader({ title, initials, onSettings }) {
+  const user = useSelector((state) => state.auth.session?.user || {});
   return (
     <div className="header">
       <h2 id="header-title">{title}</h2>

@@ -3,9 +3,12 @@ import React, {
   Suspense,
   useLayoutEffect,
   useRef,
-  useState,
+  useEffect,
 } from "react";
-import { AuthProvider, useAuth } from "../../auth/AuthContext.jsx";
+import { useDispatch, useSelector } from "react-redux";
+import AddShipmentTest from "../../external/AddShipmentTest.jsx";
+import { validateAuthSession } from "../../auth/store/actions/authActions.js";
+import { setLandingPage } from "../store/slices/landingUiSlice.js";
 import LandingPage from "../pages/LandingPage.jsx";
 import LoginPage from "../pages/LoginPage.jsx";
 import ForgotPasswordPage from "../pages/ForgotPasswordPage.jsx";
@@ -59,37 +62,43 @@ const publicStyles = [
 ];
 
 function AppBody() {
-  const { isAuthenticated, isLoading, role } = useAuth();
+  const dispatch = useDispatch();
+  const { session, isLoading } = useSelector((state) => state.auth);
+  const page = useSelector((state) => state.landing.ui.page);
+  const role = session?.role;
+  const isAuthenticated = Boolean(session?.token);
   const wasAuthenticated = useRef(isAuthenticated);
-  const [page, setPage] = useState(() => {
-    if (isAuthenticated) {
-      if (role === "WAREHOUSE") return "warehouse";
-      if (role === "TRANSIT_HUB") return "transit-hub";
-      if (role === "LOCAL_AGENCY") return "local-agency";
-      if (role === "ADMIN_TEAMS") return "admin-teams";
-      if (role === "SUPER_USER") return "super-admin";
-    }
-    return "landing";
-  });
 
   function navigate(p) {
-    setPage(p);
+    dispatch(setLandingPage(p));
   }
+
+  useEffect(() => {
+    dispatch(validateAuthSession());
+    function handlePageShow(event) {
+      if (event.persisted) dispatch(validateAuthSession());
+    }
+    window.addEventListener("pageshow", handlePageShow);
+    return () => window.removeEventListener("pageshow", handlePageShow);
+  }, [dispatch]);
+
   useLayoutEffect(() => {
-    if (!isLoading && !isAuthenticated && window.location.pathname !== "/") {
+    const isTestRoute = window.location.pathname.startsWith("/testmode");
+    if (!isLoading && !isAuthenticated && window.location.pathname !== "/" && !isTestRoute) {
       window.history.replaceState(null, "", "/");
     }
   }, [isAuthenticated, isLoading]);
 
   useLayoutEffect(() => {
-    if (wasAuthenticated.current && !isAuthenticated) {
-      setPage("landing");
+    const isTestRoute = window.location.pathname.startsWith("/testmode");
+    if (wasAuthenticated.current && !isAuthenticated && !isTestRoute) {
+      dispatch(setLandingPage("landing"));
       if (window.location.pathname !== "/") {
         window.history.replaceState(null, "", "/");
       }
     }
     wasAuthenticated.current = isAuthenticated;
-  }, [isAuthenticated]);
+  }, [dispatch, isAuthenticated]);
 
   useLayoutEffect(() => {
     const authenticatedRoute = {
@@ -133,13 +142,14 @@ function AppBody() {
   }, [isAuthenticated, role]);
 
   if (isLoading) return null;
+  if (page === "testmode-addshipment") return <AddShipmentTest />;
 
   if (isAuthenticated) {
     return (
       <Suspense fallback={null}>
-        {role === "WAREHOUSE" && <WarehouseApp navigate={navigate} />}
-        {role === "TRANSIT_HUB" && <TransitHubApp navigate={navigate} />}
-        {role === "LOCAL_AGENCY" && <LocalAgencyApp navigate={navigate} />}
+        {role === "WAREHOUSE" && <WarehouseApp />}
+        {role === "TRANSIT_HUB" && <TransitHubApp />}
+        {role === "LOCAL_AGENCY" && <LocalAgencyApp />}
         {role === "ADMIN_TEAMS" && <AdminTeamsApp />}
         {role === "SUPER_USER" && <SuperAdminApp />}
       </Suspense>
@@ -157,9 +167,5 @@ function AppBody() {
 }
 
 export function App() {
-  return (
-    <AuthProvider>
-      <AppBody />
-    </AuthProvider>
-  );
+  return <AppBody />;
 }

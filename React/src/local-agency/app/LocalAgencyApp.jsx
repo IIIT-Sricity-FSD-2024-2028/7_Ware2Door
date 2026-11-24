@@ -1,6 +1,5 @@
-import React, { useCallback, useEffect, useState } from "react";
-import { useAuth } from "../../auth/AuthContext.jsx";
-import useLocalAgencyData from "../hooks/useLocalAgencyData.js";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import Dashboard from "../pages/Dashboard.jsx";
 import Shipments from "../pages/Shipments.jsx";
 import ScanOperations from "../pages/ScanOperations.jsx";
@@ -11,119 +10,57 @@ import SupportTickets from "../pages/SupportTickets.jsx";
 import Settings from "../pages/Settings.jsx";
 import LocalAgencyShell from "../components/LocalAgencyShell.jsx";
 import { initials } from "../utils/helpers.js";
-
-const titles = {
-  dashboard: "Dashboard",
-  shipments: "Shipments",
-  scan: "Scan Operations",
-  agents: "Delivery Agents",
-  rto: "RTO Management",
-  delivery: "Shipment Delivery",
-  support: "Support Tickets",
-  settings: "Settings",
-};
+import {
+  fetchAgencyAgents,
+  fetchAgencyDeliveries,
+  fetchAgencyInbound,
+  fetchAgencyRto,
+  fetchAgencyScanHistory,
+  fetchAgencyShipments,
+  fetchAgencyTickets,
+} from "../store/actions/localAgencyActions.js";
 
 export default function LocalAgencyApp() {
-  const { session, logout } = useAuth();
+  const dispatch = useDispatch();
+  const session = useSelector((state) => state.auth.session);
   const user = session?.user || {};
   const agencyId = user.id;
-  const [page, setPage] = useState("dashboard");
-  const [toast, setToast] = useState(null);
+  const page = useSelector((state) => state.localAgency.ui.page);
 
   useEffect(() => {
     document.body.classList.add("agency-body");
     return () => document.body.classList.remove("agency-body");
   }, []);
 
-  const showToast = useCallback((msg, isError = false) => {
-    setToast({ msg, isError });
-    window.setTimeout(() => setToast(null), 3500);
-  }, []);
-
-  const localAgencyData = useLocalAgencyData(agencyId, showToast, page);
-
-  const navigate = (nextPage) => {
-    setPage(nextPage);
-  };
+  useEffect(() => {
+    if (!agencyId) return undefined;
+    const pageLoaders = {
+      dashboard: [fetchAgencyShipments, fetchAgencyAgents],
+      shipments: [fetchAgencyShipments],
+      scan: [fetchAgencyInbound, fetchAgencyAgents, fetchAgencyScanHistory],
+      agents: [fetchAgencyAgents],
+      rto: [fetchAgencyRto],
+      delivery: [fetchAgencyDeliveries],
+      support: [fetchAgencyTickets],
+    };
+    const requests = (pageLoaders[page] || []).map((load) =>
+      dispatch(load(agencyId)),
+    );
+    return () => requests.forEach((request) => request.abort());
+  }, [agencyId, dispatch, page]);
 
   return (
-    <LocalAgencyShell
-      activePage={page}
-      headerTitle={titles[page]}
-      onNavigate={navigate}
-      user={user}
-      initials={initials}
-      onSettings={() => navigate("settings")}
-      toast={toast}
-    >
+    <LocalAgencyShell initials={initials}>
       {page === "dashboard" && (
-        <Dashboard
-          user={user}
-          shipments={localAgencyData.shipments}
-          agents={localAgencyData.agents}
-          goTo={navigate}
-        />
+        <Dashboard />
       )}
-      {page === "shipments" && (
-        <Shipments shipments={localAgencyData.shipments} />
-      )}
-      {page === "scan" && (
-        <ScanOperations
-          agencyId={agencyId}
-          showToast={showToast}
-          inbound={localAgencyData.inbound}
-          agents={localAgencyData.agents}
-          scanHistory={localAgencyData.scanHistory}
-          loadShipments={localAgencyData.loadShipments}
-          loadInbound={localAgencyData.loadInbound}
-          loadAgents={localAgencyData.loadAgents}
-          loadScanHistory={localAgencyData.loadScanHistory}
-        />
-      )}
-      {page === "agents" && (
-        <DeliveryAgents
-          agencyId={agencyId}
-          showToast={showToast}
-          agents={localAgencyData.agents}
-          loadAgents={localAgencyData.loadAgents}
-        />
-      )}
-      {page === "rto" && (
-        <RtoManagement
-          agencyId={agencyId}
-          showToast={showToast}
-          rto={localAgencyData.rto}
-          loadRto={localAgencyData.loadRto}
-        />
-      )}
-      {page === "delivery" && (
-        <ShipmentDelivery
-          agencyId={agencyId}
-          showToast={showToast}
-          deliveries={localAgencyData.deliveries}
-          loadDeliveries={localAgencyData.loadDeliveries}
-          loadShipments={localAgencyData.loadShipments}
-          loadRto={localAgencyData.loadRto}
-          onNavigateRto={() => navigate("rto")}
-        />
-      )}
-      {page === "support" && (
-        <SupportTickets
-          agencyId={agencyId}
-          showToast={showToast}
-          tickets={localAgencyData.tickets}
-          setTickets={localAgencyData.setTickets}
-          loadTickets={localAgencyData.loadTickets}
-        />
-      )}
-      {page === "settings" && (
-        <Settings
-          user={user}
-          agencyId={agencyId}
-          logout={logout}
-          showToast={showToast}
-        />
-      )}
+      {page === "shipments" && <Shipments />}
+      {page === "scan" && <ScanOperations />}
+      {page === "agents" && <DeliveryAgents />}
+      {page === "rto" && <RtoManagement />}
+      {page === "delivery" && <ShipmentDelivery />}
+      {page === "support" && <SupportTickets />}
+      {page === "settings" && <Settings />}
     </LocalAgencyShell>
   );
 }

@@ -1,6 +1,16 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { clearWarehouseToast } from "../store/slices/warehouseUiSlice.js";
 
-export default function WarehouseToast({ toast }) {
+export default function WarehouseToast() {
+  const dispatch = useDispatch();
+  const toast = useSelector((state) => state.warehouse.ui.toast);
+  useEffect(() => {
+    if (!toast) return undefined;
+    const timer = window.setTimeout(() => dispatch(clearWarehouseToast()), 3500);
+    return () => window.clearTimeout(timer);
+  }, [dispatch, toast]);
+
   if (!toast) return null;
   return (
     <div

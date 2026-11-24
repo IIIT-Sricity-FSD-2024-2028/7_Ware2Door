@@ -1,46 +1,207 @@
-import React from "react";
-
-export default function WarehouseModals({
-  hubOpen,
-  editOpen,
-  passwordOpen,
-  currentOrderId,
-  selectedCount,
-  hubs,
-  agencies,
-  hubId,
-  agencyId,
-  onHubChange,
-  onAgencyChange,
-  onCloseHub,
-  onConfirmDispatch,
-  editName,
-  editEmail,
-  editPhone,
-  onEditName,
-  onEditEmail,
-  onEditPhone,
-  onCloseEdit,
-  onSaveProfile,
-  currentPassword,
-  newPassword,
-  confirmPassword,
-  onCurrentPassword,
-  onNewPassword,
-  onConfirmPassword,
-  onClosePassword,
-  onSavePassword,
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { updateAuthUser } from "../../auth/store/actions/authActions.js";
+import {
+  dispatchWarehouseShipment,
+  fetchWarehouseInventory,
+  fetchWarehouseOutbound,
+  fetchWarehousePendingShipments,
+  updateWarehousePassword,
+  updateWarehouseProfile,
+} from "../store/actions/warehouseActions.js";
+import {
+  closeWarehouseModal,
+  openWarehouseDispatch,
+  setSelectedWarehouseOrders,
+  setWarehouseToast,
+} from "../store/slices/warehouseUiSlice.js";
+import {
   initials,
-}) {
+  validatePassword,
+  validateProfile,
+} from "../utils/warehouseUtils.js";
+
+const errorMessage = (error) =>
+  typeof error === "string" ? error : error?.message;
+
+export default function WarehouseModals() {
+  const dispatch = useDispatch();
+  const modal = useSelector((state) => state.warehouse.ui.modal);
+  const orderIds = useSelector(
+    (state) => state.warehouse.ui.dispatchOrderIds,
+  );
+  const bulkDispatch = useSelector(
+    (state) => state.warehouse.ui.bulkDispatch,
+  );
+  const { hubs, agencies, pending } = useSelector(
+    (state) => state.warehouse.data,
+  );
+  const user = useSelector((state) => state.auth.session?.user || {});
+  const warehouseId = user.id;
+  const [hubId, setHubId] = useState("");
+  const [agencyId, setAgencyId] = useState("");
+  const [editName, setEditName] = useState(user.name || "");
+  const [editEmail, setEditEmail] = useState(user.email || "");
+  const [editPhone, setEditPhone] = useState(user.phone || "");
+  const [currentPassword, setCurrentPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+
+  useEffect(() => {
+    if (modal === "dispatch") {
+      setHubId((current) => current || hubs[0]?.id || "");
+      setAgencyId((current) => current || agencies[0]?.id || "");
+    } else if (modal === "edit-profile") {
+      setEditName(user.name || "");
+      setEditEmail(user.email || "");
+      setEditPhone(user.phone || "");
+    }
+  }, [modal, hubs, agencies, user.name, user.email, user.phone]);
+
+  const showToast = (msg, isError = false) =>
+    dispatch(setWarehouseToast({ msg, isError }));
+
+  async function saveProfile() {
+    const profile = {
+      name: editName.trim(),
+      email: editEmail.trim(),
+      phone: editPhone.trim(),
+    };
+    const validationError = validateProfile(
+      profile.name,
+      profile.email,
+      profile.phone,
+    );
+    if (validationError) return showToast(validationError, true);
+    try {
+      await dispatch(
+        updateWarehouseProfile({ warehouseId, profile }),
+      ).unwrap();
+      await dispatch(updateAuthUser(profile)).unwrap();
+      dispatch(closeWarehouseModal());
+      showToast("Profile updated");
+    } catch (error) {
+      showToast(errorMessage(error) || "Unable to update profile.", true);
+    }
+  }
+
+  async function savePassword() {
+    const validationError = validatePassword(
+      currentPassword,
+      newPassword,
+      confirmPassword,
+    );
+    if (validationError) return showToast(validationError, true);
+    try {
+      await dispatch(
+        updateWarehousePassword({
+          warehouseId,
+          currentPassword,
+          newPassword,
+        }),
+      ).unwrap();
+      dispatch(closeWarehouseModal());
+      setCurrentPassword("");
+      setNewPassword("");
+      setConfirmPassword("");
+      showToast("Password updated");
+    } catch (error) {
+      showToast(errorMessage(error) || "Unable to update password.", true);
+    }
+  }
+
+  async function refreshDispatchData() {
+    const results = await Promise.all([
+      dispatch(fetchWarehousePendingShipments(warehouseId)),
+      dispatch(fetchWarehouseOutbound(warehouseId)),
+      dispatch(fetchWarehouseInventory(warehouseId)),
+    ]);
+    return results.find((result) => result.error);
+  }
+
+  async function confirmDispatch() {
+    if (!orderIds.length) return showToast("Select a pending shipment.", true);
+    if (orderIds.some((id) => !pending.some((shipment) => shipment.orderId === id))) {
+      return showToast(
+        "Select a valid pending shipment before dispatching.",
+        true,
+      );
+    }
+    if (!hubs.some((hub) => hub.id === hubId)) {
+      return showToast("Select a valid transit hub.", true);
+    }
+    if (!agencies.some((agency) => agency.id === agencyId)) {
+      return showToast("Select a valid local agency.", true);
+    }
+
+    const completed = [];
+    const failed = [];
+    let firstError = "";
+    for (const orderId of orderIds) {
+      try {
+        await dispatch(
+          dispatchWarehouseShipment({
+            warehouseId,
+            orderId,
+            hubId,
+            agencyId,
+          }),
+        ).unwrap();
+        completed.push(orderId);
+      } catch (error) {
+        failed.push(orderId);
+        firstError ||= errorMessage(error) || "Unable to dispatch shipment.";
+      }
+    }
+
+    if (completed.length) {
+      const refreshError = await refreshDispatchData();
+      if (refreshError) {
+        showToast(
+          refreshError.payload ||
+          refreshError.error?.message ||
+          "Shipment sent, but warehouse data could not be refreshed.",
+          true,
+        );
+      }
+    }
+
+    if (bulkDispatch) {
+      if (!failed.length) {
+        dispatch(setSelectedWarehouseOrders([]));
+        dispatch(closeWarehouseModal());
+        showToast(
+          `${completed.length} shipment${completed.length === 1 ? "" : "s"} accepted.`,
+        );
+      } else {
+        dispatch(setSelectedWarehouseOrders(failed));
+        dispatch(openWarehouseDispatch({ orderIds: failed, bulk: true }));
+        showToast(
+          `${completed.length} accepted; ${failed.length} failed. Failed shipments remain selected for retry. ${firstError}`,
+          true,
+        );
+      }
+    } else if (completed.length) {
+      dispatch(closeWarehouseModal());
+      showToast("Shipment dispatched successfully");
+    } else if (firstError) {
+      showToast(firstError, true);
+    }
+  }
+
+  if (!modal) return null;
+
   return (
     <>
-      {hubOpen && (
+      {modal === "dispatch" && (
         <div
           className="modal-overlay"
           id="hub-modal"
           style={{ display: "flex" }}
           onClick={(event) => {
-            if (event.target.id === "hub-modal") onCloseHub();
+            if (event.target.id === "hub-modal") {
+              dispatch(closeWarehouseModal());
+            }
           }}
         >
           <div className="modal">
@@ -49,24 +210,24 @@ export default function WarehouseModals({
               <button
                 className="modal-close"
                 id="close-hub-modal"
-                onClick={onCloseHub}
+                onClick={() => dispatch(closeWarehouseModal())}
               >
                 <i className="fa-solid fa-xmark"></i>
               </button>
             </div>
             <div className="modal-body">
               <p style={{ fontSize: 13, color: "#64748b", margin: "0 0 18px" }}>
-                {selectedCount > 1 ? (
+                {orderIds.length > 1 ? (
                   <>
                     <strong id="hub-modal-order-id">
-                      {selectedCount} selected shipments
+                      {orderIds.length} selected shipments
                     </strong>{" "}
                     — select the next transit hub and local delivery agency.
                   </>
                 ) : (
                   <>
                     Order{" "}
-                    <strong id="hub-modal-order-id">{currentOrderId}</strong> —
+                    <strong id="hub-modal-order-id">{orderIds[0]}</strong> —
                     select the next transit hub and local delivery agency.
                   </>
                 )}
@@ -76,7 +237,7 @@ export default function WarehouseModals({
                 <select
                   id="hub-select"
                   value={hubId}
-                  onChange={(event) => onHubChange(event.target.value)}
+                  onChange={(event) => setHubId(event.target.value)}
                 >
                   {hubs.map((hub) => (
                     <option key={hub.id} value={hub.id}>
@@ -90,7 +251,7 @@ export default function WarehouseModals({
                 <select
                   id="agency-select"
                   value={agencyId}
-                  onChange={(event) => onAgencyChange(event.target.value)}
+                  onChange={(event) => setAgencyId(event.target.value)}
                 >
                   {agencies.map((agency) => (
                     <option key={agency.id} value={agency.id}>
@@ -104,29 +265,31 @@ export default function WarehouseModals({
               <button
                 className="modal-cancel"
                 id="cancel-hub-modal"
-                onClick={onCloseHub}
+                onClick={() => dispatch(closeWarehouseModal())}
               >
                 Cancel
               </button>
               <button
                 className="modal-save"
                 id="confirm-dispatch-btn"
-                onClick={onConfirmDispatch}
+                onClick={confirmDispatch}
               >
-                Confirm Dispatch{selectedCount > 1 ? ` (${selectedCount})` : ""}
+                Confirm Dispatch{orderIds.length > 1 ? ` (${orderIds.length})` : ""}
               </button>
             </div>
           </div>
         </div>
       )}
 
-      {editOpen && (
+      {modal === "edit-profile" && (
         <div
           className="modal-overlay"
           id="edit-modal"
           style={{ display: "flex" }}
           onClick={(event) => {
-            if (event.target.id === "edit-modal") onCloseEdit();
+            if (event.target.id === "edit-modal") {
+              dispatch(closeWarehouseModal());
+            }
           }}
         >
           <div className="modal">
@@ -135,7 +298,7 @@ export default function WarehouseModals({
               <button
                 className="modal-close"
                 id="close-edit-modal"
-                onClick={onCloseEdit}
+                onClick={() => dispatch(closeWarehouseModal())}
               >
                 <i className="fa-solid fa-xmark"></i>
               </button>
@@ -160,7 +323,7 @@ export default function WarehouseModals({
                   placeholder="Your full name"
                   required
                   value={editName}
-                  onChange={(event) => onEditName(event.target.value)}
+                  onChange={(event) => setEditName(event.target.value)}
                 />
               </div>
               <div className="modal-field">
@@ -172,7 +335,7 @@ export default function WarehouseModals({
                   required
                   pattern="[^\s@]+@[^\s@]+\.[^\s@]+"
                   value={editEmail}
-                  onChange={(event) => onEditEmail(event.target.value)}
+                  onChange={(event) => setEditEmail(event.target.value)}
                 />
               </div>
               <div className="modal-field">
@@ -184,7 +347,7 @@ export default function WarehouseModals({
                   required
                   pattern="(\+91[\s-]?)?\d{10}"
                   value={editPhone}
-                  onChange={(event) => onEditPhone(event.target.value)}
+                  onChange={(event) => setEditPhone(event.target.value)}
                 />
               </div>
             </div>
@@ -192,14 +355,14 @@ export default function WarehouseModals({
               <button
                 className="modal-cancel"
                 id="cancel-edit-modal"
-                onClick={onCloseEdit}
+                onClick={() => dispatch(closeWarehouseModal())}
               >
                 Cancel
               </button>
               <button
                 className="modal-save"
                 id="save-edit-modal"
-                onClick={onSaveProfile}
+                onClick={saveProfile}
               >
                 Save Changes
               </button>
@@ -208,13 +371,15 @@ export default function WarehouseModals({
         </div>
       )}
 
-      {passwordOpen && (
+      {modal === "change-password" && (
         <div
           className="modal-overlay"
           id="pwd-modal"
           style={{ display: "flex" }}
           onClick={(event) => {
-            if (event.target.id === "pwd-modal") onClosePassword();
+            if (event.target.id === "pwd-modal") {
+              dispatch(closeWarehouseModal());
+            }
           }}
         >
           <div className="modal">
@@ -223,7 +388,7 @@ export default function WarehouseModals({
               <button
                 className="modal-close"
                 id="close-pwd-modal"
-                onClick={onClosePassword}
+                onClick={() => dispatch(closeWarehouseModal())}
               >
                 <i className="fa-solid fa-xmark"></i>
               </button>
@@ -237,7 +402,7 @@ export default function WarehouseModals({
                   placeholder="••••••••"
                   required
                   value={currentPassword}
-                  onChange={(event) => onCurrentPassword(event.target.value)}
+                  onChange={(event) => setCurrentPassword(event.target.value)}
                 />
               </div>
               <div className="modal-field">
@@ -249,7 +414,7 @@ export default function WarehouseModals({
                   required
                   minLength={6}
                   value={newPassword}
-                  onChange={(event) => onNewPassword(event.target.value)}
+                  onChange={(event) => setNewPassword(event.target.value)}
                 />
               </div>
               <div className="modal-field">
@@ -261,7 +426,7 @@ export default function WarehouseModals({
                   required
                   minLength={6}
                   value={confirmPassword}
-                  onChange={(event) => onConfirmPassword(event.target.value)}
+                  onChange={(event) => setConfirmPassword(event.target.value)}
                 />
               </div>
             </div>
@@ -269,14 +434,14 @@ export default function WarehouseModals({
               <button
                 className="modal-cancel"
                 id="cancel-pwd-modal"
-                onClick={onClosePassword}
+                onClick={() => dispatch(closeWarehouseModal())}
               >
                 Cancel
               </button>
               <button
                 className="modal-save"
                 id="save-pwd-modal"
-                onClick={onSavePassword}
+                onClick={savePassword}
               >
                 <i className="fa-solid fa-lock"></i> Update Password
               </button>

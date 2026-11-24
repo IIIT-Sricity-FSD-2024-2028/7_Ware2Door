@@ -1,22 +1,35 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Icon } from "../components/Icon.jsx";
 import { Welcome } from "../components/Welcome.jsx";
 import { Stats } from "../components/Stats.jsx";
 import { Filter } from "../components/Filter.jsx";
 import { Table } from "../components/Table.jsx";
 import { formatDate } from "../utils.js";
+import {
+  deleteDriver,
+  fetchAdminTeamsSection,
+} from "../store/actions/adminTeamsActions.js";
+import { openAdminModal } from "../store/slices/adminTeamsUiSlice.js";
 
-export function FleetPage({
-  data,
-  find,
-  open,
-  act,
-  mutate,
-  query,
-  setQuery,
-  load,
-}) {
+export function FleetPage() {
+  const dispatch = useDispatch();
+  const data = useSelector((state) => state.adminTeams.drivers);
+  const [query, setQuery] = useState("");
   const [vehicle, setVehicle] = useState("");
+  const open = (kind, record = null) =>
+    dispatch(openAdminModal({ kind, record }));
+  const load = () => dispatch(fetchAdminTeamsSection("fleet"));
+  useEffect(() => {
+    dispatch(fetchAdminTeamsSection("fleet"));
+  }, [dispatch]);
+  const filtered = data
+    .filter(
+      (driver) =>
+        !query ||
+        JSON.stringify(driver).toLowerCase().includes(query.toLowerCase()),
+    )
+    .filter((driver) => !vehicle || driver.vehicleType === vehicle);
   return (
     <>
       <Welcome
@@ -26,19 +39,12 @@ export function FleetPage({
         description="Register drivers, assign inter-node routes (Warehouse → Hub → Agency), and manage platform subscription billing."
         color="linear-gradient(135deg,#2e1065 0%,#4c1d95 55%,#6d28d9 100%)"
       >
-        {act(
-          <>
-            <Icon name="fa-plus" /> Add Driver
-          </>,
-          () => open("add-driver"),
-          "btn-purple",
-        )}
-        {act(
-          <>
-            <Icon name="fa-rotate" /> Refresh
-          </>,
-          load,
-        )}
+        <button className="btn-purple" onClick={() => open("add-driver")}>
+          <Icon name="fa-plus" /> Add Driver
+        </button>
+        <button className="btn-ghost" onClick={load}>
+          <Icon name="fa-rotate" /> Refresh
+        </button>
       </Welcome>
       <Stats
         items={[
@@ -97,63 +103,54 @@ export function FleetPage({
           "STATUS",
           "ACTIONS",
         ]}
-        rows={find(data)
-          .filter((d) => !vehicle || d.vehicleType === vehicle)
-          .map((d) => [
-            <>
-              <strong>{d.name}</strong>
-              <br />
-              <small>{d.id}</small>
-            </>,
-            d.phone || "—",
-            <code>{d.licenseNo || "—"}</code>,
-            d.vehicleType || "—",
-            <div className="route-display">
-              <span className="node-chip">
-                {d.fromNodeName || d.fromNodeId || "—"}
-              </span>
-              <Icon name="fa-arrow-right" />
-              <span className="node-chip">
-                {d.toNodeName || d.toNodeId || "—"}
-              </span>
-            </div>,
-            `₹${(d.subscription?.monthlyFee || d.subscription?.monthlyRate || 0).toLocaleString()}/mo`,
-            formatDate(d.subscription?.endDate),
-            <span
-              className={`sub-status ${d.subscription?.endDate && new Date(d.subscription.endDate) > new Date() ? "sub-active" : "sub-expired"}`}
+        rows={filtered.map((d) => [
+          <>
+            <strong>{d.name}</strong>
+            <br />
+            <small>{d.id}</small>
+          </>,
+          d.phone || "—",
+          <code>{d.licenseNo || "—"}</code>,
+          d.vehicleType || "—",
+          <div className="route-display">
+            <span className="node-chip">
+              {d.fromNodeName || d.fromNodeId || "—"}
+            </span>
+            <Icon name="fa-arrow-right" />
+            <span className="node-chip">
+              {d.toNodeName || d.toNodeId || "—"}
+            </span>
+          </div>,
+          `₹${(d.subscription?.monthlyFee || d.subscription?.monthlyRate || 0).toLocaleString()}/mo`,
+          formatDate(d.subscription?.endDate),
+          <span
+            className={`sub-status ${d.subscription?.endDate && new Date(d.subscription.endDate) > new Date() ? "sub-active" : "sub-expired"}`}
+          >
+            <Icon name="fa-circle-check" />{" "}
+            {d.subscription?.endDate &&
+            new Date(d.subscription.endDate) > new Date()
+              ? "Active"
+              : "Expired"}
+          </span>,
+          <div className="action-btn-group">
+            <button
+              className="action-btn edit"
+              title="Edit"
+              onClick={() => open("edit-driver", d)}
             >
-              <Icon name="fa-circle-check" />{" "}
-              {d.subscription?.endDate &&
-              new Date(d.subscription.endDate) > new Date()
-                ? "Active"
-                : "Expired"}
-            </span>,
-            <div className="action-btn-group">
-              <button
-                className="action-btn edit"
-                title="Edit"
-                onClick={() => open("edit-driver", d)}
-              >
-                <Icon name="fa-pen" />
-              </button>
-              <button
-                className="action-btn delete"
-                title="Delete"
-                onClick={() =>
-                  confirm("Delete this driver?") &&
-                  mutate(
-                    `/admin-teams/drivers/${d.id}`,
-                    "DELETE",
-                    {},
-                    "Driver deleted",
-                    "fleet",
-                  )
-                }
-              >
-                <Icon name="fa-trash" />
-              </button>
-            </div>,
-          ])}
+              <Icon name="fa-pen" />
+            </button>
+            <button
+              className="action-btn delete"
+              title="Delete"
+              onClick={() =>
+                confirm("Delete this driver?") && dispatch(deleteDriver(d.id))
+              }
+            >
+              <Icon name="fa-trash" />
+            </button>
+          </div>,
+        ])}
       />
     </>
   );

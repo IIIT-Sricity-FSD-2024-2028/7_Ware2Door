@@ -1,21 +1,79 @@
 import React, { useMemo, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { fmtDate } from "../utils/transitHubUtils.js";
+import {
+  fetchTransitHubDashboard,
+  fetchTransitHubInventory,
+  performTransitHubInscan,
+  performTransitHubOutscan,
+} from "../store/actions/transitHubActions.js";
+import {
+  setTransitHubScanMode,
+  setTransitHubToast,
+} from "../store/slices/transitHubUiSlice.js";
+import {
+  normalizeIdentifier,
+  validateTrackingId,
+} from "../../utils/inputValidation.js";
 
-export default function ScanOperationsPage({
-  mode,
-  onMode,
-  inscanValue,
-  outscanValue,
-  onInscanValue,
-  onOutscanValue,
-  onInscan,
-  onOutscan,
-  scanHistory,
-}) {
+export default function ScanOperationsPage() {
+  const dispatch = useDispatch();
+  const hubId = useSelector((state) => state.auth.session?.user?.id);
+  const mode = useSelector((state) => state.transitHub.ui.scanMode);
+  const scanHistory = useSelector(
+    (state) => state.transitHub.data.scanHistory,
+  );
+  const [inscanValue, setInscanValue] = useState("");
+  const [outscanValue, setOutscanValue] = useState("");
+  const onMode = (nextMode) => dispatch(setTransitHubScanMode(nextMode));
+  const onInscanValue = setInscanValue;
+  const onOutscanValue = setOutscanValue;
   const [search, setSearch] = useState("");
   const [filterOpen, setFilterOpen] = useState(false);
   const [status, setStatus] = useState("");
   const [agency, setAgency] = useState("");
+  const showToast = (msg, isError = false) =>
+    dispatch(setTransitHubToast({ msg, isError }));
+  const refreshData = () =>
+    Promise.all([
+      dispatch(fetchTransitHubDashboard(hubId)),
+      dispatch(fetchTransitHubInventory(hubId)),
+    ]);
+  const scan = async (value, operation) => {
+    const trackingId = normalizeIdentifier(value);
+    const validationError = validateTrackingId(trackingId, { allowRto: true });
+    if (validationError) return showToast(validationError, true);
+    try {
+      const result = await dispatch(
+        operation({ hubId, trackingId }),
+      ).unwrap();
+      await refreshData();
+      if (operation === performTransitHubInscan) {
+        setInscanValue("");
+        showToast(
+          result.status === "success"
+            ? result.rto?.rtoId
+              ? `RTO ${result.rto.rtoId} added to hub inventory`
+              : "In-Scan successful"
+            : result.flagMsg || "In-scan failed.",
+          result.status !== "success",
+        );
+      } else {
+        setOutscanValue("");
+        showToast(
+          result.status === "success" ? "Out-Scan successful" : result.flagMsg || "Out-scan failed.",
+          result.status !== "success",
+        );
+      }
+    } catch (error) {
+      showToast(
+        typeof error === "string" ? error : error.message || "Scan failed.",
+        true,
+      );
+    }
+  };
+  const onInscan = () => scan(inscanValue, performTransitHubInscan);
+  const onOutscan = () => scan(outscanValue, performTransitHubOutscan);
   const rows = useMemo(
     () =>
       scanHistory.filter((row) => {

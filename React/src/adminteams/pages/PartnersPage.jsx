@@ -1,30 +1,44 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Icon } from "../components/Icon.jsx";
 import { Welcome } from "../components/Welcome.jsx";
 import { Stats } from "../components/Stats.jsx";
 import { Filter } from "../components/Filter.jsx";
 import { Table } from "../components/Table.jsx";
+import {
+  deletePartner,
+  fetchAdminTeamsSection,
+  updatePartnerStatus,
+} from "../store/actions/adminTeamsActions.js";
+import { openAdminModal } from "../store/slices/adminTeamsUiSlice.js";
 
-export function PartnersPage({
-  data,
-  find,
-  open,
-  act,
-  mutate,
-  query,
-  setQuery,
-}) {
+export function PartnersPage() {
+  const dispatch = useDispatch();
+  const data = useSelector((state) => state.adminTeams.partners);
+  const [query, setQuery] = useState("");
+  useEffect(() => {
+    dispatch(fetchAdminTeamsSection("partners"));
+  }, [dispatch]);
   const usage = data.reduce(
     (sum, partner) => sum + (partner.currentMonthUsage || 0),
     0,
   );
   const [tier, setTier] = useState(""),
     [status, setStatus] = useState("");
-  const filtered = find(data).filter(
-    (p) =>
-      (!tier || p.tier === tier) &&
-      (!status || (status === "active" ? p.isActive : !p.isActive)),
-  );
+  const open = (kind, record = null) =>
+    dispatch(openAdminModal({ kind, record }));
+  const filtered = data
+    .filter(
+      (partner) =>
+        !query ||
+        JSON.stringify(partner).toLowerCase().includes(query.toLowerCase()),
+    )
+    .filter(
+      (partner) =>
+        (!tier || partner.tier === tier) &&
+        (!status ||
+          (status === "active" ? partner.isActive : !partner.isActive)),
+    );
   return (
     <>
       <Welcome
@@ -33,13 +47,9 @@ export function PartnersPage({
         title="Third Party Partners"
         description="Manage external businesses integrated into the Ware2Door network via API."
       >
-        {act(
-          <>
-            <Icon name="fa-plus" /> Add Partner
-          </>,
-          () => open("partner"),
-          "btn-primary",
-        )}
+        <button className="btn-primary" onClick={() => open("partner")}>
+          <Icon name="fa-plus" /> Add Partner
+        </button>
       </Welcome>
       <Stats
         items={[
@@ -169,11 +179,8 @@ export function PartnersPage({
                 className="btn-ghost"
                 title={p.isActive ? "Deactivate" : "Activate"}
                 onClick={() =>
-                  mutate(
-                    `/admin-teams/partners/${p.id}/status`,
-                    "PUT",
-                    { isActive: !p.isActive },
-                    "Partner status updated",
+                  dispatch(
+                    updatePartnerStatus({ id: p.id, isActive: !p.isActive }),
                   )
                 }
               >
@@ -184,12 +191,7 @@ export function PartnersPage({
                 title="Delete"
                 onClick={() =>
                   confirm("Delete this partner?") &&
-                  mutate(
-                    `/admin-teams/partners/${p.id}`,
-                    "DELETE",
-                    {},
-                    "Partner deleted",
-                  )
+                  dispatch(deletePartner(p.id))
                 }
               >
                 <Icon name="fa-trash" />

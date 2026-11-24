@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import Footer from "../components/Footer.jsx";
 import logoImg from "../assets/logo.png";
 import trackImg from "../assets/track.png";
@@ -12,8 +13,7 @@ import {
   normalizeIdentifier,
   validateTrackingId,
 } from "../../utils/inputValidation.js";
-
-const API = "http://127.0.0.1:8000";
+import { fetchPublicTracking } from "../store/actions/publicActions.js";
 
 function fmtDate(iso) {
   if (!iso) return "—";
@@ -48,8 +48,9 @@ const statusIcons = {
 };
 
 export default function TrackPage({ navigate }) {
+  const dispatch = useDispatch();
   const [inputVal, setInputVal] = useState("");
-  const [result, setResult] = useState(null);
+  const result = useSelector((state) => state.landing.data.tracking.data);
   const [loading, setLoading] = useState(false);
   const pollingRef = useRef(null);
   const lastStatusRef = useRef(null);
@@ -115,29 +116,7 @@ export default function TrackPage({ navigate }) {
   async function fetchTrackingData(tid, silent = false) {
     lastLookupErrorRef.current = null;
     try {
-      const res = await fetch(`${API}/track/${tid}?t=${Date.now()}`);
-      if (!res.ok) {
-        if (res.status === 429) {
-          lastLookupErrorRef.current = "temporary";
-          if (!silent)
-            alert(
-              "Tracking service is temporarily rate-limited. Please wait a few minutes and try again.",
-            );
-        } else if (res.status === 404) {
-          lastLookupErrorRef.current = "not-found";
-          if (!silent)
-            alert(
-              `No shipment found for Tracking ID "${tid}". Please verify and try again.`,
-            );
-        } else if (!silent) {
-          lastLookupErrorRef.current = "temporary";
-          alert(
-            "Tracking service is temporarily unavailable. Please try again.",
-          );
-        }
-        return null;
-      }
-      const data = await res.json();
+      const { data } = await dispatch(fetchPublicTracking(tid)).unwrap();
       if (!data || data.error || !data.trackingId) {
         lastLookupErrorRef.current = "not-found";
         if (!silent)
@@ -148,12 +127,31 @@ export default function TrackPage({ navigate }) {
         return null;
       }
       return data;
-    } catch (_) {
-      lastLookupErrorRef.current = "temporary";
-      if (!silent)
-        alert(
-          "Could not connect to tracking server. Please check your network connection.",
-        );
+    } catch (error) {
+      if (error?.status === 429) {
+          lastLookupErrorRef.current = "temporary";
+          if (!silent)
+            alert(
+              "Tracking service is temporarily rate-limited. Please wait a few minutes and try again.",
+            );
+      } else if (error?.status === 404) {
+          lastLookupErrorRef.current = "not-found";
+          if (!silent)
+            alert(
+              `No shipment found for Tracking ID "${tid}". Please verify and try again.`,
+            );
+      } else if (!silent) {
+          lastLookupErrorRef.current = "temporary";
+          alert(
+            "Tracking service is temporarily unavailable. Please try again.",
+          );
+      }
+      if (!error?.status) {
+        if (!silent)
+          alert(
+            "Could not connect to tracking server. Please check your network connection.",
+          );
+      }
       return null;
     }
   }
@@ -172,7 +170,6 @@ export default function TrackPage({ navigate }) {
     setLoading(false);
     if (!data) return;
     lastStatusRef.current = data.status;
-    setResult({ tid, data });
     startPolling(tid);
   }
 
@@ -189,7 +186,6 @@ export default function TrackPage({ navigate }) {
       return;
     }
     lastStatusRef.current = data.status;
-    setResult({ tid: normalizedId, data });
     startPolling(normalizedId);
   }
 

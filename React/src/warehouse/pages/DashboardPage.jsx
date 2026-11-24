@@ -1,25 +1,45 @@
 import React from "react";
+import { useSelector } from "react-redux";
 import { fmtDate } from "../utils/warehouseUtils.js";
+import { setWarehousePage } from "../store/slices/warehouseUiSlice.js";
+import { useDispatch } from "react-redux";
 
-export default function DashboardPage({
-  user = {},
-  greeting,
-  today,
-  stats,
-  activityRows = [],
-  onShipments,
-  onPreAlerts,
-}) {
+export default function DashboardPage() {
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.auth.session?.user || {});
+  const { inventory, pending, outbound, rtos } = useSelector(
+    (state) => state.warehouse.data,
+  );
+  const stats = {
+    inventory: inventory.reduce(
+      (sum, item) => sum + Number(item.quantity || 0),
+      0,
+    ),
+    shipments: pending.length,
+    outbound: outbound.length,
+    rto: rtos.length,
+  };
+  const greetingHour = new Date().getHours();
+  const greeting =
+    greetingHour < 12
+      ? "Good Morning"
+      : greetingHour < 17
+        ? "Good Afternoon"
+        : "Good Evening";
+  const today = new Date().toLocaleDateString("en-IN", {
+    weekday: "long",
+    day: "numeric",
+    month: "long",
+  });
+
   return (
     <div className="dashboard-page page-content">
-      <section className="welcome-banner" aria-labelledby="warehouse-welcome">
+      <div className="welcome-banner">
         <div className="welcome-text">
           <p className="welcome-label">Welcome back,</p>
-          <h2 className="welcome-heading" id="warehouse-welcome">
+          <h2 className="welcome-heading">
             {greeting},{" "}
-            <span className="welcome-name-dynamic">
-              {user.name || "Warehouse Admin"}
-            </span>
+            <span className="welcome-name-dynamic">{user.name}</span>
             <span className="welcome-date"> · {today}</span>
           </h2>
           <p className="welcome-sub">
@@ -33,129 +53,117 @@ export default function DashboardPage({
           <div className="welcome-actions">
             <button
               className="btn-primary dash-new-shipment-btn"
-              onClick={onShipments}
-              type="button"
+              onClick={() => dispatch(setWarehousePage("shipments"))}
             >
-              <i className="fa-solid fa-plus" aria-hidden="true"></i>
-              New Shipment
+              <i className="fa-solid fa-plus"></i> New Shipment
             </button>
             <button
               className="btn-secondary dash-export-btn"
-              onClick={onPreAlerts}
-              type="button"
+              onClick={() => dispatch(setWarehousePage("prealert"))}
             >
-              <i className="fa-solid fa-bell" aria-hidden="true"></i>
-              Pre-Alerts
+              <i className="fa-solid fa-bell"></i> Pre-Alerts
             </button>
           </div>
         </div>
-        <div className="welcome-icon-wrap" aria-hidden="true">
+        <div className="welcome-icon-wrap">
           <i className="fa-solid fa-chart-simple welcome-icon"></i>
         </div>
-      </section>
-
-      <section className="stat-grid" aria-label="Warehouse summary">
-        <article className="stat-card">
+      </div>
+      <div className="stat-grid">
+        <div className="stat-card">
           <div className="stat-top">
             <div className="stat-icon-box">
-              <i className="fa-solid fa-clipboard-check" aria-hidden="true"></i>
+              <i className="fa-solid fa-clipboard-check"></i>
             </div>
             <span className="stat-badge stat-badge--green"></span>
           </div>
           <p className="stat-label">TOTAL INVENTORY</p>
-          <p className="stat-value">{stats.inventory}</p>
+          <p className="stat-value" id="dash-inventory">
+            {stats.inventory}
+          </p>
           <span className="stat-unit">units</span>
-        </article>
-        <article className="stat-card">
+        </div>
+        <div className="stat-card">
           <div className="stat-top">
             <div className="stat-icon-box">
-              <i className="fa-solid fa-box-open" aria-hidden="true"></i>
+              <i className="fa-solid fa-box-open"></i>
             </div>
-            <span className="stat-badge stat-badge--orange"></span>
+            <span
+              className="stat-badge stat-badge--orange"
+              id="dash-shipment-badge"
+            ></span>
           </div>
           <p className="stat-label">PENDING SHIPMENTS</p>
-          <p className="stat-value">{stats.shipments}</p>
+          <p className="stat-value" id="dash-shipments">
+            {stats.shipments}
+          </p>
           <span className="stat-unit">orders</span>
-        </article>
-        <article className="stat-card">
+        </div>
+        <div className="stat-card">
           <div className="stat-top">
             <div className="stat-icon-box">
-              <i
-                className="fa-solid fa-arrow-up-right-from-square"
-                aria-hidden="true"
-              ></i>
+              <i className="fa-solid fa-arrow-up-right-from-square"></i>
             </div>
-            <span className="stat-badge stat-badge--blue"></span>
+            <span
+              className="stat-badge stat-badge--blue"
+              id="dash-outbound-badge"
+            ></span>
           </div>
           <p className="stat-label">OUTBOUND TODAY</p>
-          <p className="stat-value">{stats.outbound}</p>
+          <p className="stat-value" id="dash-outbound">
+            {stats.outbound}
+          </p>
           <span className="stat-unit">dispatches</span>
-        </article>
-        <article className="stat-card">
+        </div>
+        <div className="stat-card">
           <div className="stat-top">
             <div className="stat-icon-box stat-icon-box--red">
-              <i className="fa-solid fa-rotate-left" aria-hidden="true"></i>
+              <i className="fa-solid fa-rotate-left"></i>
             </div>
             <span className="stat-badge"></span>
           </div>
           <p className="stat-label">RTO REQUESTS</p>
-          <p className="stat-value">{stats.rto}</p>
+          <p className="stat-value" id="dash-rto">
+            {stats.rto}
+          </p>
           <span className="stat-unit">returns</span>
-        </article>
-      </section>
-
-      <section className="activity-card" aria-labelledby="warehouse-activity">
+        </div>
+      </div>
+      <div className="activity-card">
         <div className="activity-header">
           <div>
-            <h3 className="activity-title" id="warehouse-activity">
-              Warehouse Activity
-            </h3>
+            <h3 className="activity-title">Warehouse Activity</h3>
             <p className="activity-sub">
               Monitoring shipments currently in transit
             </p>
           </div>
           <div className="live-pill">
-            <span className="live-dot" aria-hidden="true"></span>
-            LIVE UPDATES
+            <span className="live-dot"></span> LIVE UPDATES
           </div>
         </div>
-        <div className="activity-table-wrap">
-          <table className="activity-table">
-            <thead>
-              <tr>
-                <th scope="col">TRACKING ID</th>
-                <th scope="col">LAST UPDATE</th>
-                <th scope="col">STATUS</th>
+        <table className="activity-table">
+          <thead>
+            <tr>
+              <th>TRACKING ID</th>
+              <th>LAST UPDATE</th>
+              <th>STATUS</th>
+            </tr>
+          </thead>
+          <tbody id="activity-tbody">
+            {inventory.slice(0, 5).map((row, i) => (
+              <tr key={i}>
+                <td>{row.labelId || row.trackingId || "—"}</td>
+                <td>{fmtDate(row.lastUpdated || row.updatedAt || row.addedAt)}</td>
+                <td>
+                  <span className="stat-badge stat-badge--green">
+                    {row.status || "In Stock"}
+                  </span>
+                </td>
               </tr>
-            </thead>
-            <tbody>
-              {activityRows.length ? (
-                activityRows.map((row, index) => (
-                  <tr key={row._id || row.labelId || row.trackingId || index}>
-                    <td>{row.labelId || row.trackingId || "—"}</td>
-                    <td>
-                      {fmtDate(
-                        row.lastUpdated || row.updatedAt || row.addedAt,
-                      )}
-                    </td>
-                    <td>
-                      <span className="stat-badge stat-badge--green">
-                        {row.status || "In Stock"}
-                      </span>
-                    </td>
-                  </tr>
-                ))
-              ) : (
-                <tr>
-                  <td className="activity-empty" colSpan="3">
-                    No recent warehouse activity.
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
-        </div>
-      </section>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }

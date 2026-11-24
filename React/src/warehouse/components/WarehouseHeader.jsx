@@ -1,14 +1,14 @@
 import React from "react";
+import { useSelector } from "react-redux";
 
-export default function WarehouseHeader({ title, user, initials, onSettings }) {
-  const userName = user?.name || "";
-
+export default function WarehouseHeader({ title, initials, onSettings }) {
+  const user = useSelector((state) => state.auth.session?.user || {});
   return (
     <div className="header">
       <h2>{title}</h2>
       <div className="user">
         <div>
-          <p className="name">{userName}</p>
+          <p className="name">{user.name}</p>
           <p className="role">Warehouse Admin</p>
         </div>
         <div
@@ -18,7 +18,7 @@ export default function WarehouseHeader({ title, user, initials, onSettings }) {
           title="Go to Settings"
           onClick={onSettings}
         >
-          {initials(userName)}
+          {initials(user.name)}
         </div>
       </div>
     </div>

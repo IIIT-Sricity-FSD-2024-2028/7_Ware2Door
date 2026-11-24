@@ -1,5 +1,10 @@
 import React from "react";
+import { useDispatch } from "react-redux";
 import logoImg from "../assets/logo.png";
+import {
+  setWarehousePage,
+  toggleWarehouseInventory,
+} from "../store/slices/warehouseUiSlice.js";
 
 const items = [
   ["dashboard", "Dashboard", "fa-table-columns"],
@@ -7,12 +12,8 @@ const items = [
   ["rto", "Manage RTO", "fa-truck"],
 ];
 
-export default function WarehouseSidebar({
-  activePage,
-  inventoryOpen,
-  onNavigate,
-  onToggleInventory,
-}) {
+export default function WarehouseSidebar({ activePage, inventoryOpen }) {
+  const dispatch = useDispatch();
   return (
     <div className="sidebar">
       <div className="logo-section">
@@ -23,7 +24,7 @@ export default function WarehouseSidebar({
           <li
             key={page}
             className={`menu-item${activePage === page ? " active" : ""}`}
-            onClick={() => onNavigate(page, label)}
+            onClick={() => dispatch(setWarehousePage(page))}
           >
             <div className="icon-box">
               <i className={`fa-solid ${icon}`}></i>
@@ -35,7 +36,7 @@ export default function WarehouseSidebar({
           <button
             type="button"
             className={`menu-item dropdown-header${inventoryOpen ? " active open" : ""}`}
-            onClick={onToggleInventory}
+            onClick={() => dispatch(toggleWarehouseInventory())}
             aria-expanded={inventoryOpen}
             aria-controls="warehouse-inventory-submenu"
           >
@@ -58,7 +59,7 @@ export default function WarehouseSidebar({
                 <li
                   key={page}
                   className={`submenu-item${activePage === page ? " active" : ""}`}
-                  onClick={() => onNavigate(page, label)}
+                  onClick={() => dispatch(setWarehousePage(page))}
                 >
                   {label}
                 </li>
@@ -70,7 +71,7 @@ export default function WarehouseSidebar({
       <div className="bottom">
         <li
           className={`menu-item stng-btn${activePage === "settings" ? " active" : ""}`}
-          onClick={() => onNavigate("settings", "Settings")}
+          onClick={() => dispatch(setWarehousePage("settings"))}
         >
           <div className="icon-box">
             <i className="fa-solid fa-gear"></i>

@@ -1,5 +1,7 @@
 import React from "react";
+import { useDispatch } from "react-redux";
 import logoImg from "../assets/logo.png";
+import { setLocalAgencyPage } from "../store/slices/localAgencyUiSlice.js";
 
 const navigationItems = [
   ["dashboard", "Dashboard", "Dashboard", "fa-table-columns"],
@@ -11,7 +13,8 @@ const navigationItems = [
   ["support", "Support Tickets", "Support Tickets", "fa-headset"],
 ];
 
-export default function LocalAgencySidebar({ activePage, onNavigate }) {
+export default function LocalAgencySidebar({ activePage }) {
+  const dispatch = useDispatch();
   return (
     <div className="sidebar">
       <div className="logo-section">
@@ -23,7 +26,7 @@ export default function LocalAgencySidebar({ activePage, onNavigate }) {
             key={page}
             className={`menu-item${activePage === page ? " active" : ""}`}
             id={`nav-${page}`}
-            onClick={() => onNavigate(page, title)}
+            onClick={() => dispatch(setLocalAgencyPage(page))}
           >
             <div className="icon-box">
               <i className={`fa-solid ${icon}`}></i>
@@ -36,7 +39,7 @@ export default function LocalAgencySidebar({ activePage, onNavigate }) {
         <li
           className={`menu-item stng-btn${activePage === "settings" ? " stng-active" : ""}`}
           id="nav-settings"
-          onClick={() => onNavigate("settings", "Settings")}
+          onClick={() => dispatch(setLocalAgencyPage("settings"))}
         >
           <div className="icon-box">
             <i className="fa-solid fa-gear"></i>

@@ -1,7 +1,16 @@
 import React, { useState } from "react";
-import { localAgencyApi } from "../api/localAgencyApi.js";
+import { useDispatch, useSelector } from "react-redux";
 import { initials } from "../utils/helpers.js";
 import LocalAgencyModal from "../components/LocalAgencyModal.jsx";
+import {
+  logout,
+  updateAuthUser,
+} from "../../auth/store/actions/authActions.js";
+import {
+  updateAgencyPassword,
+  updateAgencyProfile,
+} from "../store/actions/localAgencyActions.js";
+import { setLocalAgencyToast } from "../store/slices/localAgencyUiSlice.js";
 import {
   validateEmail,
   validatePhone,
@@ -31,15 +40,23 @@ function validatePassword(current, next, confirm) {
   return "";
 }
 
-export default function Settings({ user, agencyId, logout, showToast }) {
-  const [tfaEnabled, setTfaEnabled] = useState(false);
-  const [editModal, setEditModal] = useState(false);
-  const [pwdModal, setPwdModal] = useState(false);
-  const [profile, setProfile] = useState({
+const errorMessage = (error) =>
+  typeof error === "string" ? error : error?.message;
+
+export default function Settings() {
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.auth.session?.user || {});
+  const agencyId = user.id;
+  const showToast = (msg, isError = false) =>
+    dispatch(setLocalAgencyToast({ msg, isError }));
+  const profile = {
     name: user.name || "LB Nagar Agency",
     email: user.email || "lbagency@logix.com",
     phone: user.phone || "8977568680",
-  });
+  };
+  const [tfaEnabled, setTfaEnabled] = useState(false);
+  const [editModal, setEditModal] = useState(false);
+  const [pwdModal, setPwdModal] = useState(false);
   const [editForm, setEditForm] = useState({
     name: user.name || "",
     email: user.email || "",
@@ -61,39 +78,19 @@ export default function Settings({ user, agencyId, logout, showToast }) {
     const validationError = validateProfile(n, em, ph);
     if (validationError) return showToast(`⚠ ${validationError}`, true);
     try {
-      const res = await localAgencyApi.updateProfile(agencyId, {
-        name: n,
-        email: em,
-        phone: ph,
-      });
+      const profileUpdate = { name: n, email: em, phone: ph };
+      const res = await dispatch(
+        updateAgencyProfile({ agencyId, profile: profileUpdate }),
+      ).unwrap();
       if (res && res.success === false) {
         showToast(res.error || "Failed to update profile.", true);
         return;
       }
-      setProfile((p) => ({
-        name: n || p.name,
-        email: em || p.email,
-        phone: ph || p.phone,
-      }));
-      try {
-        const raw = localStorage.getItem("session");
-        if (raw) {
-          const sess = JSON.parse(raw);
-          sess.user = {
-            ...sess.user,
-            name: n || profile.name,
-            email: em || profile.email,
-            phone: ph || profile.phone,
-          };
-          localStorage.setItem("session", JSON.stringify(sess));
-        }
-      } catch (error) {
-        console.error("Unable to update stored session profile", error);
-      }
+      await dispatch(updateAuthUser(profileUpdate)).unwrap();
       showToast("✓ Profile updated.");
       setEditModal(false);
     } catch (e) {
-      showToast(e.message || "Backend connection failed.", true);
+      showToast(errorMessage(e) || "Backend connection failed.", true);
     }
   }
 
@@ -105,10 +102,13 @@ export default function Settings({ user, agencyId, logout, showToast }) {
     );
     if (validationError) return showToast(`⚠ ${validationError}`, true);
     try {
-      const res = await localAgencyApi.updatePassword(agencyId, {
-        currentPassword: pwdForm.current,
-        newPassword: pwdForm.next,
-      });
+      const res = await dispatch(
+        updateAgencyPassword({
+          agencyId,
+          currentPassword: pwdForm.current,
+          newPassword: pwdForm.next,
+        }),
+      ).unwrap();
       if (res && res.success === false) {
         showToast(res.error || "Failed to update password", true);
         return;
@@ -117,7 +117,7 @@ export default function Settings({ user, agencyId, logout, showToast }) {
       setPwdModal(false);
       setPwdForm({ current: "", next: "", confirm: "" });
     } catch (e) {
-      showToast(e.message, true);
+      showToast(errorMessage(e) || "Unable to update password.", true);
     }
   }
 
@@ -267,7 +267,11 @@ export default function Settings({ user, agencyId, logout, showToast }) {
             </p>
           </div>
         </div>
-        <button className="logout-btn" id="logout-btn" onClick={logout}>
+        <button
+          className="logout-btn"
+          id="logout-btn"
+          onClick={() => dispatch(logout())}
+        >
           Logout
         </button>
       </div>

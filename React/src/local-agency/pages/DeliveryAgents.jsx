@@ -1,19 +1,30 @@
 import React, { useState } from "react";
-import { localAgencyApi } from "../api/localAgencyApi.js";
+import { useDispatch, useSelector } from "react-redux";
 import { agentStatusClass, agentDotClass } from "../utils/helpers.js";
 import LocalAgencyModal from "../components/LocalAgencyModal.jsx";
+import {
+  addAgencyAgent,
+  deleteAgencyAgent,
+  fetchAgencyAgents,
+  updateAgencyAgent,
+} from "../store/actions/localAgencyActions.js";
+import { setLocalAgencyToast } from "../store/slices/localAgencyUiSlice.js";
 import {
   validateEmail,
   validatePhone,
   validateRequiredText,
 } from "../../utils/inputValidation.js";
 
-export default function DeliveryAgents({
-  agencyId,
-  showToast,
-  agents,
-  loadAgents,
-}) {
+const getErrorMessage = (error) =>
+  typeof error === "string" ? error : error?.message;
+
+export default function DeliveryAgents() {
+  const dispatch = useDispatch();
+  const agencyId = useSelector((state) => state.auth.session?.user?.id);
+  const agents = useSelector((state) => state.localAgency.data.agents);
+  const loadAgents = () => dispatch(fetchAgencyAgents(agencyId));
+  const showToast = (msg, isError = false) =>
+    dispatch(setLocalAgencyToast({ msg, isError }));
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("");
   const [addModal, setAddModal] = useState(false);
@@ -41,18 +52,24 @@ export default function DeliveryAgents({
       return;
     }
     try {
-      await localAgencyApi.addAgent(agencyId, {
-        name: form.name,
-        phone: form.phone,
-        email: form.email,
-        area: form.area,
-      });
+      const createdAgent = await dispatch(
+        addAgencyAgent({
+          agencyId,
+          agent: {
+            name: form.name,
+            phone: form.phone,
+            email: form.email,
+            area: form.area,
+          },
+        }),
+      ).unwrap();
+      if (!createdAgent) throw new Error("Unable to add delivery agent.");
       showToast("Agent added successfully");
       setAddModal(false);
       setForm({ name: "", phone: "", email: "", area: "", status: "Active" });
       loadAgents();
     } catch (e) {
-      showToast(e.message, true);
+      showToast(getErrorMessage(e) || "Unable to add delivery agent.", true);
     }
   }
 
@@ -64,29 +81,39 @@ export default function DeliveryAgents({
       return;
     }
     try {
-      await localAgencyApi.updateAgent(agencyId, editingAgent.id, {
-        name: form.name,
-        phone: form.phone,
-        email: form.email,
-        area: form.area,
-        status: form.status,
-      });
+      const updatedAgent = await dispatch(
+        updateAgencyAgent({
+          agencyId,
+          agentId: editingAgent.id,
+          agent: {
+            name: form.name,
+            phone: form.phone,
+            email: form.email,
+            area: form.area,
+            status: form.status,
+          },
+        }),
+      ).unwrap();
+      if (!updatedAgent) throw new Error("Unable to update delivery agent.");
       showToast("Agent updated");
       setEditModal(false);
       loadAgents();
     } catch (e) {
-      showToast(e.message, true);
+      showToast(getErrorMessage(e) || "Unable to update delivery agent.", true);
     }
   }
 
   async function deleteAgent(agentId, agentName) {
     if (!window.confirm(`Remove agent ${agentName}?`)) return;
     try {
-      await localAgencyApi.deleteAgent(agencyId, agentId);
+      const deletedAgent = await dispatch(
+        deleteAgencyAgent({ agencyId, agentId }),
+      ).unwrap();
+      if (!deletedAgent) throw new Error("Delivery agent was not found.");
       showToast("Agent removed");
       loadAgents();
     } catch (e) {
-      showToast(e.message, true);
+      showToast(getErrorMessage(e) || "Unable to remove delivery agent.", true);
     }
   }
 
@@ -107,7 +134,7 @@ export default function DeliveryAgents({
     return (
       (!q ||
         (a.name || "").toLowerCase().includes(q) ||
-        (a.phone || "").toLowerCase().includes(q)) &&
+        (a.id || "").toLowerCase().includes(q)) &&
       (!statusFilter || a.status === statusFilter)
     );
   });

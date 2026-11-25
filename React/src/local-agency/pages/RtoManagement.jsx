@@ -1,9 +1,11 @@
 import React, { useState } from "react";
+import { useSelector } from "react-redux";
 import { fmtDate } from "../utils/helpers.js";
 import LocalAgencyModal from "../components/LocalAgencyModal.jsx";
 import LocalAgencyStatusBadge from "../components/LocalAgencyStatusBadge.jsx";
 
-export default function RtoManagement({ rto }) {
+export default function RtoManagement() {
+  const rto = useSelector((state) => state.localAgency.data.rto);
   const [selectedRto, setSelectedRto] = useState(null);
   const total = rto.length;
   const inTransit = rto.filter((r) => r.status?.includes("Transit")).length;

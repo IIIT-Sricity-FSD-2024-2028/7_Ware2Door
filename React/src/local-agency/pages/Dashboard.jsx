@@ -1,7 +1,13 @@
 import React, { useMemo } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { statBadgeClass } from "../utils/helpers.js";
+import { setLocalAgencyPage } from "../store/slices/localAgencyUiSlice.js";
 
-export default function Dashboard({ user, shipments, agents, goTo }) {
+export default function Dashboard() {
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.auth.session?.user || {});
+  const { shipments, agents } = useSelector((state) => state.localAgency.data);
+  const goTo = (page) => dispatch(setLocalAgencyPage(page));
   const stats = useMemo(
     () => ({
       totalShipments: shipments.length,

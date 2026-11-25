@@ -1,14 +1,35 @@
 import React from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { logout } from "../../auth/store/actions/authActions.js";
+import {
+  setTransitHubModal,
+  setTransitHubToast,
+} from "../store/slices/transitHubUiSlice.js";
 
-export default function SettingsPage({
-  user,
-  initials,
-  tfaEnabled,
-  onToggleTfa,
-  onEdit,
-  onPassword,
-  onLogout,
-}) {
+export default function SettingsPage() {
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.auth.session?.user || {});
+  const initials = (name) =>
+    (name || "?")
+      .split(" ")
+      .map((word) => word[0])
+      .join("")
+      .slice(0, 2)
+      .toUpperCase();
+  const [tfaEnabled, setTfaEnabled] = React.useState(false);
+  const onToggleTfa = () => {
+    setTfaEnabled((enabled) => !enabled);
+    dispatch(
+      setTransitHubToast({
+        msg: tfaEnabled
+          ? "Two-factor authentication disabled."
+          : "✓ Two-factor authentication enabled.",
+      }),
+    );
+  };
+  const onEdit = () => dispatch(setTransitHubModal("edit-profile"));
+  const onPassword = () => dispatch(setTransitHubModal("change-password"));
+  const onLogout = () => dispatch(logout());
   return (
     <div className="settings-container page-content">
       <h1 className="settings-title">Account Settings</h1>

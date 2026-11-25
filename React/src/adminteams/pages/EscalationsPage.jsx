@@ -1,28 +1,40 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Icon } from "../components/Icon.jsx";
 import { Welcome } from "../components/Welcome.jsx";
 import { Stats } from "../components/Stats.jsx";
 import { Filter } from "../components/Filter.jsx";
 import { Table } from "../components/Table.jsx";
 import { formatDate } from "../utils.js";
+import {
+  fetchAdminTeamsSection,
+  updateEscalation,
+} from "../store/actions/adminTeamsActions.js";
+import { openAdminModal } from "../store/slices/adminTeamsUiSlice.js";
 
-export function EscalationsPage({
-  data,
-  find,
-  open,
-  act,
-  mutate,
-  query,
-  setQuery,
-  load,
-}) {
+export function EscalationsPage() {
+  const dispatch = useDispatch();
+  const data = useSelector((state) => state.adminTeams.escalations);
+  const [query, setQuery] = useState("");
   const [priority, setPriority] = useState(""),
     [status, setStatus] = useState("");
-  const filtered = find(data).filter(
-    (e) =>
-      (!priority || e.priority === priority) &&
-      (!status || e.escalationStatus === status),
-  );
+  const open = (kind, record = null) =>
+    dispatch(openAdminModal({ kind, record }));
+  const load = () => dispatch(fetchAdminTeamsSection("escalation"));
+  useEffect(() => {
+    dispatch(fetchAdminTeamsSection("escalation"));
+  }, [dispatch]);
+  const filtered = data
+    .filter(
+      (escalation) =>
+        !query ||
+        JSON.stringify(escalation).toLowerCase().includes(query.toLowerCase()),
+    )
+    .filter(
+      (escalation) =>
+        (!priority || escalation.priority === priority) &&
+        (!status || escalation.escalationStatus === status),
+    );
   return (
     <>
       <Welcome
@@ -32,13 +44,9 @@ export function EscalationsPage({
         description="Handle tickets escalated from Local Agencies. Assign officers, coordinate across nodes, and resolve cross-network issues."
         color="linear-gradient(135deg,#064e3b 0%,#065f46 55%,#047857 100%)"
       >
-        {act(
-          <>
-            <Icon name="fa-rotate" /> Refresh
-          </>,
-          () => load("escalation"),
-          "btn-emerald",
-        )}
+        <button className="btn-emerald" onClick={load}>
+          <Icon name="fa-rotate" /> Refresh
+        </button>
       </Welcome>
       <Stats
         items={[
@@ -142,12 +150,14 @@ export function EscalationsPage({
                 className="action-btn resolve"
                 title="Resolve"
                 onClick={() =>
-                  mutate(
-                    `/admin-teams/escalations/${e.ticketId || e.id}`,
-                    "PUT",
-                    { escalationStatus: "Resolved", status: "Resolved" },
-                    "Escalation resolved",
-                    "escalation",
+                  dispatch(
+                    updateEscalation({
+                      id: e.ticketId || e.id,
+                      escalation: {
+                        escalationStatus: "Resolved",
+                        status: "Resolved",
+                      },
+                    }),
                   )
                 }
               >

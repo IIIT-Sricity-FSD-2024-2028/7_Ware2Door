@@ -1,22 +1,47 @@
-import React from "react";
+import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { downloadCsv } from "../../utils/dataExport.js";
-export default function RtoPage({
-  data,
-  search,
-  status,
-  reason,
-  scanId,
-  onSearch,
-  onStatus,
-  onReason,
-  onScanId,
-  onInscan,
-  page,
-  perPage,
-  onPage,
-  fmtDate,
-  onExportError,
-}) {
+import {
+  fetchWarehouseInventory,
+  fetchWarehouseRtos,
+  inscanWarehouseRto,
+} from "../store/actions/warehouseActions.js";
+import { setWarehouseToast } from "../store/slices/warehouseUiSlice.js";
+import { fmtDate } from "../utils/warehouseUtils.js";
+
+export default function RtoPage() {
+  const dispatch = useDispatch();
+  const warehouseId = useSelector((state) => state.auth.session?.user?.id);
+  const data = useSelector((state) => state.warehouse.data.rtos);
+  const [search, setSearch] = useState("");
+  const [status, setStatus] = useState("");
+  const [reason, setReason] = useState("");
+  const [scanId, setScanId] = useState("");
+  const [page, setPage] = useState(1);
+  const perPage = 5;
+  const onExportError = (message) =>
+    dispatch(setWarehouseToast({ msg: message, isError: true }));
+  const onInscan = async () => {
+    try {
+      await dispatch(
+        inscanWarehouseRto({ warehouseId, rtoId: scanId }),
+      ).unwrap();
+      await Promise.all([
+        dispatch(fetchWarehouseRtos(warehouseId)).unwrap(),
+        dispatch(fetchWarehouseInventory(warehouseId)).unwrap(),
+      ]);
+      setScanId("");
+      dispatch(setWarehouseToast({ msg: "RTO inscan successful" }));
+    } catch (error) {
+      dispatch(
+        setWarehouseToast({
+          msg: typeof error === "string" ? error : error.message,
+          isError: true,
+        }),
+      );
+    }
+  };
+  const onPage = setPage;
   const rows = data.filter(
     (r) =>
       (!search ||
@@ -98,13 +123,13 @@ export default function RtoPage({
           <input
             placeholder="Search by tracking ID, order ID or customer..."
             value={search}
-            onChange={(e) => onSearch(e.target.value)}
+            onChange={(e) => setSearch(e.target.value)}
           />
         </div>
         <select
           className="filter-select"
           value={status}
-          onChange={(e) => onStatus(e.target.value)}
+          onChange={(e) => setStatus(e.target.value)}
         >
           <option value="">All Statuses</option>
           <option>RTO Initiated</option>
@@ -115,7 +140,7 @@ export default function RtoPage({
         <select
           className="filter-select"
           value={reason}
-          onChange={(e) => onReason(e.target.value)}
+          onChange={(e) => setReason(e.target.value)}
         >
           <option value="">All Reasons</option>
           <option>Customer Unavailable</option>
@@ -130,7 +155,7 @@ export default function RtoPage({
           <input
             placeholder="Enter RTO ID (e.g. RTOID-1746280000-001)"
             value={scanId}
-            onChange={(e) => onScanId(e.target.value)}
+            onChange={(e) => setScanId(e.target.value)}
           />
           <button className="btn-primary" onClick={onInscan}>
             Inscan RTO
@@ -159,11 +184,10 @@ export default function RtoPage({
                 </td>
                 <td>
                   <span
-                    className={`rto-status-badge ${
-                      r.status === "Returned to Warehouse"
+                    className={`rto-status-badge ${r.status === "Returned to Warehouse"
                         ? "rto-status-received"
                         : "rto-status-transit"
-                    }`}
+                      }`}
                   >
                     <i className="fa-solid fa-circle"></i>
                     {r.status}

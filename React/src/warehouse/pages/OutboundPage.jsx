@@ -1,5 +1,8 @@
 import React from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { downloadCsv } from "../../utils/dataExport.js";
+import { setWarehouseToast } from "../store/slices/warehouseUiSlice.js";
+import { fmtDate } from "../utils/warehouseUtils.js";
 
 const headers = [
   "Tracking ID",
@@ -9,11 +12,11 @@ const headers = [
   "Driver & Vehicle",
 ];
 
-export default function OutboundPage({
-  shipments,
-  fmtDate,
-  onExportError,
-}) {
+export default function OutboundPage() {
+  const dispatch = useDispatch();
+  const shipments = useSelector((state) => state.warehouse.data.outbound);
+  const onExportError = (message) =>
+    dispatch(setWarehouseToast({ msg: message, isError: true }));
   const exportData = () => {
     try {
       downloadCsv(

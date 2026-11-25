@@ -1,8 +1,12 @@
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Icon } from "../components/Icon.jsx";
 import { Stats } from "../components/Stats.jsx";
 import { Welcome } from "../components/Welcome.jsx";
 import { Filter } from "../components/Filter.jsx";
 import { formatDate, isExpired } from "../utils.js";
+import { fetchAdminTeamsSection } from "../store/actions/adminTeamsActions.js";
+import { openAdminModal } from "../store/slices/adminTeamsUiSlice.js";
 
 const typeClasses = {
   WAREHOUSE: "type--warehouse",
@@ -150,19 +154,36 @@ function NodeRows({ nodes, cards = false, onClick }) {
   ));
 }
 
-export function SubscriptionsPage({
-  nodes,
-  nodeFilter,
-  query,
-  setQuery,
-  type,
-  setType,
-  status,
-  setStatus,
-  open,
-  act,
-  load,
-}) {
+export function SubscriptionsPage() {
+  const dispatch = useDispatch();
+  const nodes = useSelector((state) => state.adminTeams.nodes);
+  const [query, setQuery] = useState("");
+  const [type, setType] = useState("");
+  const [status, setStatus] = useState("");
+  const open = (kind, record = null) =>
+    dispatch(openAdminModal({ kind, record }));
+  const load = () => dispatch(fetchAdminTeamsSection("subscriptions"));
+  useEffect(() => {
+    dispatch(fetchAdminTeamsSection("subscriptions"));
+  }, [dispatch]);
+  const nodeFilter = nodes.filter((node) => {
+    const endDate = node.subscription?.endDate || node.subscriptionEndDate;
+    const matchesQuery =
+      !query ||
+      `${node.name} ${node.city} ${node.email}`
+        .toLowerCase()
+        .includes(query.toLowerCase());
+    const matchesType = !type || (node.type || node._type) === type;
+    const matchesStatus =
+      status === "active"
+        ? node.isActive !== false && !isExpired(endDate)
+        : status === "inactive"
+          ? node.isActive === false
+          : status === "expired"
+            ? isExpired(endDate)
+            : true;
+    return matchesQuery && matchesType && matchesStatus;
+  });
   return (
     <>
       <Welcome
@@ -171,14 +192,12 @@ export function SubscriptionsPage({
         title="Node Partner Licences"
         description="Manage Warehouses, Transit Hubs, and Local Agencies — extend subscriptions, upload legal documents, and control active status."
       >
-        {act(
-          <>
-            <Icon name="fa-plus" /> Add New Node
-          </>,
-          () => open("add-node"),
-          "btn-primary",
-        )}
-        {act("Refresh", load)}
+        <button className="btn-primary" onClick={() => open("add-node")}>
+          <Icon name="fa-plus" /> Add New Node
+        </button>
+        <button className="btn-ghost" onClick={load}>
+          Refresh
+        </button>
       </Welcome>
       <Stats
         items={[

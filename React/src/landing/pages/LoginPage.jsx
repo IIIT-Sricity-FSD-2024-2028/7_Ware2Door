@@ -1,11 +1,14 @@
 import React, { useState } from "react";
-import { useAuth } from "../../auth/AuthContext.jsx";
+import { useDispatch, useSelector } from "react-redux";
+import { login } from "../../auth/store/actions/authActions.js";
+import { clearAuthError } from "../../auth/store/slices/authSlice.js";
 import logoImg from "../assets/logo.png";
 import backgroundImg from "../assets/back.png";
 import { validateEmail } from "../../utils/inputValidation.js";
 
 export default function LoginPage({ navigate }) {
-  const { authError, login } = useAuth();
+  const dispatch = useDispatch();
+  const authError = useSelector((state) => state.auth.authError);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -32,11 +35,14 @@ export default function LoginPage({ navigate }) {
       return;
     }
     setError("");
+    dispatch(clearAuthError());
     setLoading(true);
     try {
-      await login(email.trim().toLowerCase(), password);
+      await dispatch(
+        login({ email: email.trim().toLowerCase(), password }),
+      ).unwrap();
     } catch (e) {
-      const message = e instanceof Error ? e.message : "";
+      const message = typeof e === "string" ? e : "";
       setError(
         message === "Email not found" || message === "Incorrect password"
           ? "Invalid email or password. Please try again."

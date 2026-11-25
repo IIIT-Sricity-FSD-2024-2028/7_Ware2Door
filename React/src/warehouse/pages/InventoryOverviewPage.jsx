@@ -1,16 +1,16 @@
-import React from "react";
-export default function InventoryOverviewPage({
-  items,
-  search,
-  status,
-  page,
-  perPage,
-  onSearch,
-  onStatus,
-  onPage,
-  onAddStock,
-  fmtDate,
-}) {
+import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { setWarehousePage } from "../store/slices/warehouseUiSlice.js";
+import { fmtDate } from "../utils/warehouseUtils.js";
+
+export default function InventoryOverviewPage() {
+  const dispatch = useDispatch();
+  const items = useSelector((state) => state.warehouse.data.inventory);
+  const [search, setSearch] = useState("");
+  const [status, setStatus] = useState("");
+  const [page, setPage] = useState(1);
+  const perPage = 5;
+  const onPage = setPage;
   const filtered = items.filter(
     (i) =>
       (!search ||
@@ -30,7 +30,10 @@ export default function InventoryOverviewPage({
             inventory.
           </p>
         </div>
-        <button className="btn-primary" onClick={onAddStock}>
+        <button
+          className="btn-primary"
+          onClick={() => dispatch(setWarehousePage("stock-addition"))}
+        >
           <i className="fa-solid fa-plus"></i> Add Stock
         </button>
       </div>
@@ -64,13 +67,13 @@ export default function InventoryOverviewPage({
           <input
             placeholder="Search by item name or label ID..."
             value={search}
-            onChange={(e) => onSearch(e.target.value)}
+            onChange={(e) => setSearch(e.target.value)}
           />
         </div>
         <select
           className="filter-select"
           value={status}
-          onChange={(e) => onStatus(e.target.value)}
+          onChange={(e) => setStatus(e.target.value)}
         >
           <option value="">All Statuses</option>
           <option>In Stock</option>

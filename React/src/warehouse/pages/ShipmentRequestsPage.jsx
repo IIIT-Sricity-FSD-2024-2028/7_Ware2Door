@@ -1,24 +1,86 @@
-import React from "react";
+import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  fetchWarehousePendingShipments,
+  rejectWarehouseShipment,
+} from "../store/actions/warehouseActions.js";
+import {
+  openWarehouseDispatch,
+  setSelectedWarehouseOrders,
+  setWarehouseToast,
+  toggleSelectedWarehouseOrder,
+} from "../store/slices/warehouseUiSlice.js";
+import { fmtDate, stockStatus } from "../utils/warehouseUtils.js";
 
-export default function ShipmentRequestsPage({
-  shipments,
-  selected,
-  onSelectAll,
-  onSelect,
-  search,
-  source,
-  priority,
-  stock,
-  onSearch,
-  onSource,
-  onPriority,
-  onStock,
-  onAccept,
-  onReject,
-  onDispatch,
-  availability,
-  fmtDate,
-}) {
+export default function ShipmentRequestsPage() {
+  const dispatch = useDispatch();
+  const warehouseId = useSelector((state) => state.auth.session?.user?.id);
+  const { pending, inventory } = useSelector((state) => state.warehouse.data);
+  const selectedIds = useSelector(
+    (state) => state.warehouse.ui.selectedOrderIds,
+  );
+  const selected = new Set(selectedIds);
+  const [search, setSearch] = useState("");
+  const [source, setSource] = useState("");
+  const [stock, setStock] = useState("");
+  const availability = (product) => {
+    const item = inventory.find(
+      (entry) =>
+        (entry.itemName || "").toLowerCase() === (product || "").toLowerCase(),
+    );
+    const label = stockStatus(item?.quantity || 0);
+    return {
+      label,
+      key: label === "In Stock" ? "in" : label === "Low Stock" ? "low" : "out",
+    };
+  };
+  const query = search.toLowerCase();
+  const shipments = pending.filter(
+    (item) =>
+      (!query ||
+        `${item.orderId} ${item.productName} ${item.sku}`
+          .toLowerCase()
+          .includes(query)) &&
+      (!source || item.source === source) &&
+      (!stock || availability(item.productName).key === stock),
+  );
+  const onSelectAll = (checked) =>
+    dispatch(
+      setSelectedWarehouseOrders(
+        checked ? shipments.map((item) => item.orderId) : [],
+      ),
+    );
+  const onSelect = (orderId, checked) =>
+    dispatch(toggleSelectedWarehouseOrder({ orderId, checked }));
+  const onAccept = () => {
+    const ids = pending
+      .filter((item) => selected.has(item.orderId))
+      .map((item) => item.orderId);
+    if (ids.length) {
+      dispatch(openWarehouseDispatch({ orderIds: ids, bulk: true }));
+    }
+  };
+  const onReject = async (orderId) => {
+    try {
+      await dispatch(
+        rejectWarehouseShipment({ warehouseId, orderId }),
+      ).unwrap();
+      await dispatch(fetchWarehousePendingShipments(warehouseId)).unwrap();
+      dispatch(
+        setWarehouseToast({ msg: `Shipment #${orderId} rejected.` }),
+      );
+    } catch (error) {
+      dispatch(
+        setWarehouseToast({
+          msg: typeof error === "string" ? error : error.message,
+          isError: true,
+        }),
+      );
+    }
+  };
+  const onDispatch = (orderId) =>
+    dispatch(openWarehouseDispatch({ orderIds: [orderId] }));
+
   return (
     <div className="shipment-page page-content">
       <div className="page-title-row">
@@ -46,13 +108,13 @@ export default function ShipmentRequestsPage({
             id="shipment-search"
             placeholder="Search by order ID, product name, or SKU..."
             value={search}
-            onChange={(e) => onSearch(e.target.value)}
+            onChange={(e) => setSearch(e.target.value)}
           />
         </div>
         <select
           className="filter-select"
           value={source}
-          onChange={(e) => onSource(e.target.value)}
+          onChange={(e) => setSource(e.target.value)}
         >
           <option value="">All Platforms</option>
           <option>Amazon</option>
@@ -62,17 +124,8 @@ export default function ShipmentRequestsPage({
         </select>
         <select
           className="filter-select"
-          value={priority}
-          onChange={(e) => onPriority(e.target.value)}
-        >
-          <option value="">All Priorities</option>
-          <option value="express">Express</option>
-          <option value="normal">Normal</option>
-        </select>
-        <select
-          className="filter-select"
           value={stock}
-          onChange={(e) => onStock(e.target.value)}
+          onChange={(e) => setStock(e.target.value)}
         >
           <option value="">All Stock Levels</option>
           <option value="in">In Stock</option>

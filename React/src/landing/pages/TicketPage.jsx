@@ -1,14 +1,19 @@
 import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import Footer from "../components/Footer.jsx";
 import logoImg from "../assets/logo.png";
-import { API_BASE } from "../api/client.js";
 import {
   normalizeIdentifier,
   validateRequiredText,
   validateTrackingId as validateTrackingIdFormat,
 } from "../../utils/inputValidation.js";
+import {
+  submitPublicTicket,
+  validatePublicTracking,
+} from "../store/actions/publicActions.js";
 
 export default function TicketPage({ navigate }) {
+  const dispatch = useDispatch();
   const [trackingId, setTrackingId] = useState("");
   const [category, setCategory] = useState("");
   const [description, setDescription] = useState("");
@@ -16,7 +21,9 @@ export default function TicketPage({ navigate }) {
   const [toastVisible, setToastVisible] = useState(false);
   const [toastError, setToastError] = useState(false);
   const [trackingValidation, setTrackingValidation] = useState("");
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const isSubmitting = useSelector(
+    (state) => state.landing.data.ticketSubmission.status === "pending",
+  );
 
   useEffect(() => {
     function onScroll() {
@@ -45,15 +52,7 @@ export default function TicketPage({ navigate }) {
 
     setTrackingValidation("Checking Tracking ID...");
     try {
-      const res = await fetch(
-        `${API_BASE}/tickets/validate/${encodeURIComponent(val)}`,
-      );
-      const result = await res.json();
-      if (!res.ok) {
-        throw new Error(
-          result.message || result.error || "Unable to validate Tracking ID.",
-        );
-      }
+      const result = await dispatch(validatePublicTracking(val)).unwrap();
       if (!result.valid) {
         const message = "Tracking ID not found. Please check and try again.";
         setTrackingValidation(message);
@@ -65,7 +64,8 @@ export default function TicketPage({ navigate }) {
       return { valid: true };
     } catch (error) {
       const message =
-        error.message || "Unable to validate Tracking ID. Please try again.";
+        (typeof error === "string" ? error : error?.message) ||
+        "Unable to validate Tracking ID. Please try again.";
       setTrackingValidation(message);
       return { valid: false, message };
     }
@@ -92,29 +92,21 @@ export default function TicketPage({ navigate }) {
       return;
     }
 
-    setIsSubmitting(true);
     try {
       const validation = await validateTrackingId(val);
       if (!validation.valid) {
         showToast(validation.message, true);
         return;
       }
-      const res = await fetch(`${API_BASE}/tickets/raise`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
+      const result = await dispatch(
+        submitPublicTicket({
           trackingId: val,
           category,
           description: desc,
         }),
-      });
-      const result = await res.json();
-      if (!res.ok || !result.success || !result.ticket) {
-        throw new Error(
-          result.message ||
-            result.error ||
-            "Unable to submit support ticket. Please try again.",
-        );
+      ).unwrap();
+      if (!result.success || !result.ticket) {
+        throw new Error(result.message || result.error || "Unable to submit support ticket. Please try again.");
       }
       showToast(
         `✓ Ticket for ${val} (${category}) has been raised. We'll update you within 4 hours.`,
@@ -125,9 +117,11 @@ export default function TicketPage({ navigate }) {
       setCategory("");
       setTrackingValidation("");
     } catch (error) {
-      showToast(error.message || "Could not connect to server. Please try again.", true);
-    } finally {
-      setIsSubmitting(false);
+      showToast(
+        (typeof error === "string" ? error : error?.message) ||
+          "Could not connect to server. Please try again.",
+        true,
+      );
     }
   }
 

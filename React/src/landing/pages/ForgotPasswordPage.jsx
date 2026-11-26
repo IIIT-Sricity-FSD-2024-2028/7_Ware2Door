@@ -1,9 +1,14 @@
 import React, { useState } from "react";
-import { API_BASE } from "../api/client.js";
+import { useDispatch } from "react-redux";
+import {
+  resetPassword,
+  verifyResetEmail,
+} from "../../auth/store/actions/authActions.js";
 import logoImg from "../assets/logo.png";
 import { validateEmail } from "../../utils/inputValidation.js";
 
 export default function ForgotPasswordPage({ navigate }) {
+  const dispatch = useDispatch();
   const [step, setStep] = useState(1);
   const [email, setEmail] = useState("");
   const [verifiedEmail, setVerifiedEmail] = useState("");
@@ -41,13 +46,8 @@ export default function ForgotPasswordPage({ navigate }) {
     }
     setLoading(true);
     try {
-      const res = await fetch(`${API_BASE}/auth/verify-email`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: trimEmail }),
-      });
-      const data = await res.json();
-      if (res.ok && data.exists) {
+      const data = await dispatch(verifyResetEmail(trimEmail)).unwrap();
+      if (data.exists) {
         setVerifiedEmail(trimEmail);
         setStep(2);
         showSuccess("OTP sent to your email address!");
@@ -56,8 +56,11 @@ export default function ForgotPasswordPage({ navigate }) {
           data.error || data.message || "Email not found in our records.",
         );
       }
-    } catch (_) {
-      showError("Failed to connect to the server.");
+    } catch (error) {
+      showError(
+        (typeof error === "string" ? error : error?.message) ||
+          "Failed to connect to the server.",
+      );
     } finally {
       setLoading(false);
     }
@@ -91,24 +94,24 @@ export default function ForgotPasswordPage({ navigate }) {
     }
     setLoading(true);
     try {
-      const res = await fetch(`${API_BASE}/auth/reset-password`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
+      const data = await dispatch(
+        resetPassword({
           email: verifiedEmail,
           otp,
           newPassword: newPwd,
         }),
-      });
-      const data = await res.json();
-      if (res.ok && data.success) {
+      ).unwrap();
+      if (data.success) {
         showSuccess("Password reset successfully! Redirecting...");
         setTimeout(() => navigate("login"), 2000);
       } else {
         showError(data.error || data.message || "Failed to reset password.");
       }
-    } catch (_) {
-      showError("Failed to connect to the server.");
+    } catch (error) {
+      showError(
+        (typeof error === "string" ? error : error?.message) ||
+          "Failed to connect to the server.",
+      );
     } finally {
       setLoading(false);
     }

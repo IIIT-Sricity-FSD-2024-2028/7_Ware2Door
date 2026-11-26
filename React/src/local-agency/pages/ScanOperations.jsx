@@ -1,33 +1,43 @@
 import React, { useState } from "react";
-import { localAgencyApi } from "../api/localAgencyApi.js";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  assignAgencyAgent,
+  fetchAgencyAgents,
+  fetchAgencyInbound,
+  fetchAgencyScanHistory,
+  fetchAgencyShipments,
+  performAgencyInscan,
+  performAgencyOutscan,
+} from "../store/actions/localAgencyActions.js";
+import { setLocalAgencyToast } from "../store/slices/localAgencyUiSlice.js";
 import {
   normalizeIdentifier,
   validateTrackingId,
 } from "../../utils/inputValidation.js";
 
-export default function ScanOperations({
-  agencyId,
-  showToast,
-  inbound: inboundList = [],
-  agents = [],
-  scanHistory: initialScanHistory = [],
-  loadShipments,
-  loadInbound,
-  loadAgents,
-  loadScanHistory,
-}) {
+const errorMessage = (error) =>
+  typeof error === "string" ? error : error?.message;
+
+export default function ScanOperations() {
+  const dispatch = useDispatch();
+  const agencyId = useSelector((state) => state.auth.session?.user?.id);
+  const { inbound: inboundList, agents, scanHistory } = useSelector(
+    (state) => state.localAgency.data,
+  );
+  const showToast = (msg, isError = false) =>
+    dispatch(setLocalAgencyToast({ msg, isError }));
+  const refreshHistory = () =>
+    Promise.all([
+      dispatch(fetchAgencyScanHistory(agencyId)),
+      dispatch(fetchAgencyShipments(agencyId)),
+      dispatch(fetchAgencyInbound(agencyId)),
+    ]);
   const [scanInput, setScanInput] = useState("");
-  const [outscanInput, setOutscanInput] = useState("");
   const [scanMode, setScanMode] = useState("in-scan");
   const [scanSearch, setScanSearch] = useState("");
   const [agentPickerShipment, setAgentPickerShipment] = useState(null);
   const [selectedAgentId, setSelectedAgentId] = useState("");
-  const scanHistory = initialScanHistory;
   const [unknownErrors, setUnknownErrors] = useState(0);
-
-  const refreshHistory = async () => {
-    await Promise.all([loadScanHistory(), loadShipments(), loadInbound()]);
-  };
 
   async function doInscan() {
     const id = normalizeIdentifier(scanInput);
@@ -37,7 +47,9 @@ export default function ScanOperations({
       return;
     }
     try {
-      const r = await localAgencyApi.inscan(agencyId, id);
+      const r = await dispatch(
+        performAgencyInscan({ agencyId, trackingId: id }),
+      ).unwrap();
       if (r && r.status === "success") {
         showToast(`✓ ${id} successfully scanned in.`);
       } else {
@@ -48,7 +60,7 @@ export default function ScanOperations({
       await refreshHistory();
     } catch (e) {
       setUnknownErrors((v) => v + 1);
-      showToast(e.message, true);
+      showToast(errorMessage(e) || "In-scan failed.", true);
     }
   }
 
@@ -60,7 +72,9 @@ export default function ScanOperations({
       return;
     }
     try {
-      const r = await localAgencyApi.outscan(agencyId, id);
+      const r = await dispatch(
+        performAgencyOutscan({ agencyId, trackingId: id }),
+      ).unwrap();
       if (r && r.status === "success") {
         showToast(
           `✓ Out-Scan complete for ${id}${r.agentName ? " → " + r.agentName : ""}`,
@@ -70,19 +84,8 @@ export default function ScanOperations({
       }
       await refreshHistory();
     } catch (e) {
-      showToast(e.message, true);
+      showToast(errorMessage(e) || "Out-scan failed.", true);
     }
-  }
-
-  async function doOutscanInput() {
-    const id = normalizeIdentifier(outscanInput);
-    const validationError = validateTrackingId(id);
-    if (validationError) {
-      showToast(validationError, true);
-      return;
-    }
-    await doOutscan(id);
-    setOutscanInput("");
   }
 
   async function confirmAgentAssignment() {
@@ -94,10 +97,13 @@ export default function ScanOperations({
     }
     const selectedAgent = agents.find((agent) => agent.id === selectedAgentId);
     try {
-      const result = await localAgencyApi.assignAgent(agencyId, {
-        trackingId: agentPickerShipment,
-        agentId: selectedAgentId,
-      });
+      const result = await dispatch(
+        assignAgencyAgent({
+          agencyId,
+          trackingId: agentPickerShipment,
+          agentId: selectedAgentId,
+        }),
+      ).unwrap();
       if (!result?.success)
         throw new Error(result?.error || "Unable to assign delivery agent.");
       showToast(
@@ -105,9 +111,16 @@ export default function ScanOperations({
       );
       setAgentPickerShipment(null);
       setSelectedAgentId("");
-      await Promise.all([loadInbound(), loadShipments(), loadAgents()]);
+      await Promise.all([
+        dispatch(fetchAgencyInbound(agencyId)),
+        dispatch(fetchAgencyShipments(agencyId)),
+        dispatch(fetchAgencyAgents(agencyId)),
+      ]);
     } catch (error) {
-      showToast(error.message || "Unable to assign delivery agent.", true);
+      showToast(
+        errorMessage(error) || "Unable to assign delivery agent.",
+        true,
+      );
     }
   }
 

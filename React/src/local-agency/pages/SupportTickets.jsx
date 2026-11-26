@@ -1,8 +1,14 @@
 import React, { useState } from "react";
-import { localAgencyApi } from "../api/localAgencyApi.js";
+import { useDispatch, useSelector } from "react-redux";
 import LocalAgencyModal from "../components/LocalAgencyModal.jsx";
 import { validateTrackingId } from "../../utils/inputValidation.js";
-import { fmtDate } from "../utils/helpers.js";
+import {
+  escalateAgencyTicket,
+  fetchAgencyTracking,
+  resolveAgencyTicket,
+  updateAgencyTicketStatus,
+} from "../store/actions/localAgencyActions.js";
+import { setLocalAgencyToast } from "../store/slices/localAgencyUiSlice.js";
 
 const TICKETS_PER_PAGE = 10;
 
@@ -52,13 +58,14 @@ const TIMELINE_DESCS = {
   Delivered: "Package successfully delivered to destination",
 };
 
-export default function SupportTickets({
-  agencyId,
-  showToast,
-  tickets,
-  setTickets,
-  loadTickets,
-}) {
+const errorMessage = (error) =>
+  typeof error === "string" ? error : error?.message;
+
+export default function SupportTickets() {
+  const dispatch = useDispatch();
+  const tickets = useSelector((state) => state.localAgency.data.tickets);
+  const showToast = (msg, isError = false) =>
+    dispatch(setLocalAgencyToast({ msg, isError }));
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("Open");
   const [page, setPage] = useState(1);
@@ -81,11 +88,16 @@ export default function SupportTickets({
     }
     setTimelineLoading(true);
     try {
-      const trackData = await localAgencyApi.getTracking(t.trackingId);
+      const trackData = await dispatch(
+        fetchAgencyTracking(t.trackingId),
+      ).unwrap();
       setTimeline(trackData?.statusSteps || null);
     } catch (error) {
       setTimeline(null);
-      showToast(error.message || "Unable to load tracking timeline.", true);
+      showToast(
+        errorMessage(error) || "Unable to load tracking timeline.",
+        true,
+      );
     }
     setTimelineLoading(false);
   }
@@ -94,22 +106,17 @@ export default function SupportTickets({
     if (!currentTicket) return;
     if (normalizeStatus(currentTicket.status) === "Resolved") return;
     try {
-      const r = await localAgencyApi.resolveTicket(currentTicket.ticketId);
+      const r = await dispatch(
+        resolveAgencyTicket({ ticketId: currentTicket.ticketId }),
+      ).unwrap();
       if (r && r.success) {
         setCurrentTicket((t) => ({ ...t, status: "Resolved" }));
-        setTickets((ts) =>
-          ts.map((t) =>
-            t.ticketId === currentTicket.ticketId
-              ? { ...t, status: "Resolved" }
-              : t,
-          ),
-        );
         showToast(`✓ Ticket ${currentTicket.ticketId} marked as Resolved`);
       } else {
         showToast("Failed to resolve ticket.", true);
       }
     } catch (e) {
-      showToast(e.message, true);
+      showToast(errorMessage(e) || "Failed to resolve ticket.", true);
     }
   }
 
@@ -126,18 +133,14 @@ export default function SupportTickets({
     );
     if (note === null) return;
     try {
-      const r = await localAgencyApi.escalateTicket(currentTicket.ticketId, {
-        escalationNote: note || "Escalated by agency",
-      });
+      const r = await dispatch(
+        escalateAgencyTicket({
+          ticketId: currentTicket.ticketId,
+          escalationNote: note || "Escalated by agency",
+        }),
+      ).unwrap();
       if (r && r.success) {
         setCurrentTicket((t) => ({ ...t, status: "Escalated" }));
-        setTickets((ts) =>
-          ts.map((t) =>
-            t.ticketId === currentTicket.ticketId
-              ? { ...t, status: "Escalated" }
-              : t,
-          ),
-        );
         showToast(
           `✓ Ticket ${currentTicket.ticketId} escalated to Central Desk.`,
         );
@@ -145,26 +148,21 @@ export default function SupportTickets({
         showToast("Failed to escalate ticket.", true);
       }
     } catch (e) {
-      showToast(e.message, true);
+      showToast(errorMessage(e) || "Failed to escalate ticket.", true);
     }
   }
 
   async function updateStatus() {
     if (!currentTicket) return;
     try {
-      const r = await localAgencyApi.updateTicketStatus(
-        currentTicket.ticketId,
-        newStatus,
-      );
+      const r = await dispatch(
+        updateAgencyTicketStatus({
+          ticketId: currentTicket.ticketId,
+          status: newStatus,
+        }),
+      ).unwrap();
       if (r && r.success) {
         setCurrentTicket((t) => ({ ...t, status: newStatus }));
-        setTickets((ts) =>
-          ts.map((t) =>
-            t.ticketId === currentTicket.ticketId
-              ? { ...t, status: newStatus }
-              : t,
-          ),
-        );
         showToast(
           `✓ Ticket ${currentTicket.ticketId} status updated to ${newStatus}`,
         );
@@ -173,7 +171,7 @@ export default function SupportTickets({
         showToast("Failed to update ticket status.", true);
       }
     } catch (e) {
-      showToast(e.message, true);
+      showToast(errorMessage(e) || "Failed to update ticket status.", true);
     }
   }
 
@@ -204,21 +202,21 @@ export default function SupportTickets({
   const custInitials =
     custName !== "—"
       ? custName
-          .split(" ")
-          .map((w) => w[0])
-          .join("")
-          .toUpperCase()
-          .slice(0, 2)
+        .split(" ")
+        .map((w) => w[0])
+        .join("")
+        .toUpperCase()
+        .slice(0, 2)
       : "NA";
   const createdDate = currentTicket
     ? currentTicket.created ||
-      (currentTicket.raisedAt
-        ? new Date(currentTicket.raisedAt).toLocaleDateString("en-GB", {
-            day: "2-digit",
-            month: "short",
-            year: "numeric",
-          })
-        : "—")
+    (currentTicket.raisedAt
+      ? new Date(currentTicket.raisedAt).toLocaleDateString("en-GB", {
+        day: "2-digit",
+        month: "short",
+        year: "numeric",
+      })
+      : "—")
     : "";
 
   if (view === "detail" && currentTicket) {
@@ -252,7 +250,7 @@ export default function SupportTickets({
                   color: "#ef4444",
                   opacity:
                     normalCurrent === "Resolved" ||
-                    normalCurrent === "Escalated"
+                      normalCurrent === "Escalated"
                       ? 0.5
                       : 1,
                 }}
@@ -424,9 +422,9 @@ export default function SupportTickets({
                       const desc = TIMELINE_DESCS[step.label] || "";
                       const time = step.time
                         ? new Date(step.time).toLocaleString("en-IN", {
-                            dateStyle: "medium",
-                            timeStyle: "short",
-                          })
+                          dateStyle: "medium",
+                          timeStyle: "short",
+                        })
                         : "";
                       return (
                         <div key={i} className="timeline-item">
@@ -577,10 +575,10 @@ export default function SupportTickets({
                   t.created ||
                   (t.raisedAt
                     ? new Date(t.raisedAt).toLocaleDateString("en-GB", {
-                        day: "2-digit",
-                        month: "short",
-                        year: "numeric",
-                      })
+                      day: "2-digit",
+                      month: "short",
+                      year: "numeric",
+                    })
                     : "—");
                 return (
                   <tr key={i}>

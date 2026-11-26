@@ -1,17 +1,31 @@
 import React, { useEffect, useRef, useState } from "react";
-import { localAgencyApi } from "../api/localAgencyApi.js";
+import { useDispatch, useSelector } from "react-redux";
 import LocalAgencyStatusBadge from "../components/LocalAgencyStatusBadge.jsx";
 import LocalAgencyModal from "../components/LocalAgencyModal.jsx";
 import { validateRequiredText } from "../../utils/inputValidation.js";
+import {
+  confirmAgencyDelivery,
+  fetchAgencyDeliveries,
+  fetchAgencyRto,
+  initiateAgencyRto,
+  recordAgencyDeliveryAttempt,
+} from "../store/actions/localAgencyActions.js";
+import { setLocalAgencyPage, setLocalAgencyToast } from "../store/slices/localAgencyUiSlice.js";
 
-export default function ShipmentDelivery({
-  agencyId,
-  showToast,
-  deliveries: deliveryList,
-  loadDeliveries,
-  loadRto,
-  onNavigateRto,
-}) {
+const errorMessage = (error) =>
+  typeof error === "string" ? error : error?.message;
+
+export default function ShipmentDelivery() {
+  const dispatch = useDispatch();
+  const agencyId = useSelector((state) => state.auth.session?.user?.id);
+  const deliveryList = useSelector((state) => state.localAgency.data.deliveries);
+  const showToast = (msg, isError = false) =>
+    dispatch(setLocalAgencyToast({ msg, isError }));
+  const refreshDeliveryData = () =>
+    Promise.all([
+      dispatch(fetchAgencyDeliveries(agencyId)),
+      dispatch(fetchAgencyRto(agencyId)),
+    ]);
   const [updateModal, setUpdateModal] = useState(false);
   const [current, setCurrent] = useState(null);
   const [selectedStatus, setSelectedStatus] = useState(null);
@@ -65,10 +79,6 @@ export default function ShipmentDelivery({
     otpInputs.current[Math.min(digits.length, 5)]?.focus();
   }
 
-  async function refreshDeliveryData() {
-    await Promise.all([loadDeliveries(), loadShipments(), loadRto()]);
-  }
-
   async function verifyDeliveryOtp() {
     if (otpVerifying) return;
     const enteredOtp = otp.join("");
@@ -81,10 +91,12 @@ export default function ShipmentDelivery({
     setOtpMessage("");
     try {
       if (enteredOtp === "000000") {
-        const result = await localAgencyApi.confirmDelivery(
-          agencyId,
-          current.trackingId.replace(/^#/, ""),
-        );
+        const result = await dispatch(
+          confirmAgencyDelivery({
+            agencyId,
+            trackingId: current.trackingId.replace(/^#/, ""),
+          }),
+        ).unwrap();
         if (result?.status !== "success") {
           throw new Error(result?.flagMsg || "Unable to confirm delivery.");
         }
@@ -111,13 +123,18 @@ export default function ShipmentDelivery({
       }
 
       setOtpMessage("3 failed OTP attempts. Raising RTO automatically...");
-      const rtoResult = await localAgencyApi.initiateRto(agencyId, {
-        trackingId: current.trackingId.replace(/^#/, ""),
-        customerName: current.customerName,
-        agentId: current.agentId,
-        agentName: current.agentName,
-        reason: "OTP verification failed after 3 attempts",
-      });
+      const rtoResult = await dispatch(
+        initiateAgencyRto({
+          agencyId,
+          details: {
+            trackingId: current.trackingId.replace(/^#/, ""),
+            customerName: current.customerName,
+            agentId: current.agentId,
+            agentName: current.agentName,
+            reason: "OTP verification failed after 3 attempts",
+          },
+        }),
+      ).unwrap();
       if (rtoResult?.status !== "success") {
         throw new Error(rtoResult?.message || "Unable to raise an RTO.");
       }
@@ -126,9 +143,9 @@ export default function ShipmentDelivery({
       setSelectedStatus(null);
       showToast(`${current.trackingId} raised to RTO after failed OTP.`, true);
       await refreshDeliveryData();
-      onNavigateRto();
+      dispatch(setLocalAgencyPage("rto"));
     } catch (error) {
-      setOtpMessage(error.message || "Unable to verify delivery OTP.");
+      setOtpMessage(errorMessage(error) || "Unable to verify delivery OTP.");
     } finally {
       setOtpVerifying(false);
     }
@@ -169,26 +186,33 @@ export default function ShipmentDelivery({
         openOtpVerification(current);
         return;
       } else if (selectedStatus === "Customer Refused") {
-        result = await localAgencyApi.initiateRto(agencyId, {
-          trackingId: current.trackingId,
-          customerName: current.customerName,
-          agentId: current.agentId,
-          agentName: current.agentName,
-          reason: "Customer Refused",
-          notes: notes.trim(),
-        });
+        result = await dispatch(
+          initiateAgencyRto({
+            agencyId,
+            details: {
+              trackingId: current.trackingId,
+              customerName: current.customerName,
+              agentId: current.agentId,
+              agentName: current.agentName,
+              reason: "Customer Refused",
+              notes: notes.trim(),
+            },
+          }),
+        ).unwrap();
         if (result?.status !== "success")
           throw new Error(result?.message || "Unable to initiate RTO.");
         showToast("Customer refusal recorded. Shipment moved to RTO.");
       } else {
-        result = await localAgencyApi.recordDeliveryAttempt(
-          agencyId,
-          current.trackingId,
-          {
-            failStatus: selectedStatus,
-            notes: notes.trim(),
-          },
-        );
+        result = await dispatch(
+          recordAgencyDeliveryAttempt({
+            agencyId,
+            trackingId: current.trackingId,
+            details: {
+              failStatus: selectedStatus,
+              notes: notes.trim(),
+            },
+          }),
+        ).unwrap();
         if (result?.status !== "success")
           throw new Error(result?.flagMsg || "Unable to record delivery attempt.");
         showToast(
@@ -203,10 +227,10 @@ export default function ShipmentDelivery({
         selectedStatus === "Customer Refused" ||
         (selectedStatus !== "Delivered" && result?.autoRTO)
       ) {
-        onNavigateRto();
+        dispatch(setLocalAgencyPage("rto"));
       }
     } catch (e) {
-      showToast(e.message, true);
+      showToast(errorMessage(e) || "Unable to update delivery status.", true);
     }
   }
 
@@ -367,7 +391,7 @@ export default function ShipmentDelivery({
                   className={`dsc-icon ${selectedStatus === card.status && card.status !== "Delivered" ? "" : card.status === "Delivered" ? "dsc-green" : "dsc-grey"}`}
                   style={
                     selectedStatus === card.status &&
-                    card.status !== "Delivered"
+                      card.status !== "Delivered"
                       ? { background: "#f4a32a", color: "white" }
                       : {}
                   }

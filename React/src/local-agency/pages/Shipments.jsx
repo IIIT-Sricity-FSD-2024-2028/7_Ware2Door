@@ -1,7 +1,9 @@
 import React, { useState } from "react";
+import { useSelector } from "react-redux";
 import LocalAgencyStatusBadge from "../components/LocalAgencyStatusBadge.jsx";
 
-export default function Shipments({ shipments }) {
+export default function Shipments() {
+  const shipments = useSelector((state) => state.localAgency.data.shipments);
   const [activeTab, setActiveTab] = useState("all");
 
   const filtered = shipments.filter((s) => {
